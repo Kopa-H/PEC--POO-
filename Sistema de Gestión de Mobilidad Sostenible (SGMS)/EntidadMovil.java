@@ -320,4 +320,21 @@ public class EntidadMovil extends Entidad {
         }
         return false;
     }
+    
+    /*
+     * public String toString(String str) {
+        str = super.toString(str);
+        
+        // Añadir información sobre el trayecto solo si está en trayecto
+        if (enTrayecto) {
+            str += ", en trayecto hacia " + ubicacionDestino.toString();
+        }
+        return str;
+    }
+    */
+    
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

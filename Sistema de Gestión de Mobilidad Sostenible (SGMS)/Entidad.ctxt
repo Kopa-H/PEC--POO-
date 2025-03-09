@@ -21,4 +21,6 @@ comment7.target=java.lang.String\ getTipoEntidad()
 comment7.text=\r\n\ M\u00E9todo\ para\ representar\ la\ entidad\ m\u00F3vil\ en\ forma\ de\ cadena\ de\ texto.\r\n\ \r\n\ @return\ Informaci\u00F3n\ de\ la\ entidad\ y\ su\ ubicaci\u00F3n.\r\n
 comment8.params=ciudad
 comment8.target=void\ actuar(Ciudad)
-numComments=9
+comment9.params=
+comment9.target=java.lang.String\ toString()
+numComments=10

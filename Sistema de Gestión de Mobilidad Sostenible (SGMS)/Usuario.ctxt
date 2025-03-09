@@ -21,6 +21,4 @@ comment7.params=x
 comment7.target=void\ recargarSaldo(double)
 comment8.params=
 comment8.target=Usuario.TipoMembresia\ getTipoMembresia()
-comment9.params=
-comment9.target=java.lang.String\ toString()
-numComments=10
+numComments=9

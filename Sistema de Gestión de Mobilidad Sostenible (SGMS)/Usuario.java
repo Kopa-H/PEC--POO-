@@ -93,9 +93,4 @@ public class Usuario extends Persona {
     public TipoMembresia getTipoMembresia() {
         return tipoMembresia;
     }
-    
-    @Override
-    public String toString() {
-        return "Usuario (" + getNombre() + ") con id " + id;
-    }
 }

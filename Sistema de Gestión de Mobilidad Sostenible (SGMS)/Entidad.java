@@ -67,4 +67,9 @@ abstract public class Entidad
     
     // Acción que hace a las entidades hacer sus funciones dependiendo de su estado
     abstract public void actuar(Ciudad ciudad);
+    
+    @Override
+    public String toString() {
+        return "  Id: " + id + "  |  Tipo: " + getClass().getSimpleName();
+    }
 }

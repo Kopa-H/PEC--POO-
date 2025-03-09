@@ -9,7 +9,7 @@ import java.awt.Color;
 public class Moto extends Vehiculo
 {
     private static int contadorInstancias = 0;
-    private static final int MAX_DISTANCIA_BATERIA = 400;
+    private static final int MAX_DISTANCIA_BATERIA = 100;
     
     /**
      * Constructor for objects of class Moto

@@ -63,10 +63,8 @@ abstract public class Vehiculo extends EntidadMovil
         }
     }
     
-    // Método toString común para todos los vehículos
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " con id " + id + " y porcentaje de batería " + getPorcentajeBateria() + "%";
+        return super.toString() + "  |  Porcentaje batería: " + getPorcentajeBateria() + "%";
     }
-
 }

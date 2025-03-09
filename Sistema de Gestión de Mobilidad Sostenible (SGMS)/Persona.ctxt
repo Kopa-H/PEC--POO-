@@ -13,4 +13,6 @@ comment3.text=\r\n\ Sirve\ para\ otorgarle\ un\ nombre\ a\ una\ Persona\r\n\r\n\
 comment4.params=
 comment4.target=java.lang.String\ getNombre()
 comment4.text=\r\n\ Sirve\ para\ obtener\ el\ nombre\ de\ una\ persona\r\n\r\n\ @return\ \ \ the\ result\ produced\r\n
-numComments=5
+comment5.params=
+comment5.target=java.lang.String\ toString()
+numComments=6

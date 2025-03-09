@@ -18,6 +18,9 @@ comment15.params=entidad
 comment15.target=void\ seguirEntidadMovil(Entidad)
 comment16.params=ciudad\ tipoEntidad
 comment16.target=boolean\ intentarPlanearTrayecto(Ciudad,\ java.lang.Class)
+comment17.params=
+comment17.target=java.lang.String\ toString()
+comment17.text=\r\n\ public\ String\ toString(String\ str)\ {\r\n\ \ \ \ \ \ \ \ str\ \=\ super.toString(str);\r\n\ \ \ \ \ \ \ \ \r\n\ \ \ \ \ \ \ \ //\ A\u00F1adir\ informaci\u00F3n\ sobre\ el\ trayecto\ solo\ si\ est\u00E1\ en\ trayecto\r\n\ \ \ \ \ \ \ \ if\ (enTrayecto)\ {\r\n\ \ \ \ \ \ \ \ \ \ \ \ str\ +\=\ ",\ en\ trayecto\ hacia\ "\ +\ ubicacionDestino.toString();\r\n\ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ return\ str;\r\n\ \ \ \ }\r\n
 comment2.params=x\ y
 comment2.target=EntidadMovil(int,\ int)
 comment2.text=\r\n\ Constructor\ que\ permite\ inicializar\ la\ EntidadMovil\ en\ una\ ubicaci\u00F3n\ espec\u00EDfica.\r\n\ \r\n\ @param\ x\ Coordenada\ X\ inicial\r\n\ @param\ y\ Coordenada\ Y\ inicial\r\n
@@ -41,4 +44,4 @@ comment8.target=void\ moverRandom(Ciudad)
 comment9.params=ubiDestino
 comment9.target=void\ planearTrayecto(Ubicacion)
 comment9.text=\r\n\ M\u00E9todo\ que\ hace\ que\ el\ veh\u00EDculo\ inicie\ un\ trayecto\r\n
-numComments=17
+numComments=18

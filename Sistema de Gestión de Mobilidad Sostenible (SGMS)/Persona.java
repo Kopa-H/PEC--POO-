@@ -28,7 +28,7 @@ public abstract class Persona extends EntidadMovil
     {
         // Se inicializa el nombre de la Persona como " "
         super();
-        nombre = " ";
+        nombre = randomGenerator.getNombreRandom();
     }
     
     /**
@@ -48,5 +48,10 @@ public abstract class Persona extends EntidadMovil
      */
     public String getNombre() {
         return nombre;
+    }
+    
+    @Override
+    public String toString() {
+        return super.toString() + "  |  Nombre: " + nombre;
     }
 }

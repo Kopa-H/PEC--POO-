@@ -7,28 +7,31 @@
  */
 abstract public class Trabajador extends Persona
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
+    // Almacena el vehículo que el trabajador tiene asignado
+    Vehiculo vehiculoAsignado;
+    
     /**
      * Constructor for objects of class Trabajador
      */
-    public Trabajador()
+    public Trabajador(int posX, int posY)
     {
-        super();
-        // initialise instance variables
-        x = 0;
+        super(posX, posY);
+    }
+   
+    /*
+    @Override
+    public String toString() {
+        return super.toString() + ", trabajo: " + trabajo;
+    }
+    */
+    
+    @Override
+    public String toString() {
+        String str = super.toString();  // Llamamos al toString de Trabajador
+        if (vehiculoAsignado != null) {
+            str += "  |  Vehículo asignado: (" + vehiculoAsignado + ")";  // Añadimos el vehículo si está asignado
+        }
+        return str;
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
-    }
 }

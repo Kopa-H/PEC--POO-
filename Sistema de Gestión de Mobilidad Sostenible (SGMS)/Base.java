@@ -50,16 +50,15 @@ public class Base extends EntidadFija
         
         return num; // Recuerda devolver el resultado
     }
-
-    
-    @Override
-    public String toString() {
-       return String.format("Base con id %d | Bicis = %d | Patinetes = %d",
-            id, getNumeroVehiculos(Bicicleta.class), getNumeroVehiculos(Patinete.class));
-    }
     
     @Override
     public void actuar(Ciudad ciudad) {
         // System.out.println("La base no tiene nada que hacer");
+    }
+    
+    @Override
+    public String toString() {
+       return String.format("%s  |  Vehiculos: [motos = %d | bicis = %d | patinetes = %d]",
+            super.toString(), getNumeroVehiculos(Moto.class), getNumeroVehiculos(Bicicleta.class), getNumeroVehiculos(Patinete.class));
     }
 }

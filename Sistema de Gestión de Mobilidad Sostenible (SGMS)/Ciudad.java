@@ -26,6 +26,8 @@ public class Ciudad extends JFrame {
     public static final int MAX_SIMULATION_SPEED = 500;
     public int simulationSpeed = (MAX_SIMULATION_SPEED + MIN_SIMULATION_SPEED) / 2;
     
+    private boolean appActive = true; // Variable para controlar el estado de la simulación
+    
     /**
      * Constructor para objetos de la clase Ciudad.
      */ 
@@ -33,7 +35,7 @@ public class Ciudad extends JFrame {
         // Inicializamos el grid y otros componentes
         grid = new int[ROWS][COLUMNS];
         gridButtons = new JButton[ROWS][COLUMNS];
-        entidades = new ArrayList<>(); // Inicializamos la lista de personas
+        entidades = new ArrayList<>(); // Inicializamos el lista de personas
         step = 0; // Inicializamos el contador de pasos
     
         setTitle("Simulación de Ciudad");
@@ -112,37 +114,53 @@ public class Ciudad extends JFrame {
         sliderPanel.add(sliderLabel, BorderLayout.NORTH);
         sliderPanel.add(speedSlider, BorderLayout.CENTER);
     
-        // Crear el panel contenedor para stepPanel y statusPanel con BoxLayout
-        JPanel northPanel = new JPanel();
-        northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
+        // Crear un botón para detener o reanudar la simulación
+        JButton toggleButton = new JButton("Detener Simulación");
+        toggleButton.addActionListener(e -> toggleSimulation(toggleButton));  // Alternar el estado de la simulación al hacer clic en el botón
+        
+        // Panel para el slider y su etiqueta
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+        
+        // Agregar stepPanel encima
+        southPanel.add(stepPanel);
+        
+        // Agregar un pequeño espacio entre stepPanel y sliderPanel
+        southPanel.add(Box.createVerticalStrut(10));  // Ajusta el tamaño según lo que necesites
     
-        // Añadir los paneles stepPanel y statusPanel al northPanel
-        northPanel.add(statusPanel);
+        // Agregar el sliderPanel debajo
+        southPanel.add(sliderPanel);
+        
+        // Agregar el botón de detener simulación
+        southPanel.add(Box.createVerticalStrut(10));
+        southPanel.add(toggleButton);
     
-        // Añadir el panel northPanel al NORTH de la ventana
-        add(northPanel, BorderLayout.NORTH);
+        // Añadir el statusPanel al norte
+        add(statusPanel, BorderLayout.NORTH);
     
-        // Añadir el panel stepPanel al SUR (SOUTH) de la ventana
-        add(stepPanel, BorderLayout.SOUTH);
-    
-        // Añadir el slider al pie de la ventana
-        add(sliderPanel, BorderLayout.SOUTH);
+        // Añadir el panel southPanel al SOUTH de la ventana
+        add(southPanel, BorderLayout.SOUTH);
     
         // Configurar pantalla completa
         setExtendedState(JFrame.MAXIMIZED_BOTH);  // Pantalla completa
     
         setVisible(true);
     }
-
-    public ArrayList<Entidad> getEntidades() {
-        return entidades;
-    }
     
+    // Método para alternar entre detener y reanudar la simulación
+    public void toggleSimulation(JButton toggleButton) {
+        if (appActive) {
+            appActive = false;  // Detener la simulación
+            toggleButton.setText("Reanudar Simulación");  // Cambiar el texto del botón
+        } else {
+            appActive = true;  // Reanudar la simulación
+            toggleButton.setText("Detener Simulación");  // Cambiar el texto del botón
+            new Thread(() -> runSimulacion()).start();  // Iniciar la simulación en un hilo separado para evitar bloquear la interfaz gráfica
+        }
+    }
+
     public void runSimulacion() {
-        boolean appActive = true;
-        
         while (appActive) {
-            
             // Se hace que todas las entidades actúen según su estado (moverse)
             for (Entidad entidad : entidades) {
                 entidad.actuar(this);
@@ -165,6 +183,10 @@ public class Ciudad extends JFrame {
     // Método que actualiza visualmente la posición de una entidad en la cuadrícula
     private void mostrarEntidad(Ubicacion ubi, Color color) {
         gridButtons[ubi.getPosX()][ubi.getPosY()].setBackground(color); // Actualiza la celda correspondiente
+    }
+    
+    public ArrayList<Entidad> getEntidades() {
+        return entidades;
     }
     
     public Entidad encontrarEntidadMasCercana(EntidadMovil entidadBuscando, Class<?> tipoEntidad) {
