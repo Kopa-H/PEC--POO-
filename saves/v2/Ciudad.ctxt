@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Ciudad
+comment1.params=
+comment1.target=Ciudad()
+comment1.text=\r\n\ Constructor\ para\ objetos\ de\ la\ clase\ Ciudad.\r\n
+comment2.params=e
+comment2.target=void\ mouseEntered(java.awt.event.MouseEvent)
+comment3.params=e
+comment3.target=void\ mouseExited(java.awt.event.MouseEvent)
+comment4.params=e
+comment4.target=void\ stateChanged(javax.swing.event.ChangeEvent)
+comment5.params=
+comment5.target=void\ runSimulacion()
+comment6.params=entidad
+comment6.target=void\ addElement(Entidad)
+comment7.params=ubi\ color
+comment7.target=void\ mostrarEntidad(Ubicacion,\ java.awt.Color)
+comment8.params=ubi\ tipoEntidad
+comment8.target=Ubicacion\ encontrarEntidadMasCercana(Ubicacion,\ java.lang.Class)
+comment9.params=
+comment9.target=void\ actualizarEstadoVisual()
+numComments=10

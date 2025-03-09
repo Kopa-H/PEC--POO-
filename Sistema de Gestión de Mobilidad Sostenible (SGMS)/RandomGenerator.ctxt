@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=RandomGenerator
+comment0.text=\r\n\ Clase\ para\ generar\ valores\ aleatorios,\ como\ direcciones\ y\ nombres.\r\n
+comment1.params=
+comment1.target=RandomGenerator()
+comment1.text=\r\n\ Constructor\ para\ objetos\ de\ la\ clase\ RandomGenerator\r\n
+comment2.params=
+comment2.target=EntidadMovil.Direcciones\ getDireccionRandom()
+comment2.text=\r\n\ Genera\ una\ direcci\u00F3n\ aleatoria.\r\n\r\n\ @return\ Direcci\u00F3n\ aleatoria\ (UP,\ DOWN,\ LEFT,\ RIGHT)\r\n
+comment3.params=
+comment3.target=java.lang.String\ getNombreRandom()
+comment3.text=\r\n\ Genera\ un\ nombre\ aleatorio\ de\ un\ listado\ de\ nombres\ en\ espa\u00F1ol.\r\n\r\n\ @return\ Nombre\ aleatorio\ en\ espa\u00F1ol\r\n
+comment4.params=ciudad
+comment4.target=Ubicacion\ getUbicacionLibreRandom(Ciudad)
+numComments=5

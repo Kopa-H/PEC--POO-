@@ -1,0 +1,26 @@
+#BlueJ class context
+comment0.target=Usuario
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Usuario\ here.\r\n\r\n\ @author\ Kopa\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=posX\ posY
+comment1.target=Usuario(int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Usuario\r\n
+comment2.params=
+comment2.target=void\ consultarVehiculosDisponibles()
+comment2.text=\r\n\ Muestra\ en\ la\ interfaz\ los\ veh\u00EDculos\ disponibles\ y\ sus\ niveles\ de\ bateria\r\n\ \ -\ Coordenadas\ de\ todas\ las\ motos.\r\n\ \ -\ ID\ y\ coordenadas\ de\ las\ bases\ con\ bicis\ o\ patinetes.\r\n\r\n
+comment3.params=locInicial\ locFinal\ tipoV
+comment3.target=void\ alquilarVehiculo(Ubicacion,\ Ubicacion,\ Vehiculo.TipoVehiculo)
+comment3.text=\r\n\ Alquila\ un\ veh\u00EDculo\r\n\r\n
+comment4.params=
+comment4.target=void\ reservarVehiculo()
+comment5.params=v\ descripcion
+comment5.target=void\ informarFalloMecanico(Vehiculo,\ java.lang.String)
+comment5.text=\r\n\ Informar\ de\ un\ problema\ con\ un\ veh\u00EDculo\ o\ con\ una\ base\ de\ bicicletas\ o\ patinetes\r\n\r\n
+comment6.params=
+comment6.target=double\ getSaldo()
+comment7.params=x
+comment7.target=void\ recargarSaldo(double)
+comment8.params=
+comment8.target=Usuario.TipoMembresia\ getTipoMembresia()
+comment9.params=
+comment9.target=java.lang.String\ toString()
+numComments=10

@@ -1,0 +1,24 @@
+#BlueJ class context
+comment0.target=Entidad
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Entidad\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=Entidad()
+comment2.params=x\ y
+comment2.target=Entidad(int,\ int)
+comment2.text=\r\n\ Constructor\ que\ permite\ inicializar\ la\ EntidadMovil\ en\ una\ ubicaci\u00F3n\ espec\u00EDfica.\r\n\ \r\n\ @param\ x\ Coordenada\ X\ inicial\r\n\ @param\ y\ Coordenada\ Y\ inicial\r\n
+comment3.params=
+comment3.target=Ubicacion\ getUbicacion()
+comment3.text=\r\n\ M\u00E9todo\ para\ obtener\ la\ ubicaci\u00F3n\ actual\ de\ la\ entidad.\r\n\ \r\n\ @return\ La\ ubicaci\u00F3n\ actual\ (coordenadas\ X\ e\ Y).\r\n
+comment4.params=x\ y
+comment4.target=void\ setUbicacion(int,\ int)
+comment4.text=\r\n\ M\u00E9todo\ para\ establecer\ manualmente\ la\ ubicaci\u00F3n\ de\ la\ entidad.\r\n\ \r\n\ @param\ x\ Nueva\ coordenada\ X\r\n\ @param\ y\ Nueva\ coordenada\ Y\r\n
+comment5.params=color
+comment5.target=void\ setColor(java.awt.Color)
+comment6.params=
+comment6.target=java.awt.Color\ getColor()
+comment7.params=
+comment7.target=java.lang.String\ getTipoEntidad()
+comment7.text=\r\n\ M\u00E9todo\ para\ representar\ la\ entidad\ m\u00F3vil\ en\ forma\ de\ cadena\ de\ texto.\r\n\ \r\n\ @return\ Informaci\u00F3n\ de\ la\ entidad\ y\ su\ ubicaci\u00F3n.\r\n
+comment8.params=ciudad
+comment8.target=void\ actuar(Ciudad)
+numComments=9
