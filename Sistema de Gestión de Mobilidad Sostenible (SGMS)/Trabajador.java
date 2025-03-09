@@ -29,7 +29,7 @@ abstract public class Trabajador extends Persona
     public String toString() {
         String str = super.toString();  // Llamamos al toString de Trabajador
         if (vehiculoAsignado != null) {
-            str += "  |  Vehículo asignado: (" + vehiculoAsignado + ")";  // Añadimos el vehículo si está asignado
+            str += "  |  Vehículo asignado: (" + vehiculoAsignado + " )";  // Añadimos el vehículo si está asignado
         }
         return str;
     }
