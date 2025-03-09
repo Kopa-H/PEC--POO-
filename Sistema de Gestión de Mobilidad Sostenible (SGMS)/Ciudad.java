@@ -167,7 +167,7 @@ public class Ciudad extends JFrame {
         gridButtons[ubi.getPosX()][ubi.getPosY()].setBackground(color); // Actualiza la celda correspondiente
     }
     
-    public Entidad encontrarEntidadMasCercana(EntidadMovil entidadBuscando, Ubicacion ubi, Class<?> tipoEntidad) {
+    public Entidad encontrarEntidadMasCercana(EntidadMovil entidadBuscando, Class<?> tipoEntidad) {
         Entidad entidadMasCercana = null;
         int distanciaMinima = Integer.MAX_VALUE; // Inicializamos con el valor más alto posible
     
@@ -181,8 +181,8 @@ public class Ciudad extends JFrame {
                 }
     
                 // Calculamos la distancia Manhattan entre la ubicación actual y la entidad
-                int distancia = Math.abs(entidad.getUbicacion().getPosX() - ubi.getPosX()) 
-                              + Math.abs(entidad.getUbicacion().getPosY() - ubi.getPosY());
+                int distancia = Math.abs(entidad.getUbicacion().getPosX() - entidadBuscando.getUbicacion().getPosX()) 
+                              + Math.abs(entidad.getUbicacion().getPosY() - entidadBuscando.getUbicacion().getPosY());
                               
                 // Si la entidad es un Vehículo y quien busca es una Persona
                 if (entidad instanceof Vehiculo && entidadBuscando instanceof Usuario) {
@@ -217,16 +217,30 @@ public class Ciudad extends JFrame {
         // Devolvemos la entidad más cercana, o null si no se encontró ninguna
         return entidadMasCercana;
     }
-
+    
     // Método que verifica si una posición está ocupada
-    public boolean posicionOcupada(int posX, int posY) {
+    public boolean posicionOcupada(Ubicacion ubicacion) {
         // Recorrer las entidades existentes y verificar si alguna está en la misma posición
         for (Entidad entidad : entidades) {
-            if (entidad.getUbicacion().getPosX() == posX && entidad.getUbicacion().getPosY() == posY) {
+            if (entidad.getUbicacion().getPosX() == ubicacion.getPosX() && entidad.getUbicacion().getPosY() == ubicacion.getPosY()) {
                 return true; // La posición está ocupada
             }
         }
         return false; // La posición no está ocupada
+    }
+
+    public boolean posicionOcupadaPor(Ubicacion ubicacion, Class<?> tipoEntidad) {
+        // Iterar sobre las entidades existentes
+        for (Entidad entidad : entidades) {
+            // Comprobamos si la entidad es una instancia del tipo proporcionado
+            if (tipoEntidad.isInstance(entidad)) {
+                // Verificar si la posición coincide
+                if (entidad.getUbicacion().getPosX() == ubicacion.getPosX() && entidad.getUbicacion().getPosY() == ubicacion.getPosY()) {
+                    return true; // La posición está ocupada por una entidad del tipo especificado
+                }
+            }
+        }
+        return false; // La posición no está ocupada por una entidad del tipo especificado
     }
     
     // Método que actualiza el estado de la ciudad

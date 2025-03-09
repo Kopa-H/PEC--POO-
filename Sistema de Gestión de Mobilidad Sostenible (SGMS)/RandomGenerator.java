@@ -69,7 +69,7 @@ public class RandomGenerator {
             posY = random.nextInt(Ciudad.COLUMNS);
             
             ubi.setUbicacion(posX, posY);
-        } while (ciudad.posicionOcupada(posX, posY));  // Comprobar si la ubicación está ocupada
+        } while (ciudad.posicionOcupada(ubi));  // Comprobar si la ubicación está ocupada
         
         return ubi;
     }

@@ -86,7 +86,7 @@ public class EntidadMovil extends Entidad {
         Ubicacion nuevaUbi = new Ubicacion(nuevaPosX, nuevaPosY);
     
         // Verificar si la nueva posición está ocupada cuando NO es el destino final
-        if (!nuevaUbi.equals(ubicacionDestino) && ciudad.posicionOcupada(nuevaPosX, nuevaPosY)) {
+        if (!nuevaUbi.equals(ubicacionDestino) && ciudad.posicionOcupada(nuevaUbi)) {
             System.out.println("La posición (" + nuevaPosX + ", " + nuevaPosY + ") está ocupada, la entidad " + toString() + " no avanza.");
             return;
         } else {
@@ -129,16 +129,21 @@ public class EntidadMovil extends Entidad {
     /**
      * Método que hace que el vehículo inicie un trayecto
      */
-    public void planearTrayecto(int destinoX, int destinoY) {
-        int desplazX, desplazY;
-        Ubicacion ubi = getUbicacion();
+    public void planearTrayecto(Ubicacion ubiDestino) {
+        int actualX, actualY, destinoX, destinoY, desplazX, desplazY;
+        
+        destinoX = ubiDestino.getPosX();
+        destinoY = ubiDestino.getPosY();
+        
+        actualX = getUbicacion().getPosX();
+        actualY = getUbicacion().getPosY();
         
         ubicacionDestino = new Ubicacion();
         ubicacionDestino.setUbicacion(destinoX, destinoY);
         
         // Se calcula el desplazamiento en x y en y que debe realizar
-        desplazX = destinoX - ubi.getPosX();
-        desplazY = destinoY - ubi.getPosY();
+        desplazX = destinoX - actualX;
+        desplazY = destinoY - actualY;
         
         // Inicializar la lista de trayecto
         trayecto = new ArrayList<>();
@@ -237,18 +242,22 @@ public class EntidadMovil extends Entidad {
     
             // Si se ha llegado a una moto, se sube y la moto planea un trayecto hacia una dirección aleatoria
             if (entidadDestino instanceof Moto) {
-                entidadSeguida = (Moto) entidadDestino;
-                siguiendoEntidad = true;
+                empezarSeguimiento((EntidadMovil) entidadDestino);
     
                 // La moto comienza un rumbo hacia una posición aleatoria de la ciudad
                 RandomGenerator randomGenerator = new RandomGenerator();
                 Ubicacion ubicacion = randomGenerator.getUbicacionLibreRandom(ciudad);
-                entidadSeguida.planearTrayecto(ubicacion.getPosX(), ubicacion.getPosY());
+                entidadSeguida.planearTrayecto(ubicacion);
                 System.out.println(toString() + " ha comenzado un viaje hacia " + ubicacionDestino);
             }
     
             entidadDestino = null;
         }
+    }
+    
+    public void empezarSeguimiento(EntidadMovil entidadPorSeguir) {
+        entidadSeguida = entidadPorSeguir;
+        siguiendoEntidad = true;
     }
 
     
@@ -292,7 +301,7 @@ public class EntidadMovil extends Entidad {
         if (Math.random() < probabilidad) {
             
             // Encontrar la entidad más cercana
-            Entidad entidad = ciudad.encontrarEntidadMasCercana(this, getUbicacion(), tipoEntidad);
+            Entidad entidad = ciudad.encontrarEntidadMasCercana(this, tipoEntidad);
             
             if (entidad == null || entidad.getUbicacion() == null) {
                 return false;
@@ -301,7 +310,7 @@ public class EntidadMovil extends Entidad {
             Ubicacion ubiEntidad = entidad.getUbicacion();
         
             // Planear trayecto hacia la entidad
-            planearTrayecto(ubiEntidad.getPosX(), ubiEntidad.getPosY());
+            planearTrayecto(ubiEntidad);
             
             entidadDestino = entidad;
             

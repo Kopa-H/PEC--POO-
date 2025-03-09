@@ -55,6 +55,14 @@ abstract public class Vehiculo extends EntidadMovil
         }
     }
     
+    public void sumarBateria() {
+        if (autonomiaBateria < DISTANCIA_MAX_BATERIA) {
+            autonomiaBateria++;
+        } else {
+            System.out.println("La batería del vehículo " + toString() + " está llena!");  
+        }
+    }
+    
     // Método toString común para todos los vehículos
     @Override
     public String toString() {
