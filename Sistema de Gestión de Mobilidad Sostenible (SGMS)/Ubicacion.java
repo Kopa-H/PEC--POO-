@@ -1,4 +1,5 @@
 import java.util.Objects;
+import java.io.Serializable;
 
 /**
  * Write a description of class Ubicacion here.
@@ -6,7 +7,7 @@ import java.util.Objects;
  * @author Kopa
  * @version (a version number or a date)
  */
-public class Ubicacion
+public class Ubicacion implements Serializable
 {
     // instance variables - replace the example below with your own
     private int posX;

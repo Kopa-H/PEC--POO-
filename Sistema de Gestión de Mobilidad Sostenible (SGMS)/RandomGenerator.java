@@ -1,9 +1,10 @@
 import java.util.Random;
+import java.io.Serializable;
 
 /**
  * Clase para generar valores aleatorios, como direcciones y nombres.
  */
-public class RandomGenerator {
+public class RandomGenerator implements Serializable {
     // Instancia de Random para generar números aleatorios
     private Random random;
 

@@ -242,9 +242,8 @@ public class Simulacion extends JFrame {
         while (simulationRunning) {
             
             if (runningForward) {
-                System.out.println("avanzaad!");
-                
-                // Se hace que todas las entidades actúen según su estado (moverse)
+        
+                // Se hace que todas las entidades actúen según su estado
                 for (Entidad entidad : ciudad.getEntidades()) {
                     entidad.actuar(ciudad);
                 }
@@ -256,7 +255,6 @@ public class Simulacion extends JFrame {
                 step++;
 
             } else if (runningBackward && step > 0) {
-                System.out.println("retrocedeeed!");
                 
                 // Se tira para atrás
                 retrocederEstado(ciudad);
@@ -267,6 +265,7 @@ public class Simulacion extends JFrame {
             actualizarEstadoVisual(ciudad);
             stepLabel.setText("Paso: " + step);
             Utilities.gestionarDelay(simulationSpeed);
+            System.out.println(simulationSpeed);
         }
     }
     
