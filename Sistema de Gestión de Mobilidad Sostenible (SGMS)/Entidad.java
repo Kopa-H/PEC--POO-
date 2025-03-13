@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.io.*;
 
 /**
  * Write a description of class Entidad here.
@@ -6,7 +7,7 @@ import java.awt.Color;
  * @author (your name)
  * @version (a version number or a date)
  */
-public abstract class Entidad
+public abstract class Entidad implements Serializable
 {
     public Ubicacion ubicacion;
     private Color color; // color mostrado en la visualización
@@ -57,21 +58,18 @@ public abstract class Entidad
     public void actuar(Ciudad ciudad) {
         // System.out.println("La entidad no tiene ninguna acción asignada");
     }
-
-    public abstract Entidad clone();  // Método abstracto para obligar a las subclases a implementarlo
     
-    // Método para clonar los atributos comunes de Entidad
-    protected Entidad cloneCommonAttributes(Entidad entidadCopia) {
-        // Clonar la ubicación si existe
-        if (this.ubicacion != null) {
-            entidadCopia.ubicacion = this.ubicacion.clone();
-        }
-        
-        // Clonar otros atributos comunes
-        entidadCopia.id = this.id;
-        entidadCopia.color = this.color;
+    // Método para hacer una copia profunda de una entidad
+    public static Object deepCopy(Object object) throws IOException, ClassNotFoundException {
+        // Serializa el objeto a un flujo de bytes
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(object);
 
-        return entidadCopia;
+        // Deserializa el objeto para obtener una copia profunda
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        return objectInputStream.readObject();
     }
 
     @Override

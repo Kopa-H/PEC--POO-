@@ -22,15 +22,4 @@ public class Moto extends Vehiculo
         setId(contadorInstancias);  // Asignamos el ID único a esta instancia
         contadorInstancias++;
     }
-    
-    @Override
-    public Moto clone() {
-        // Llamamos a super.clone() para clonar los atributos de Vehiculo y superiores
-        Moto motoCopia = (Moto) super.clone();
-    
-        // Aquí, si Moto tiene atributos específicos adicionales, se clonan. 
-        // Actualmente, no hay atributos específicos en este ejemplo, pero si los hubiera, los manejaríamos aquí.
-    
-        return motoCopia;
-    }
 }

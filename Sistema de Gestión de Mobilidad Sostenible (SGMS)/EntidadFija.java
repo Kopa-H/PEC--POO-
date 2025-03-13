@@ -17,15 +17,4 @@ public class EntidadFija extends Entidad
     {
         super(x, y);
     }
-    
-    @Override
-    public EntidadFija clone() {
-        // Crear una nueva instancia de EntidadMovil
-        EntidadFija entidadFijaCopia = new EntidadFija();
-    
-        // Clonar los atributos comunes de la superclase Entidad
-        super.cloneCommonAttributes(entidadFijaCopia);
-    
-        return entidadFijaCopia;
-    }
 }

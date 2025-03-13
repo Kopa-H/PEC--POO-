@@ -6,6 +6,4 @@ comment1.target=EntidadFija()
 comment2.params=x\ y
 comment2.target=EntidadFija(int,\ int)
 comment2.text=\r\n\ Constructor\ for\ objects\ of\ class\ EntidadFija\r\n
-comment3.params=
-comment3.target=EntidadFija\ clone()
-numComments=4
+numComments=3

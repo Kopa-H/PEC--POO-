@@ -75,15 +75,4 @@ public class Persona extends EntidadMovil
     public String toString() {
         return super.toString() + "  |  Nombre: " + nombre;
     }
-    
-    @Override
-    public Persona clone() {
-        // Llamamos a super.clone() para clonar los atributos de EntidadMovil y superiores
-        Persona personaCopia = (Persona) super.clone();
-    
-        // Clonamos los atributos específicos de Persona
-        personaCopia.setNombre(this.getNombre());
-    
-        return personaCopia;
-    }
 }

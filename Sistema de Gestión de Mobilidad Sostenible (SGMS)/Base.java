@@ -55,24 +55,7 @@ public class Base extends EntidadFija
     public void actuar(Ciudad ciudad) {
         // System.out.println("La base no tiene nada que hacer");
     }
-    
-    @Override
-    public Base clone() {
-        // Llamamos a super.clone() para clonar los atributos de EntidadFija y Entidad
-        Base baseCopia = (Base) super.clone();
-    
-        // Clonamos la lista de vehículos
-        baseCopia.vehiculos = new ArrayList<>();
-        for (Vehiculo v : this.vehiculos) {
-            // Clonamos el vehículo adecuado
-            Vehiculo vehiculoCopia = v.clone(); // Asumimos que v.clone() devuelve una copia adecuada de cada vehículo
-            baseCopia.agregarVehiculo(vehiculoCopia); // Agregamos el vehículo copiado a la lista
-        }
-    
-        return baseCopia;
-    }
-
-    
+        
     @Override
     public String toString() {
        return String.format("%s  |  Vehiculos: [motos = %d | bicis = %d | patinetes = %d]",

@@ -23,15 +23,4 @@ public class Bicicleta extends Vehiculo
         setId(contadorInstancias);
         contadorInstancias++;
     }
-    
-    @Override
-    public Patinete clone() {
-        // Llamamos a super.clone() para clonar los atributos de Vehiculo, EntidadMovil y Entidad
-        Patinete patineteCopia = (Patinete) super.clone();
-    
-        // Si Patinete tiene atributos específicos, los clonamos aquí.
-        // Actualmente, no se mencionan atributos adicionales en este ejemplo, pero si los hubiera, se añadirían aquí.
-    
-        return patineteCopia;
-    }
 }

@@ -107,16 +107,4 @@ public class Usuario extends Persona {
     public TipoMembresia getTipoMembresia() {
         return tipoMembresia;
     }
-    
-    @Override
-    public Usuario clone() {
-        // Llamamos a super.clone() para clonar los atributos de Persona y superiores
-        Usuario usuarioCopia = (Usuario) super.clone();
-    
-        // Clonamos los atributos específicos de Usuario
-        usuarioCopia.setSaldo(this.getSaldo());
-        usuarioCopia.tipoMembresia = this.tipoMembresia;
-    
-        return usuarioCopia;
-    }
 }

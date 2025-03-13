@@ -71,23 +71,6 @@ abstract public class Vehiculo extends EntidadMovil
     }
 
     @Override
-    public Vehiculo clone() {
-        // Llamamos a super.clone() para clonar los atributos de EntidadMovil y superiores
-        Vehiculo vehiculoCopia = (Vehiculo) super.clone();
-    
-        // Clonamos los atributos específicos de Vehiculo
-        vehiculoCopia.setAutonomiaBateria(this.autonomiaBateria);
-    
-        // Clonamos la lista de fallos mecánicos si no es nula
-        if (this.fallosMecanicos != null) {
-            vehiculoCopia.fallosMecanicos = new ArrayList<>(this.fallosMecanicos);
-        }
-    
-        return vehiculoCopia;
-    }
-
-    
-    @Override
     public String toString() {
         return super.toString() + "  |  Porcentaje batería: " + getPorcentajeBateria() + "%";
     }

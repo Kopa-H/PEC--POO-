@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * Write a description of class Simulacion here.
@@ -195,17 +196,20 @@ public class Simulacion extends JFrame {
         for (int i = 0; i < Ciudad.ROWS; i++) {
             for (int j = 0; j < Ciudad.COLUMNS; j++) {
                 JButton button = getGridButtons()[i][j];
-            
                 copiaCuadricula[i][j] = button;  // Copiar cada valor de la cuadrícula
             }
         }
     
-        // Crear una copia profunda de las entidades
+        // Crear una copia profunda de las entidades usando el método deepCopy de Entidad
         ArrayList<Entidad> copiaEntidades = new ArrayList<>();
         for (Entidad entidad : ciudad.getEntidades()) {
-            // Crear la copia de la entidad dentro del bucle
-            Entidad entidadCopia = entidad.clone();  // Puedes pasar una nueva instancia si la subclase lo necesita
-            copiaEntidades.add(entidadCopia);
+            try {
+                // Usamos deepCopy para obtener una copia profunda de la entidad
+                Entidad entidadCopia = (Entidad) Entidad.deepCopy(entidad);
+                copiaEntidades.add(entidadCopia);  // Agregar la entidad copiada a la lista
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     
         // Crear un nuevo estado con las copias

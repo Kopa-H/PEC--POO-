@@ -331,35 +331,6 @@ public class EntidadMovil extends Entidad {
     }
     
     @Override
-    public EntidadMovil clone() {
-        // Crear una nueva instancia de EntidadMovil
-        EntidadMovil entidadMovilCopia = new EntidadMovil();
-    
-        // Clonar los atributos comunes de la superclase Entidad
-        super.cloneCommonAttributes(entidadMovilCopia);
-    
-        // Clonar los atributos específicos de EntidadMovil
-        entidadMovilCopia.enTrayecto = this.enTrayecto;
-    
-        // Clonar ubicacionDestino si existe
-        if (this.ubicacionDestino != null) {
-            entidadMovilCopia.ubicacionDestino = this.ubicacionDestino.clone();
-        }
-    
-        // Clonar trayecto si existe
-        if (this.trayecto != null) {
-            entidadMovilCopia.trayecto = new ArrayList<>(this.trayecto);
-        }
-    
-        // Asignar referencias a otras entidades (puedes ajustar según si necesitas clon profundo)
-        entidadMovilCopia.entidadDestino = this.entidadDestino;
-        entidadMovilCopia.entidadSeguida = this.entidadSeguida;
-        entidadMovilCopia.siguiendoEntidad = this.siguiendoEntidad;
-    
-        return entidadMovilCopia;
-    }
-    
-    @Override
     public String toString() {
         String str = super.toString();
         
