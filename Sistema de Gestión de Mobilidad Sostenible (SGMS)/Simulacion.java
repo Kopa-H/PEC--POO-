@@ -203,7 +203,9 @@ public class Simulacion extends JFrame {
         // Crear una copia profunda de las entidades
         ArrayList<Entidad> copiaEntidades = new ArrayList<>();
         for (Entidad entidad : ciudad.getEntidades()) {
-            copiaEntidades.add(entidad.clone());
+            // Crear la copia de la entidad dentro del bucle
+            Entidad entidadCopia = entidad.clone();  // Puedes pasar una nueva instancia si la subclase lo necesita
+            copiaEntidades.add(entidadCopia);
         }
     
         // Crear un nuevo estado con las copias

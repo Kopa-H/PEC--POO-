@@ -24,11 +24,13 @@ public class Moto extends Vehiculo
     }
     
     @Override
-    public Entidad clone() {
-        Moto motoCopia = new Moto(this.getUbicacion().getPosX(), this.getUbicacion().getPosY());    
-        motoCopia = (Moto) super.clone(motoCopia);
-        
+    public Moto clone() {
+        // Llamamos a super.clone() para clonar los atributos de Vehiculo y superiores
+        Moto motoCopia = (Moto) super.clone();
+    
+        // Aquí, si Moto tiene atributos específicos adicionales, se clonan. 
+        // Actualmente, no hay atributos específicos en este ejemplo, pero si los hubiera, los manejaríamos aquí.
+    
         return motoCopia;
     }
-
 }

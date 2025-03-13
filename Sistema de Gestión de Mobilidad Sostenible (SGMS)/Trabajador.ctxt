@@ -8,7 +8,6 @@ comment2.params=
 comment2.target=boolean\ isTrabajando()
 comment3.params=
 comment3.target=java.lang.String\ toString()
-comment3.text=\r\n\ \ \ \ @Override\r\n\ \ \ \ public\ String\ toString()\ {\r\n\ \ \ \ \ \ \ \ return\ super.toString()\ +\ ",\ trabajo\:\ "\ +\ trabajo;\r\n\ \ \ \ }\r\n
 comment4.params=ciudad
 comment4.target=void\ actuar(Ciudad)
 numComments=5

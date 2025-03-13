@@ -23,10 +23,13 @@ public class Patinete extends Vehiculo {
     }
     
     @Override
-    public Entidad clone() {
-        Patinete patineteCopia = new Patinete(this.getUbicacion().getPosX(), this.getUbicacion().getPosY());    
-        patineteCopia = (Patinete) super.clone(patineteCopia);
-        
-        return patineteCopia;
+    public Bicicleta clone() {
+        // Llamamos a super.clone() para clonar los atributos de Vehiculo, EntidadMovil y Entidad
+        Bicicleta bicicletaCopia = (Bicicleta) super.clone();
+    
+        // Si Bicicleta tiene atributos específicos, los clonamos aquí.
+        // Actualmente, no se mencionan atributos adicionales en este ejemplo, pero si los hubiera, se añadirían aquí.
+    
+        return bicicletaCopia;
     }
 }

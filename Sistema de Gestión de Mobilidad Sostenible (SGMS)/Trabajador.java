@@ -25,13 +25,6 @@ abstract public class Trabajador extends Persona
             return false;
         }
     }
-   
-    /*
-    @Override
-    public String toString() {
-        return super.toString() + ", trabajo: " + trabajo;
-    }
-    */
     
     @Override
     public String toString() {
@@ -46,6 +39,4 @@ abstract public class Trabajador extends Persona
     public void actuar(Ciudad ciudad) {
         super.actuar(ciudad);
     }
-    
-
 }

@@ -5,5 +5,5 @@ comment1.params=posX\ posY
 comment1.target=Moto(int,\ int)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Moto\r\n
 comment2.params=
-comment2.target=Entidad\ clone()
+comment2.target=Moto\ clone()
 numComments=3

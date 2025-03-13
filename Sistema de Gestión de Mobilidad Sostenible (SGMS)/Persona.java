@@ -4,7 +4,7 @@
  * @author Kopa
  * @version (a version number or a date)
  */
-public abstract class Persona extends EntidadMovil
+public class Persona extends EntidadMovil
 {
     // instance variables - replace the example below with your own
     private String nombre;
@@ -77,12 +77,13 @@ public abstract class Persona extends EntidadMovil
     }
     
     @Override
-    public Entidad clone(Entidad entidadCopia) {
-        // Clonamos la superclase
-        entidadCopia = super.clone(entidadCopia);
-        
-        ((Persona)entidadCopia).setNombre(this.getNombre());
-
-        return entidadCopia;
+    public Persona clone() {
+        // Llamamos a super.clone() para clonar los atributos de EntidadMovil y superiores
+        Persona personaCopia = (Persona) super.clone();
+    
+        // Clonamos los atributos específicos de Persona
+        personaCopia.setNombre(this.getNombre());
+    
+        return personaCopia;
     }
 }

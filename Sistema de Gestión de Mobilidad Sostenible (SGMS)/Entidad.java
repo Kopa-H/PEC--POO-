@@ -6,7 +6,7 @@ import java.awt.Color;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Entidad
+public abstract class Entidad
 {
     public Ubicacion ubicacion;
     private Color color; // color mostrado en la visualización
@@ -57,22 +57,23 @@ public class Entidad
     public void actuar(Ciudad ciudad) {
         // System.out.println("La entidad no tiene ninguna acción asignada");
     }
-       
-    // Implementación del método clone()
-    public Entidad clone(Entidad entidadCopia) {
+
+    public abstract Entidad clone();  // Método abstracto para obligar a las subclases a implementarlo
+    
+    // Método para clonar los atributos comunes de Entidad
+    protected Entidad cloneCommonAttributes(Entidad entidadCopia) {
+        // Clonar la ubicación si existe
+        if (this.ubicacion != null) {
+            entidadCopia.ubicacion = this.ubicacion.clone();
+        }
         
-        // Clonamos la ubicación de la entidad
-        Ubicacion copiaUbicacion = this.ubicacion.clone();
-        
-        entidadCopia.ubicacion.setUbicacion(copiaUbicacion);
-  
-        entidadCopia.setId(this.id);  // Copiamos el id (si es necesario copiar otros atributos, hacerlo aquí)
- 
-        entidadCopia.setColor(this.color);  // Copiar color también si es necesario
+        // Clonar otros atributos comunes
+        entidadCopia.id = this.id;
+        entidadCopia.color = this.color;
 
         return entidadCopia;
     }
-    
+
     @Override
     public String toString() {
         return "Ubi: " + ubicacion.toString() + "  |  Id: " + id + "  |  Tipo: " + getClass().getSimpleName();

@@ -57,16 +57,18 @@ public class Base extends EntidadFija
     }
     
     @Override
-    public Entidad clone() {
-        Base baseCopia = new Base(this.getUbicacion().getPosX(), this.getUbicacion().getPosY());
-        baseCopia = (Base) super.clone(baseCopia);
-        
+    public Base clone() {
+        // Llamamos a super.clone() para clonar los atributos de EntidadFija y Entidad
+        Base baseCopia = (Base) super.clone();
+    
         // Clonamos la lista de vehículos
         baseCopia.vehiculos = new ArrayList<>();
         for (Vehiculo v : this.vehiculos) {
-            baseCopia.agregarVehiculo(v.clone());
+            // Clonamos el vehículo adecuado
+            Vehiculo vehiculoCopia = v.clone(); // Asumimos que v.clone() devuelve una copia adecuada de cada vehículo
+            baseCopia.agregarVehiculo(vehiculoCopia); // Agregamos el vehículo copiado a la lista
         }
-
+    
         return baseCopia;
     }
 

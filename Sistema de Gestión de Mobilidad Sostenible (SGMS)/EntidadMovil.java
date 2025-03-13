@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * Clase EntidadMovil que representa un objeto que puede moverse por el tablero.
  */
-public abstract class EntidadMovil extends Entidad {
+public class EntidadMovil extends Entidad {
     public enum Direcciones {
         UP, DOWN, RIGHT, LEFT
     }
@@ -331,30 +331,33 @@ public abstract class EntidadMovil extends Entidad {
     }
     
     @Override
-    public Entidad clone(Entidad entidadCopia) {
-        EntidadMovil entidadMovilCopia = (EntidadMovil) super.clone(entidadCopia);
+    public EntidadMovil clone() {
+        // Crear una nueva instancia de EntidadMovil
+        EntidadMovil entidadMovilCopia = new EntidadMovil();
     
-        // Clonamos los atributos específicos de EntidadMovil
+        // Clonar los atributos comunes de la superclase Entidad
+        super.cloneCommonAttributes(entidadMovilCopia);
+    
+        // Clonar los atributos específicos de EntidadMovil
         entidadMovilCopia.enTrayecto = this.enTrayecto;
     
-        // Clonamos ubicacionDestino si existe
+        // Clonar ubicacionDestino si existe
         if (this.ubicacionDestino != null) {
             entidadMovilCopia.ubicacionDestino = this.ubicacionDestino.clone();
         }
     
-        // Clonamos trayecto si existe
+        // Clonar trayecto si existe
         if (this.trayecto != null) {
             entidadMovilCopia.trayecto = new ArrayList<>(this.trayecto);
         }
     
-        // Asignamos otras referencias (considera si necesitan un clon profundo)
+        // Asignar referencias a otras entidades (puedes ajustar según si necesitas clon profundo)
         entidadMovilCopia.entidadDestino = this.entidadDestino;
         entidadMovilCopia.entidadSeguida = this.entidadSeguida;
         entidadMovilCopia.siguiendoEntidad = this.siguiendoEntidad;
     
         return entidadMovilCopia;
     }
-
     
     @Override
     public String toString() {
