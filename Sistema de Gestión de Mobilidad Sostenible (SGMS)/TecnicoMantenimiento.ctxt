@@ -6,4 +6,6 @@ comment1.target=TecnicoMantenimiento(int,\ int)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ TrabajadorMantenimiento\r\n
 comment2.params=ciudad
 comment2.target=void\ actuar(Ciudad)
-numComments=3
+comment3.params=
+comment3.target=void\ terminarTrabajo()
+numComments=4

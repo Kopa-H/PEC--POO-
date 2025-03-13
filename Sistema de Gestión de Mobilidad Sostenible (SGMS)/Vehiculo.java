@@ -34,7 +34,7 @@ abstract public class Vehiculo extends EntidadMovil
         
         fallosMecanicos = new ArrayList<>();
     }
-    
+       
     /**
      * An example of a method - replace this comment with your own
      *

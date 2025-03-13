@@ -19,7 +19,9 @@ public class TecnicoMantenimiento extends Trabajador
     }
 
     @Override
-    public void actuar(Ciudad ciudad) {
+    public void actuar(Ciudad ciudad) {        
+         // Asciende en la jerarquía de clases y hereda las funciones de actuación de EntidadMovil
+        super.actuar(ciudad);
         
         // Si no tiene ningún vehículo asignado, busca uno que necesite atención
         if (vehiculoAsignado == null) {
@@ -35,27 +37,44 @@ public class TecnicoMantenimiento extends Trabajador
                 }
             }
         } else {
+            // Si hay un vehículo asignado
             
-            // Si el técnico está yendo hacia un vehículo o base, sigue su trayecto
-            if (enTrayecto) {
-                // seguirTrayecto(ciudad);   
-            } else {
-                
-                // Si el vehículo está en una base le recarga la batería
+            // Si el técnico NO está yendo a ningún sitio
+            if (!enTrayecto) {
+                // Si el vehículo está en una base
                 if (ciudad.posicionOcupadaPor(vehiculoAsignado.getUbicacion(), Base.class)) {
-                    vehiculoAsignado.sumarBateria();
-                    System.out.println("El trabajador de mantenimiento " + toString() + " recarga la batería de " + vehiculoAsignado.toString());
-                } else {
-                    // Si el vehículo NO está en una base y aun no se ha comenzado el trayecto, se lleva a una base
                     
+                    // Recarga la batería del vehículo
+                    vehiculoAsignado.sumarBateria();
+                    
+                    // Si se ha cargado la batería por completo, el trabajador abandona su labor
+                    if (((Vehiculo) vehiculoAsignado).getPorcentajeBateria() >= 100) {
+                        terminarTrabajo();
+                        
+                        // Si el vehículo recargado es una moto
+                        if (vehiculoAsignado instanceof Moto) {
+                            // El vehículo que ha sido cargado se mueve afuera de la base para que sea visible
+                            vehiculoAsignado.moverRandom(ciudad);
+                        }
+                    }
+
+                } else if (ciudad.posicionOcupadaPor(vehiculoAsignado.getUbicacion(), Vehiculo.class)) {                   
                     // El vehículo sigue a la persona
                     vehiculoAsignado.empezarSeguimiento(this);
                     
                     // La persona planea un trayecto hacia la base más cercana
                     Base base = (Base) ciudad.encontrarEntidadMasCercana(this, Base.class);
                     planearTrayecto(base.getUbicacion());
+                    
+                } else {
+                    // Si el vehículo NO está en una base y aun no se ha comenzado el trayecto planea un trayecto hacia el vehículo
+                    planearTrayecto(vehiculoAsignado.getUbicacion());
                 }
             }            
         }
+    }
+    
+    public void terminarTrabajo() {
+        vehiculoAsignado = null;   
     }
 }

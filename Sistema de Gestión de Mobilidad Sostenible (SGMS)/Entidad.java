@@ -70,6 +70,6 @@ abstract public class Entidad
     
     @Override
     public String toString() {
-        return "  Id: " + id + "  |  Tipo: " + getClass().getSimpleName();
+        return "Ubi: " + ubicacion.toString() + "  |  Id: " + id + "  |  Tipo: " + getClass().getSimpleName();
     }
 }

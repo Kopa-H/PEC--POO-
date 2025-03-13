@@ -31,6 +31,27 @@ public abstract class Persona extends EntidadMovil
         nombre = randomGenerator.getNombreRandom();
     }
     
+    @Override
+    public void actuar(Ciudad ciudad) {
+        super.actuar(ciudad);
+ 
+        if (!enTrayecto && !isSiguiendoEntidad()) {
+            boolean hasToMoveRandom = true;
+            
+            if (this instanceof Trabajador) {
+                // Si el trabajador NO está trabajando
+                if (((Trabajador) this).isTrabajando()) {
+                    hasToMoveRandom = false;
+                }
+            }
+            // Si no se cumplen las probabilidades, mover de manera aleatoria
+            
+            if (hasToMoveRandom) {
+                moverRandom(ciudad);
+            }
+        }
+    }
+    
     /**
      * Sirve para otorgarle un nombre a una Persona
      *

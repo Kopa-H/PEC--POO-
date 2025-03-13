@@ -5,12 +5,17 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Ciudad extends JFrame {
     // Variables de instancia
     private int[][] grid;
     private JButton[][] gridButtons; // Matriz para almacenar los botones de la cuadrícula
+    
     private ArrayList<Entidad> entidades; // Lista de entidades móviles en la ciudad
+    private ArrayList<Estado> historialEstados;
+    
     private int step; // Recuento de pasos
     private JLabel statusLabel; // JLabel para mostrar el nombre del objeto
     private JLabel stepLabel;
@@ -35,7 +40,10 @@ public class Ciudad extends JFrame {
         // Inicializamos el grid y otros componentes
         grid = new int[ROWS][COLUMNS];
         gridButtons = new JButton[ROWS][COLUMNS];
+        
         entidades = new ArrayList<>(); // Inicializamos el lista de personas
+        historialEstados = new ArrayList<>();
+        
         step = 0; // Inicializamos el contador de pasos
     
         setTitle("Simulación de Ciudad");
@@ -91,7 +99,7 @@ public class Ciudad extends JFrame {
         JPanel statusPanel = new JPanel();
         statusLabel = new JLabel(" ");
         statusPanel.add(statusLabel);
-    
+
         // Crear el slider para controlar la velocidad
         JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, MIN_SIMULATION_SPEED, MAX_SIMULATION_SPEED, simulationSpeed);
         speedSlider.setMajorTickSpacing(500);
@@ -117,6 +125,19 @@ public class Ciudad extends JFrame {
         // Crear un botón para detener o reanudar la simulación
         JButton toggleButton = new JButton("Detener Simulación");
         toggleButton.addActionListener(e -> toggleSimulation(toggleButton));  // Alternar el estado de la simulación al hacer clic en el botón
+        
+        JButton backButton = new JButton("Retroceder");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                retrocederEstado();
+            }
+        });
+
+        JPanel controlPanel = new JPanel();
+        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
+        controlPanel.add(stepPanel);
+        controlPanel.add(backButton);
         
         // Panel para el slider y su etiqueta
         JPanel southPanel = new JPanel();
@@ -158,7 +179,26 @@ public class Ciudad extends JFrame {
             new Thread(() -> runSimulacion()).start();  // Iniciar la simulación en un hilo separado para evitar bloquear la interfaz gráfica
         }
     }
+    
+    /**
+     * Captura el estado actual de la simulación y lo guarda en el historial de estados.
+     */
+    public void guardarEstado() {
+        // Crear una copia del estado actual (grid y entidades)
+        Estado estadoActual = new Estado(this.grid, this.entidades);
+        
+        // Guardar el estado actual en la lista de historial de estados
+        this.historialEstados.add(estadoActual);
+    }
 
+    /**
+     * Devuelve el historial de estados guardados.
+     * @return ArrayList con los estados guardados
+     */
+    public ArrayList<Estado> getHistorialEstados() {
+        return this.historialEstados;
+    }
+    
     public void runSimulacion() {
         while (appActive) {
             // Se hace que todas las entidades actúen según su estado (moverse)
@@ -167,8 +207,28 @@ public class Ciudad extends JFrame {
             }
             
             actualizarEstadoVisual();
+            // Se almacena el estado actual de la simulación para poder retroceder
+            guardarEstado();
             
             Utilities.gestionarDelay(simulationSpeed);
+        }
+    }
+    
+        public ArrayList<Entidad> getEntidades() {
+        return entidades;
+    }
+    
+    // Método para retroceder al estado anterior
+    private void retrocederEstado() {
+        if (!historialEstados.isEmpty()) {
+            Estado estadoAnterior = historialEstados.remove(historialEstados.size() - 1); // Recupera el último estado
+            this.grid = estadoAnterior.obtenerEstadoCuadricula(); // Restaura la cuadrícula
+            this.entidades = estadoAnterior.obtenerEstadoEntidades(); // Restaura las entidades
+            actualizarEstadoVisual();
+            step--;
+            stepLabel.setText("Paso: " + step); // Actualiza la etiqueta de paso
+        } else {
+            System.out.println("No hay más estados anteriores.");
         }
     }
     
@@ -183,10 +243,6 @@ public class Ciudad extends JFrame {
     // Método que actualiza visualmente la posición de una entidad en la cuadrícula
     private void mostrarEntidad(Ubicacion ubi, Color color) {
         gridButtons[ubi.getPosX()][ubi.getPosY()].setBackground(color); // Actualiza la celda correspondiente
-    }
-    
-    public ArrayList<Entidad> getEntidades() {
-        return entidades;
     }
     
     public Entidad encontrarEntidadMasCercana(EntidadMovil entidadBuscando, Class<?> tipoEntidad) {
@@ -256,7 +312,7 @@ public class Ciudad extends JFrame {
         for (Entidad entidad : entidades) {
             // Comprobamos si la entidad es una instancia del tipo proporcionado
             if (tipoEntidad.isInstance(entidad)) {
-                // Verificar si la posición coincide
+                
                 if (entidad.getUbicacion().getPosX() == ubicacion.getPosX() && entidad.getUbicacion().getPosY() == ubicacion.getPosY()) {
                     return true; // La posición está ocupada por una entidad del tipo especificado
                 }

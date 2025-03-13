@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * Clase EntidadMovil que representa un objeto que puede moverse por el tablero.
  */
-public class EntidadMovil extends Entidad {
+public abstract class EntidadMovil extends Entidad {
     public enum Direcciones {
         UP, DOWN, RIGHT, LEFT
     }
@@ -37,7 +37,20 @@ public class EntidadMovil extends Entidad {
     public EntidadMovil(int x, int y) {
         super(x, y);
     }
+    
+    // Métodos get
+    public EntidadMovil getEntidadSeguida() {
+        return entidadSeguida;
+    }
+    
+    public Entidad getEntidadDestino() {
+        return entidadDestino;
+    }
 
+    public boolean isSiguiendoEntidad() {
+        return siguiendoEntidad;
+    }
+    
     /**
      * Método para mover la entidad hacia arriba (disminuye la coordenada Y).
      */
@@ -85,8 +98,8 @@ public class EntidadMovil extends Entidad {
         int nuevaPosY = ubicacion.getPosY() + Math.min(deltaY * Math.min(distancia, (deltaY > 0 ? Ciudad.ROWS - 1 - ubicacion.getPosY() : ubicacion.getPosY())), distancia);
         Ubicacion nuevaUbi = new Ubicacion(nuevaPosX, nuevaPosY);
     
-        // Verificar si la nueva posición está ocupada cuando NO es el destino final
-        if (!nuevaUbi.equals(ubicacionDestino) && ciudad.posicionOcupada(nuevaUbi)) {
+        // Verificar si la nueva posición está ocupada cuando NO es el destino final y no se es un vehículo (los vehículos se almacenan dentro)
+        if (!nuevaUbi.equals(ubicacionDestino) && ciudad.posicionOcupada(nuevaUbi) && !(this instanceof Vehiculo)) {
             System.out.println("La posición (" + nuevaPosX + ", " + nuevaPosY + ") está ocupada, la entidad " + toString() + " no avanza.");
             return;
         } else {
@@ -182,7 +195,7 @@ public class EntidadMovil extends Entidad {
             entidadDestino = null;
     }
     
-    private void seguirTrayecto(Ciudad ciudad) {
+    public void seguirTrayecto(Ciudad ciudad) {
         // Verificamos si aún hay movimientos por hacer
         if (!trayecto.isEmpty()) {
             // Se verifica que la entidad seguida NO está en movimiento
@@ -195,6 +208,13 @@ public class EntidadMovil extends Entidad {
                 }
     
                 terminarTrayecto();
+            }
+            
+            // Si la entidad que se está moviendo es un vehículo y se queda sin batería, se termina su trayecto y por ende el de su pasajero
+            if (entidadDestino instanceof Vehiculo && ((Vehiculo) entidadDestino).getPorcentajeBateria() < 0) {
+                System.out.println("La entidad " + toString() + " ha abandonado su trayecto a " + entidadDestino.toString() + " porque la batería está agotada!");
+                terminarTrayecto();
+                return;
             }
     
             // Tomamos el primer movimiento en la lista
@@ -265,37 +285,27 @@ public class EntidadMovil extends Entidad {
         return enTrayecto;
     }
     
-    public void actuar(Ciudad ciudad) {      
+    public void actuar(Ciudad ciudad) {
         if (enTrayecto) {
             seguirTrayecto(ciudad);
         } else {
-            if (this instanceof Usuario) {
-                // La persona deja de seguir al vehículo cuando este ha terminado el trayecto, entonces sigue a la suya
-                if (entidadSeguida != null && !entidadSeguida.enTrayecto) {
-                    entidadSeguida = null;
-                    siguiendoEntidad = false;
-                }
-                
-                if (siguiendoEntidad && entidadSeguida != null) {
-                    seguirEntidadMovil(entidadSeguida);
-                    
-                // Intentar planear trayecto hacia base o moto con una probabilidad del 5% cada suceso
-                } else if (intentarPlanearTrayecto(ciudad, Base.class) || intentarPlanearTrayecto(ciudad, Moto.class)) {
-                
-                // Si no, se realiza un movimiento aleatorio 
-                } else {
-                    // Si no se cumplen las probabilidades, mover de manera aleatoria
-                    moverRandom(ciudad);
-                }
+            // La entidad actualiza su estado de seguimiento si ha dejado de seguir a la entidad
+            if (entidadSeguida != null && !entidadSeguida.enTrayecto) {
+                entidadSeguida = null;
+                siguiendoEntidad = false;
+            }
+            
+            if (siguiendoEntidad && entidadSeguida != null) {
+                seguirEntidadMovil(entidadSeguida);
             }
         }
     }
     
-    private void seguirEntidadMovil(Entidad entidad) {
+    public void seguirEntidadMovil(Entidad entidad) {
         ubicacion.setUbicacion(entidad.getUbicacion());
     }
     
-    private boolean intentarPlanearTrayecto(Ciudad ciudad, Class<?> tipoEntidad) {
+    public boolean intentarPlanearTrayecto(Ciudad ciudad, Class<?> tipoEntidad) {
         double probabilidad = 0.01;
         
         if (Math.random() < probabilidad) {
@@ -321,20 +331,22 @@ public class EntidadMovil extends Entidad {
         return false;
     }
     
-    /*
-     * public String toString(String str) {
-        str = super.toString(str);
-        
-        // Añadir información sobre el trayecto solo si está en trayecto
-        if (enTrayecto) {
-            str += ", en trayecto hacia " + ubicacionDestino.toString();
-        }
-        return str;
-    }
-    */
-    
     @Override
     public String toString() {
-        return super.toString();
+        String str = super.toString();
+        
+        if (enTrayecto) {
+            str += "  |  Destino = " + ubicacionDestino.toString();
+        }
+        
+        if (siguiendoEntidad) {
+            str += "  |  siguiendoEntidad = " + isSiguiendoEntidad();
+        }
+        
+        if (entidadDestino != null) {
+            str += "  |  entidadDestino = [" + entidadDestino.toString() + "]"; 
+        }
+        
+        return str;
     }
 }

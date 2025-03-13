@@ -17,6 +17,14 @@ abstract public class Trabajador extends Persona
     {
         super(posX, posY);
     }
+    
+    public boolean isTrabajando() {
+        if (vehiculoAsignado != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
    
     /*
     @Override
@@ -33,5 +41,11 @@ abstract public class Trabajador extends Persona
         }
         return str;
     }
+    
+    @Override
+    public void actuar(Ciudad ciudad) {
+        super.actuar(ciudad);
+    }
+    
 
 }

@@ -30,6 +30,16 @@ public class Usuario extends Persona {
         id = contadorInstancias;  // Asignamos el ID único a esta instancia
         contadorInstancias++;
     }
+    
+    @Override
+    public void actuar(Ciudad ciudad) {
+        super.actuar(ciudad);
+        
+        if (!enTrayecto && !isSiguiendoEntidad()) {
+            intentarPlanearTrayecto(ciudad, Base.class);
+            intentarPlanearTrayecto(ciudad, Moto.class);
+        }
+    }
 
     /**
      * Muestra en la interfaz los vehículos disponibles y sus niveles de bateria
