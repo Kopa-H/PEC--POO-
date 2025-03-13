@@ -23,4 +23,12 @@ public class Bicicleta extends Vehiculo
         setId(contadorInstancias);
         contadorInstancias++;
     }
+    
+    @Override
+    public Entidad clone() {
+        Bicicleta biciletaCopia = new Bicicleta(this.getUbicacion().getPosX(), this.getUbicacion().getPosY());    
+        biciletaCopia = (Bicicleta) super.clone(biciletaCopia);
+        
+        return biciletaCopia;
+    }
 }

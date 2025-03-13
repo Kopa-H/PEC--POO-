@@ -110,19 +110,14 @@ public class Usuario extends Persona {
     
     @Override
     public Entidad clone() {
-        Entidad entidadCopia = super.clone();
+        Usuario usuarioCopia = new Usuario(this.getUbicacion().getPosX(), this.getUbicacion().getPosY());    
+        usuarioCopia = (Usuario) super.clone(usuarioCopia);
         
-        if (entidadCopia instanceof Usuario) {
-            // Clonamos las propiedades de la superclase adyacente
-            Usuario entidadUsuarioCopia = (Usuario) super.clone();
-
-            // Clonamos los atributos específicos de esta clase
-            entidadUsuarioCopia.setSaldo(this.getSaldo());
-            entidadUsuarioCopia.tipoMembresia = this.tipoMembresia;
-                   
-            return entidadUsuarioCopia;
-        }
+        // Clonamos los atributos específicos de la clase Usuario
+        usuarioCopia.setSaldo(this.getSaldo());
+        usuarioCopia.tipoMembresia = this.tipoMembresia;
         
-        return entidadCopia;
+        return usuarioCopia;
     }
+
 }

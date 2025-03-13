@@ -45,7 +45,14 @@ abstract public class Vehiculo extends EntidadMovil
         // Calcular el porcentaje de batería restante
         return (int) Math.round((double) autonomiaBateria / DISTANCIA_MAX_BATERIA * 100);
     }
+    
+    public int getAutonomiaBateria() {
+        return autonomiaBateria;
+    }
 
+    public void setAutonomiaBateria(int autonomiaBateria) {
+        this.autonomiaBateria = autonomiaBateria;
+    }
     
     public void restarBateria() {
         if (autonomiaBateria > 0) {
@@ -64,26 +71,20 @@ abstract public class Vehiculo extends EntidadMovil
     }
 
     @Override
-    public Entidad clone() {
-        Entidad entidadCopia = super.clone();        
-        
-        if (entidadCopia instanceof Vehiculo) {
-            // Clonamos las propiedades de la superclase
-            Vehiculo entidadVehiculoCopia = (Vehiculo) entidadCopia;
+    public Entidad clone(Entidad entidadCopia) {
+        Vehiculo vehiculoCopia = (Vehiculo) super.clone(entidadCopia);       
+    
+        // Clonamos los atributos específicos de la clase Vehiculo
+        vehiculoCopia.setAutonomiaBateria(this.autonomiaBateria);
             
-            // Clonamos los atributos específicos de la clase Vehiculo
-            entidadVehiculoCopia.autonomiaBateria = this.autonomiaBateria;
-            
-            // Clonamos la lista de fallos mecánicos (si es mutable)
-            if (this.fallosMecanicos != null) {
-                entidadVehiculoCopia.fallosMecanicos = new ArrayList<>(this.fallosMecanicos);
-            }
-        
-            return entidadVehiculoCopia; 
+        // Clonamos la lista de fallos mecánicos (si es mutable)
+        if (this.fallosMecanicos != null) {
+            vehiculoCopia.fallosMecanicos = new ArrayList<>(this.fallosMecanicos);
         }
         
-        return entidadCopia;
+        return vehiculoCopia;
     }
+
     
     @Override
     public String toString() {

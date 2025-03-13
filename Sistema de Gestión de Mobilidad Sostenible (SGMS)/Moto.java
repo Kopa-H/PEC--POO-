@@ -22,4 +22,13 @@ public class Moto extends Vehiculo
         setId(contadorInstancias);  // Asignamos el ID único a esta instancia
         contadorInstancias++;
     }
+    
+    @Override
+    public Entidad clone() {
+        Moto motoCopia = new Moto(this.getUbicacion().getPosX(), this.getUbicacion().getPosY());    
+        motoCopia = (Moto) super.clone(motoCopia);
+        
+        return motoCopia;
+    }
+
 }

@@ -77,18 +77,12 @@ public abstract class Persona extends EntidadMovil
     }
     
     @Override
-    public Entidad clone() {
+    public Entidad clone(Entidad entidadCopia) {
         // Clonamos la superclase
-        Entidad entidadCopia = super.clone();
+        entidadCopia = super.clone(entidadCopia);
         
-        // Si la entidad clonada es una instancia de Persona, clonamos sus atributos específicos
-        if (entidadCopia instanceof Persona) {
-            Persona personaCopia = (Persona) entidadCopia;
-            personaCopia.setNombre(this.getNombre());
-            
-            return personaCopia;
-        }
-    
+        ((Persona)entidadCopia).setNombre(this.getNombre());
+
         return entidadCopia;
     }
 }

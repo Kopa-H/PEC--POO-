@@ -59,8 +59,7 @@ public class Entidad
     }
        
     // Implementación del método clone()
-    public Entidad clone() {
-        Entidad entidadCopia = new Entidad();
+    public Entidad clone(Entidad entidadCopia) {
         
         // Clonamos la ubicación de la entidad
         Ubicacion copiaUbicacion = this.ubicacion.clone();

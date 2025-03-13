@@ -21,4 +21,12 @@ public class Patinete extends Vehiculo {
         setId(contadorInstancias);
         contadorInstancias++;
     }
+    
+    @Override
+    public Entidad clone() {
+        Patinete patineteCopia = new Patinete(this.getUbicacion().getPosX(), this.getUbicacion().getPosY());    
+        patineteCopia = (Patinete) super.clone(patineteCopia);
+        
+        return patineteCopia;
+    }
 }

@@ -331,30 +331,30 @@ public abstract class EntidadMovil extends Entidad {
     }
     
     @Override
-    public Entidad clone() {
-        Entidad entidadCopia = super.clone();
-        
-        if (entidadCopia instanceof EntidadMovil) {
-            // Clonamos las propiedades de la superclase adyacente
-            EntidadMovil entidadMovilCopia = ((EntidadMovil) entidadCopia);
+    public Entidad clone(Entidad entidadCopia) {
+        EntidadMovil entidadMovilCopia = (EntidadMovil) super.clone(entidadCopia);
     
-            // Clonamos los atributos específicos de esta clase
-            entidadMovilCopia.enTrayecto = this.enTrayecto;
-            if (this.ubicacionDestino != null) {
-                entidadMovilCopia.ubicacionDestino = this.ubicacionDestino.clone(); // Si es necesario clonar, como es un objeto Ubicacion
-            }
-            if (this.trayecto != null) {
-                entidadMovilCopia.trayecto = new ArrayList<>(this.trayecto); // Crea una nueva lista con los mismos elementos (si quieres duplicar la lista, no solo la referencia)
-            }
-            entidadMovilCopia.entidadDestino = this.entidadDestino; // Dependiendo del tipo, puede que necesites hacer un clon de entidadDestino si es un objeto mutable
-            entidadMovilCopia.entidadSeguida = this.entidadSeguida; // Lo mismo con entidadSeguida
-            entidadMovilCopia.siguiendoEntidad = this.siguiendoEntidad;
-            
-            return entidadMovilCopia;
+        // Clonamos los atributos específicos de EntidadMovil
+        entidadMovilCopia.enTrayecto = this.enTrayecto;
+    
+        // Clonamos ubicacionDestino si existe
+        if (this.ubicacionDestino != null) {
+            entidadMovilCopia.ubicacionDestino = this.ubicacionDestino.clone();
         }
-        
-        return entidadCopia;
+    
+        // Clonamos trayecto si existe
+        if (this.trayecto != null) {
+            entidadMovilCopia.trayecto = new ArrayList<>(this.trayecto);
+        }
+    
+        // Asignamos otras referencias (considera si necesitan un clon profundo)
+        entidadMovilCopia.entidadDestino = this.entidadDestino;
+        entidadMovilCopia.entidadSeguida = this.entidadSeguida;
+        entidadMovilCopia.siguiendoEntidad = this.siguiendoEntidad;
+    
+        return entidadMovilCopia;
     }
+
     
     @Override
     public String toString() {
