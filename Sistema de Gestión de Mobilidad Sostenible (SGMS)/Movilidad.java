@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Color;
 
 /**
  * Se trata de la clase principal del programa, encargada de poner a funcionar el sistema.
@@ -9,6 +10,10 @@ import java.util.List;
  */
 public class Movilidad {
 
+    Ciudad ciudad = new Ciudad();
+    Simulacion simulacion = new Simulacion(ciudad);
+
+    
     /**
      * Método para agregar n entidades de un tipo específico en ubicaciones aleatorias.
      * 
@@ -26,7 +31,11 @@ public class Movilidad {
             try {
                 // Crear la entidad de acuerdo con el tipo y la ubicación
                 T entidad = tipoEntidad.getConstructor(int.class, int.class).newInstance(ubi.getPosX(), ubi.getPosY());
+                
                 ciudad.addElement((Entidad) entidad);  // Se supone que todas las entidades extienden de la clase Entidad
+                Color color = entidad.getColor();
+                simulacion.mostrarEntidad(entidad.getUbicacion(), color);
+            
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -39,8 +48,6 @@ public class Movilidad {
      * @param args  Los argumentos de la línea de comandos proporcionados al ejecutar el programa.
      */
     public static void main(String[] args) {
-        Ciudad ciudad = new Ciudad();
-
         // Añadimos n usuarios
         agregarEntidad(6, Usuario.class, ciudad);
         
@@ -56,6 +63,6 @@ public class Movilidad {
         // Añadimos n bases con vehículos
         agregarEntidad(3, Base.class, ciudad);
 
-        ciudad.runSimulacion();
+        simulacion.runSimulacion();
     }
 }
