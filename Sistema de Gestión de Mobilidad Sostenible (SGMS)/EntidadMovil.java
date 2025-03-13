@@ -19,7 +19,6 @@ public abstract class EntidadMovil extends Entidad {
     private EntidadMovil entidadSeguida; // Direccion que está siguiendo entidad movil
     private boolean siguiendoEntidad; // Variable booleana que registra si la entidad está siguiendo a otra entidad
     
-    
     /**
      * Constructor para objetos de la clase EntidadMovil.
      * Inicializa la ubicación en las coordenadas (0,0) por defecto.
@@ -333,8 +332,9 @@ public abstract class EntidadMovil extends Entidad {
     
     @Override
     public Entidad clone() {
+
         // Clonamos las propiedades de la superclase adyacente
-        Entidad entidadCopia = super.clone();
+        EntidadMovil entidadCopia = (EntidadMovil) super.clone();
 
         // Clonamos los atributos específicos de esta clase
         entidadCopia.enTrayecto = this.enTrayecto;
@@ -347,7 +347,7 @@ public abstract class EntidadMovil extends Entidad {
         entidadCopia.entidadDestino = this.entidadDestino; // Dependiendo del tipo, puede que necesites hacer un clon de entidadDestino si es un objeto mutable
         entidadCopia.entidadSeguida = this.entidadSeguida; // Lo mismo con entidadSeguida
         entidadCopia.siguiendoEntidad = this.siguiendoEntidad;
-
+        
         return entidadCopia;
     }
     

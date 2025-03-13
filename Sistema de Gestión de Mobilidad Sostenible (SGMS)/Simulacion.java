@@ -178,15 +178,25 @@ public class Simulacion extends JFrame {
         setVisible(true);
     }
     
+    public JButton[][] getGridButtons() {
+        return gridButtons;
+    }
+    
+    public void setGridButtons(JButton[][] newGridButtons) {
+        gridButtons = newGridButtons;
+    }
+    
     /**
      * Captura el estado actual de la simulación y lo guarda en el historial de estados.
      */
     public void guardarEstado(Ciudad ciudad) {
-        // Crear una copia profunda del estado actual (grid y entidades)
-        int[][] copiaCuadricula = new int[Ciudad.ROWS][Ciudad.COLUMNS];
-        for (int i = 0; i < ciudad.getGrid().length; i++) {
-            for (int j = 0; j < ciudad.getGrid()[i].length; j++) {
-                copiaCuadricula[i][j] = ciudad.getGrid()[i][j];  // Copiar cada valor de la cuadrícula
+        // Crear una copia profunda del estado actual del grid de botones (interfaz)
+        JButton[][] copiaCuadricula = new JButton[Ciudad.ROWS][Ciudad.COLUMNS];
+        for (int i = 0; i < Ciudad.ROWS; i++) {
+            for (int j = 0; j < Ciudad.COLUMNS; j++) {
+                JButton button = getGridButtons()[i][j];
+            
+                copiaCuadricula[i][j] = button;  // Copiar cada valor de la cuadrícula
             }
         }
     
@@ -221,7 +231,7 @@ public class Simulacion extends JFrame {
         
         if (!historialEstados.isEmpty()) {
             Estado estadoAnterior = historialEstados.remove(historialEstados.size() - 1); // Recupera el último estado
-            ciudad.setGrid(estadoAnterior.obtenerEstadoCuadricula()); // Restaura la cuadrícula
+            setGridButtons(estadoAnterior.obtenerEstadoCuadricula()); // Restaura la cuadrícula
             
             for (Entidad entidad : estadoAnterior.obtenerEstadoEntidades()) {
                 if (entidad instanceof Usuario && entidad.getId() == 0) {

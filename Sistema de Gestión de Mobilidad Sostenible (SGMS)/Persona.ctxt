@@ -17,4 +17,6 @@ comment5.target=java.lang.String\ getNombre()
 comment5.text=\r\n\ Sirve\ para\ obtener\ el\ nombre\ de\ una\ persona\r\n\r\n\ @return\ \ \ the\ result\ produced\r\n
 comment6.params=
 comment6.target=java.lang.String\ toString()
-numComments=7
+comment7.params=
+comment7.target=Entidad\ clone()
+numComments=8

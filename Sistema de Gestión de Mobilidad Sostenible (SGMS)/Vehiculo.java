@@ -62,6 +62,22 @@ abstract public class Vehiculo extends EntidadMovil
             System.out.println("La batería del vehículo " + toString() + " está llena!");  
         }
     }
+
+    @Override
+    public Vehiculo clone() {
+        // Clonamos las propiedades de la superclase
+        Vehiculo vehiculoCopia = (Vehiculo) super.clone();
+        
+        // Clonamos los atributos específicos de la clase Vehiculo
+        vehiculoCopia.autonomiaBateria = this.autonomiaBateria;
+        
+        // Clonamos la lista de fallos mecánicos (si es mutable)
+        if (this.fallosMecanicos != null) {
+            vehiculoCopia.fallosMecanicos = new ArrayList<>(this.fallosMecanicos);
+        }
+    
+        return vehiculoCopia;
+    }
     
     @Override
     public String toString() {

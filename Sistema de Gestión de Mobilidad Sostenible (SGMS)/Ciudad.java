@@ -3,7 +3,6 @@ import java.awt.Color;
 
 public class Ciudad {
     // Variables de instancia
-    private int[][] grid;
     
     private ArrayList<Entidad> entidades; // Lista de entidades móviles en la ciudad
     
@@ -14,9 +13,6 @@ public class Ciudad {
      * Constructor para objetos de la clase Ciudad.
      */ 
     public Ciudad() {
-        // Inicializamos el grid y otros componentes
-        grid = new int[ROWS][COLUMNS];
-
         entidades = new ArrayList<>(); // Inicializamos el lista de personas       
     }
     
@@ -26,14 +22,6 @@ public class Ciudad {
     
     public void setEntidades(ArrayList<Entidad> newEntidades) {
         entidades = newEntidades;
-    }
-    
-    public int[][] getGrid() {
-        return grid;
-    }
-    
-    public void setGrid(int[][] newGrid) {
-        grid = newGrid;
     }
     
     // Método para añadir una entidad a la ciudad

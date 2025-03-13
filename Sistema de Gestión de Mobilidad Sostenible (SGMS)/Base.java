@@ -57,6 +57,20 @@ public class Base extends EntidadFija
     }
     
     @Override
+    public Base clone() {
+        // Primero, clonamos la entidad base (superclase)
+        Base baseCopia = (Base) super.clone();  // Clonamos la superclase (EntidadFija)
+    
+        // Ahora, clonamos la lista de vehículos
+        baseCopia.vehiculos = new ArrayList<>();
+        for (Vehiculo v : this.vehiculos) {
+            baseCopia.vehiculos.add(v.clone());  // Asumimos que Vehiculo también tiene un método clone()
+        }
+
+        return baseCopia;
+    }
+    
+    @Override
     public String toString() {
        return String.format("%s  |  Vehiculos: [motos = %d | bicis = %d | patinetes = %d]",
             super.toString(), getNumeroVehiculos(Moto.class), getNumeroVehiculos(Bicicleta.class), getNumeroVehiculos(Patinete.class));

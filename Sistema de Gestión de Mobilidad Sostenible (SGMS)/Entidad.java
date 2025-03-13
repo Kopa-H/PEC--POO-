@@ -6,7 +6,7 @@ import java.awt.Color;
  * @author (your name)
  * @version (a version number or a date)
  */
-abstract public class Entidad
+public class Entidad
 {
     public Ubicacion ubicacion;
     private Color color; // color mostrado en la visualización
@@ -63,11 +63,13 @@ abstract public class Entidad
     }
     
     // Acción que hace a las entidades hacer sus funciones dependiendo de su estado
-    abstract public void actuar(Ciudad ciudad);
+    public void actuar(Ciudad ciudad) {
+        System.out.println("La entidad no tiene ninguna acción asignada");
+    }
        
     // Implementación del método clone()
     public Entidad clone() {
-        Entidad entidadCopia;
+        Entidad entidadCopia = new Entidad();
         
         // Clonamos la ubicación de la entidad
         Ubicacion copiaUbicacion = this.ubicacion.clone();

@@ -94,7 +94,7 @@ public class Usuario extends Persona {
         return saldo;
     }
     
-    public void setSaldo(int saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
     
@@ -111,7 +111,7 @@ public class Usuario extends Persona {
     @Override
     public Entidad clone() {
         // Clonamos las propiedades de la superclase adyacente
-        Entidad entidadCopia = super.clone();
+        Usuario entidadCopia = (Usuario) super.clone();
 
         // Clonamos los atributos específicos de esta clase
         entidadCopia.setSaldo(this.getSaldo());

@@ -1,16 +1,17 @@
 import java.util.ArrayList;
+import javax.swing.JButton;
 
 public class Estado {
-    private int[][] estadoCuadricula;
+    private JButton[][] estadoCuadricula;
     private ArrayList<Entidad> estadoEntidades;
 
-    public Estado(int[][] cuadricula, ArrayList<Entidad> entidades) {
+    public Estado(JButton[][] cuadricula, ArrayList<Entidad> entidades) {
         this.estadoCuadricula = cuadricula;
         this.estadoEntidades = entidades;
     }
 
     // Métodos para acceder al estado
-    public int[][] obtenerEstadoCuadricula() {
+    public JButton[][] obtenerEstadoCuadricula() {
         return estadoCuadricula;
     }
 
