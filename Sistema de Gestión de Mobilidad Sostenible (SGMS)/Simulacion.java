@@ -22,9 +22,8 @@ public class Simulacion extends JFrame {
     private JLabel statusLabel; // JLabel para mostrar el nombre del objeto
     private JLabel stepLabel;
     
-    public static final int MIN_SIMULATION_SPEED = 10;
     public static final int MAX_SIMULATION_SPEED = 500;
-    public int simulationSpeed = (MAX_SIMULATION_SPEED + MIN_SIMULATION_SPEED) / 2;
+    public int simulationSpeed = 0;
     
     // Tamaño fijo de la ventana donde se muestra el estado de gridButtons
     private static final int HORIZONTAL_WINDOW_SIZE = 1500;
@@ -34,9 +33,15 @@ public class Simulacion extends JFrame {
     public static final int COLUMNS = Ciudad.COLUMNS;
     
     private boolean simulationRunning = true;
+    private boolean runningForward = false;
+    private boolean runningBackward = false;
+    
+    private ArrayList<Estado> historialEstados;
     
     public Simulacion(Ciudad ciudad) {
 
+        historialEstados = new ArrayList<>();
+        
         gridButtons = new JButton[ROWS][COLUMNS];
         step = 0; // Inicializamos el contador de pasos
         
@@ -95,19 +100,48 @@ public class Simulacion extends JFrame {
         statusPanel.add(statusLabel);
     
         // Crear el slider para controlar la velocidad
-        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, MIN_SIMULATION_SPEED, MAX_SIMULATION_SPEED, simulationSpeed);
+        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -MAX_SIMULATION_SPEED, MAX_SIMULATION_SPEED, simulationSpeed);
         speedSlider.setMajorTickSpacing(500);
         speedSlider.setMinorTickSpacing(100);
         speedSlider.setPaintTicks(true);
         speedSlider.setPaintLabels(true);
         // Etiquetas para el slider
-        JLabel sliderLabel = new JLabel("Ajustar velocidad (milisegundos): " + simulationSpeed, JLabel.CENTER);
-        // Añadir un ChangeListener al slider para cambiar la velocidad
+        JLabel sliderLabel = new JLabel("Ajustar velocidad: " + simulationSpeed, JLabel.CENTER);
+        
+        // Añadir un ChangeListener al slider para cambiar la velocidad y dirección
         speedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                simulationSpeed = speedSlider.getValue();
-                sliderLabel.setText("Ajustar velocidad (milisegundos): " + simulationSpeed);
+                int sliderValue = speedSlider.getValue();
+                
+                // Definir un rango alrededor de 0 como la "zona muerta"
+                int deadZone = 5;
+                
+                // Si el valor del slider está dentro de la zona muerta, se pausa la simulación
+                if (Math.abs(sliderValue) <= deadZone) {
+                    simulationSpeed = 0;
+                    runningForward = false;
+                    runningBackward = false;
+                    
+                    // Mover el slider al centro (0)
+                    speedSlider.setValue(0);
+                } 
+                // Si el slider está en valores positivos, la simulación avanza
+                else if (sliderValue > deadZone) {
+                    simulationSpeed = sliderValue;
+ 
+                    runningForward = true;
+                    runningBackward = false;
+                } 
+                // Si el slider está en valores negativos, la simulación retrocede
+                else if (sliderValue < -deadZone) {
+                    simulationSpeed = -sliderValue; // La velocidad de retroceso será la magnitud del valor
+
+                    runningForward = false;
+                    runningBackward = true;
+                }
+            
+                sliderLabel.setText("Velocidad (milisegundos): " + Math.abs(simulationSpeed) + (sliderValue < 0 ? " (retroceso)" : " (avance)"));
             }
         });
         // Panel para el slider y su etiqueta
@@ -115,23 +149,6 @@ public class Simulacion extends JFrame {
         sliderPanel.setLayout(new BorderLayout());
         sliderPanel.add(sliderLabel, BorderLayout.NORTH);
         sliderPanel.add(speedSlider, BorderLayout.CENTER);
-    
-        // Crear un botón para detener o reanudar la simulación
-        JButton toggleButton = new JButton("Detener Simulación");
-        toggleButton.addActionListener(e -> toggleSimulation(toggleButton, ciudad));  // Alternar el estado de la simulación al hacer clic en el botón
-        
-        JButton backButton = new JButton("Retroceder");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                retrocederEstado();
-            }
-        });
-    
-        JPanel controlPanel = new JPanel();
-        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
-        controlPanel.add(stepPanel);
-        controlPanel.add(backButton);
         
         // Panel para el slider y su etiqueta
         JPanel southPanel = new JPanel();
@@ -148,7 +165,6 @@ public class Simulacion extends JFrame {
         
         // Agregar el botón de detener simulación
         southPanel.add(Box.createVerticalStrut(10));
-        southPanel.add(toggleButton);
     
         // Añadir el statusPanel al norte
         add(statusPanel, BorderLayout.NORTH);
@@ -162,62 +178,89 @@ public class Simulacion extends JFrame {
         setVisible(true);
     }
     
-    // Método para alternar entre detener y reanudar la simulación
-    public void toggleSimulation(JButton toggleButton, Ciudad ciudad) {
-        if (simulationRunning) {
-            simulationRunning = false;  // Detener la simulación
-            toggleButton.setText("Reanudar Simulación");  // Cambiar el texto del botón
-        } else {
-            simulationRunning = true;  // Reanudar la simulación
-            toggleButton.setText("Detener Simulación");  // Cambiar el texto del botón
-            new Thread(() -> runSimulacion(ciudad)).start();  // Iniciar la simulación en un hilo separado para evitar bloquear la interfaz gráfica
-        }
-    }
-    
     /**
      * Captura el estado actual de la simulación y lo guarda en el historial de estados.
      */
     public void guardarEstado(Ciudad ciudad) {
-        // Crear una copia del estado actual (grid y entidades)
-        Estado estadoActual = new Estado(ciudad.getGrid(), ciudad.getEntidades());
+        // Crear una copia profunda del estado actual (grid y entidades)
+        int[][] copiaCuadricula = new int[Ciudad.ROWS][Ciudad.COLUMNS];
+        for (int i = 0; i < ciudad.getGrid().length; i++) {
+            for (int j = 0; j < ciudad.getGrid()[i].length; j++) {
+                copiaCuadricula[i][j] = ciudad.getGrid()[i][j];  // Copiar cada valor de la cuadrícula
+            }
+        }
+    
+        // Crear una copia profunda de las entidades
+        ArrayList<Entidad> copiaEntidades = new ArrayList<>();
+        for (Entidad entidad : ciudad.getEntidades()) {
+            copiaEntidades.add(entidad.clone());
+        }
+    
+        // Crear un nuevo estado con las copias
+        Estado estadoActual = new Estado(copiaCuadricula, copiaEntidades);
         
         // Guardar el estado actual en la lista de historial de estados
-        this.historialEstados.add(estadoActual);
-    }
-
-    /**
-     * Devuelve el historial de estados guardados.
-     * @return ArrayList con los estados guardados
-     */
-    public ArrayList<Estado> getHistorialEstados() {
-        return this.historialEstados;
+        historialEstados.add(estadoActual);
     }
     
     // Método para retroceder al estado anterior
-    private void retrocederEstado() {
+    private void retrocederEstado(Ciudad ciudad) {
+        if (historialEstados.size() != step) {
+            System.out.println("El retroceso de estados se ha desincronizado!");
+        }
+        
+        System.out.println("Se imprimen vainas");
+        for (Estado estado : historialEstados) {
+           for (Entidad entidad : estado.obtenerEstadoEntidades()) {
+                if (entidad instanceof Usuario && entidad.getId() == 0) {
+                    System.out.println(entidad.toString());
+                }
+            } 
+        }
+        
+        
         if (!historialEstados.isEmpty()) {
             Estado estadoAnterior = historialEstados.remove(historialEstados.size() - 1); // Recupera el último estado
             ciudad.setGrid(estadoAnterior.obtenerEstadoCuadricula()); // Restaura la cuadrícula
+            
+            for (Entidad entidad : estadoAnterior.obtenerEstadoEntidades()) {
+                if (entidad instanceof Usuario && entidad.getId() == 0) {
+                    System.out.println(entidad.toString());
+                }
+            }
+            
             ciudad.setEntidades(estadoAnterior.obtenerEstadoEntidades()); // Restaura las entidades
-            actualizarEstadoVisual();
-            step--;
-            stepLabel.setText("Paso: " + step); // Actualiza la etiqueta de paso
+            
+            System.out.println("Se ha tirado hacia atrás la simulación");
         } else {
             System.out.println("No hay más estados anteriores.");
         }
     }
     
-    public void runSimulacion(Ciudad ciudad) {
+    public void runSimulacion(Ciudad ciudad) {        
         while (simulationRunning) {
-            // Se hace que todas las entidades actúen según su estado (moverse)
-            for (Entidad entidad : ciudad.getEntidades()) {
-                entidad.actuar(ciudad);
+            
+            if (runningForward) {
+                // Se hace que todas las entidades actúen según su estado (moverse)
+                for (Entidad entidad : ciudad.getEntidades()) {
+                    entidad.actuar(ciudad);
+                }
+        
+                // Se almacena el estado actual de la simulación para poder retroceder
+                guardarEstado(ciudad);
+                
+                // Incrementar el contador de pasos
+                step++;
+
+            } else if (runningBackward && step > 0) {
+                // Se tira para atrás
+                retrocederEstado(ciudad);
+                
+                step--;
             }
             
             actualizarEstadoVisual(ciudad);
-            // Se almacena el estado actual de la simulación para poder retroceder
-            guardarEstado();
-            
+            stepLabel.setText("Paso: " + step);
             Utilities.gestionarDelay(simulationSpeed);
         }
     }
@@ -244,12 +287,6 @@ public class Simulacion extends JFrame {
     
             mostrarEntidad(ubi, color); // Actualiza la posición en la interfaz gráfica
         }
-    
-        // Incrementar el contador de pasos
-        step++;
-    
-        // Actualizar el JLabel con el nuevo número de pasos
-        stepLabel.setText("Paso: " + step);
     
         // Redibujar el JFrame (si es necesario)
         repaint();

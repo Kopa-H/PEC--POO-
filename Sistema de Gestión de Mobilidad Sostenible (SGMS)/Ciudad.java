@@ -6,7 +6,6 @@ public class Ciudad {
     private int[][] grid;
     
     private ArrayList<Entidad> entidades; // Lista de entidades móviles en la ciudad
-    private ArrayList<Estado> historialEstados;
     
     public static final int ROWS = 50;
     public static final int COLUMNS = 50;
@@ -18,9 +17,7 @@ public class Ciudad {
         // Inicializamos el grid y otros componentes
         grid = new int[ROWS][COLUMNS];
 
-        entidades = new ArrayList<>(); // Inicializamos el lista de personas
-        historialEstados = new ArrayList<>();
-        
+        entidades = new ArrayList<>(); // Inicializamos el lista de personas       
     }
     
     public ArrayList<Entidad> getEntidades() {

@@ -75,4 +75,15 @@ public abstract class Persona extends EntidadMovil
     public String toString() {
         return super.toString() + "  |  Nombre: " + nombre;
     }
+    
+    @Override
+    public Entidad clone() {
+        // Clonamos las propiedades de la superclase adyacente
+        Entidad entidadCopia = super.clone();
+
+        // Clonamos los atributos específicos de esta clase
+        entidadCopia.setNombre(this.getNombre());
+        
+        return entidadCopia;
+    }
 }

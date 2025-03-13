@@ -77,6 +77,11 @@ public class Ubicacion
         return Objects.hash(posX, posY);
     }
     
+    // Método clone para Ubicacion
+    public Ubicacion clone() {
+        return new Ubicacion(this.posX, this.posY);  // Clonamos los valores
+    }
+    
     @Override
     public String toString() {
         return "[" + posX + " | "+ posY + "]";

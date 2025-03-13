@@ -8,8 +8,11 @@
 public class Utilities {
     public static void gestionarDelay(int simulationSpeed) {
         try {
-            // Pausar la ejecución por 500 milisegundos (medio segundo)
-            Thread.sleep(simulationSpeed);
+            // Invertir la velocidad: mayor valor = menor delay y viceversa
+            int adjustedSpeed = Math.max(1, Simulacion.MAX_SIMULATION_SPEED - simulationSpeed);
+            
+            // Pausar la ejecución según la velocidad ajustada
+            Thread.sleep(adjustedSpeed);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

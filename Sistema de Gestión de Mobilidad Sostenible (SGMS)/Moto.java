@@ -19,7 +19,7 @@ public class Moto extends Vehiculo
         super(posX, posY, MAX_DISTANCIA_BATERIA);
         setColor(Color.GREEN);
         
-        id = contadorInstancias;  // Asignamos el ID único a esta instancia
+        setId(contadorInstancias);  // Asignamos el ID único a esta instancia
         contadorInstancias++;
     }
 }

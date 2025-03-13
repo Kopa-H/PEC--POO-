@@ -18,7 +18,7 @@ public class Patinete extends Vehiculo {
         super(posX, posY, MAX_DISTANCIA_BATERIA);
         setColor(Color.GREEN);
         
-        id = contadorInstancias;
+        setId(contadorInstancias);
         contadorInstancias++;
     }
 }

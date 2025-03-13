@@ -332,6 +332,26 @@ public abstract class EntidadMovil extends Entidad {
     }
     
     @Override
+    public Entidad clone() {
+        // Clonamos las propiedades de la superclase adyacente
+        Entidad entidadCopia = super.clone();
+
+        // Clonamos los atributos específicos de esta clase
+        entidadCopia.enTrayecto = this.enTrayecto;
+        if (this.ubicacionDestino != null) {
+            entidadCopia.ubicacionDestino = this.ubicacionDestino.clone(); // Si es necesario clonar, como es un objeto Ubicacion
+        }
+        if (this.trayecto != null) {
+            entidadCopia.trayecto = new ArrayList<>(this.trayecto); // Crea una nueva lista con los mismos elementos (si quieres duplicar la lista, no solo la referencia)
+        }
+        entidadCopia.entidadDestino = this.entidadDestino; // Dependiendo del tipo, puede que necesites hacer un clon de entidadDestino si es un objeto mutable
+        entidadCopia.entidadSeguida = this.entidadSeguida; // Lo mismo con entidadSeguida
+        entidadCopia.siguiendoEntidad = this.siguiendoEntidad;
+
+        return entidadCopia;
+    }
+    
+    @Override
     public String toString() {
         String str = super.toString();
         

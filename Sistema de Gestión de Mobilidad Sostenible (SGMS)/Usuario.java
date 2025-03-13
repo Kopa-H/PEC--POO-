@@ -27,7 +27,7 @@ public class Usuario extends Persona {
         saldo = 0;
         tipoMembresia = TipoMembresia.ESTANDAR;
         
-        id = contadorInstancias;  // Asignamos el ID único a esta instancia
+        setId(contadorInstancias);  // Asignamos el ID único a esta instancia
         contadorInstancias++;
     }
     
@@ -94,6 +94,10 @@ public class Usuario extends Persona {
         return saldo;
     }
     
+    public void setSaldo(int saldo) {
+        this.saldo = saldo;
+    }
+    
     public void recargarSaldo(double x) {
         if (saldo > 0) {
             saldo += x;
@@ -102,5 +106,17 @@ public class Usuario extends Persona {
     
     public TipoMembresia getTipoMembresia() {
         return tipoMembresia;
+    }
+    
+    @Override
+    public Entidad clone() {
+        // Clonamos las propiedades de la superclase adyacente
+        Entidad entidadCopia = super.clone();
+
+        // Clonamos los atributos específicos de esta clase
+        entidadCopia.setSaldo(this.getSaldo());
+        entidadCopia.tipoMembresia = this.tipoMembresia;
+        
+        return entidadCopia;
     }
 }

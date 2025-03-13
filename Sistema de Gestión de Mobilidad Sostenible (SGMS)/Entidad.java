@@ -8,10 +8,11 @@ import java.awt.Color;
  */
 abstract public class Entidad
 {
-    Ubicacion ubicacion;
+    public Ubicacion ubicacion;
     private Color color; // color mostrado en la visualización
-        // Variable de instancia para almacenar el ID único de cada usuario
-    public int id;
+    
+    // Variable de instancia para almacenar el ID único de cada usuario
+    private int id;
     
     public Entidad() {       
         ubicacion = new Ubicacion(0, 0); // Ubicación inicial en (0,0)
@@ -35,17 +36,6 @@ abstract public class Entidad
     public Ubicacion getUbicacion() {
         return ubicacion;
     }
-
-    /**
-     * Método para establecer manualmente la ubicación de la entidad.
-     * 
-     * @param x Nueva coordenada X
-     * @param y Nueva coordenada Y
-     */
-    public void setUbicacion(int x, int y) {
-        this.ubicacion.setPosX(x);
-        this.ubicacion.setPosY(y);
-    }
     
     public void setColor(Color color) {
         this.color = color;
@@ -55,6 +45,13 @@ abstract public class Entidad
         return color;
     }
     
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
     
     /**
      * Método para representar la entidad móvil en forma de cadena de texto.
@@ -67,6 +64,22 @@ abstract public class Entidad
     
     // Acción que hace a las entidades hacer sus funciones dependiendo de su estado
     abstract public void actuar(Ciudad ciudad);
+       
+    // Implementación del método clone()
+    public Entidad clone() {
+        Entidad entidadCopia;
+        
+        // Clonamos la ubicación de la entidad
+        Ubicacion copiaUbicacion = this.ubicacion.clone();
+        
+        entidadCopia.ubicacion.setUbicacion(copiaUbicacion);
+  
+        entidadCopia.setId(this.id);  // Copiamos el id (si es necesario copiar otros atributos, hacerlo aquí)
+ 
+        entidadCopia.setColor(this.color);  // Copiar color también si es necesario
+
+        return entidadCopia;
+    }
     
     @Override
     public String toString() {

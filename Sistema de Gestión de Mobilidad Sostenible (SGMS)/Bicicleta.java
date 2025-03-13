@@ -20,7 +20,7 @@ public class Bicicleta extends Vehiculo
         super(posX, posY, MAX_DISTANCIA_BATERIA);
         setColor(Color.GREEN);
         
+        setId(contadorInstancias);
         contadorInstancias++;
-        id = contadorInstancias;
     }
 }

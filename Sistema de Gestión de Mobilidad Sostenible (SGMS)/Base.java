@@ -23,7 +23,7 @@ public class Base extends EntidadFija
 
         vehiculos = new ArrayList<>();
         
-        id = contadorInstancias;
+        setId(contadorInstancias);
         contadorInstancias++;
     }
 

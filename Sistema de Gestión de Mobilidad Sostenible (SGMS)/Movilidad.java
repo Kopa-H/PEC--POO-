@@ -10,9 +10,8 @@ import java.awt.Color;
  */
 public class Movilidad {
 
-    Ciudad ciudad = new Ciudad();
-    Simulacion simulacion = new Simulacion(ciudad);
-
+    static Ciudad ciudad = new Ciudad();
+    static Simulacion simulacion = new Simulacion(ciudad);
     
     /**
      * Método para agregar n entidades de un tipo específico en ubicaciones aleatorias.
@@ -21,7 +20,7 @@ public class Movilidad {
      * @param tipoEntidad El tipo de entidad a agregar (por ejemplo, Usuario, Moto, Base).
      * @param ciudad La ciudad en la que se agregan las entidades.
      */
-    private static <T> void agregarEntidad(int cantidad, Class<T> tipoEntidad, Ciudad ciudad) {
+    private static <T extends Entidad> void agregarEntidad(int cantidad, Class<T> tipoEntidad, Ciudad ciudad) {
         RandomGenerator randomGenerator = new RandomGenerator();
         
         for (int i = 0; i < cantidad; i++) {
@@ -48,6 +47,7 @@ public class Movilidad {
      * @param args  Los argumentos de la línea de comandos proporcionados al ejecutar el programa.
      */
     public static void main(String[] args) {
+        
         // Añadimos n usuarios
         agregarEntidad(6, Usuario.class, ciudad);
         
@@ -63,6 +63,6 @@ public class Movilidad {
         // Añadimos n bases con vehículos
         agregarEntidad(3, Base.class, ciudad);
 
-        simulacion.runSimulacion();
+        simulacion.runSimulacion(ciudad);
     }
 }
