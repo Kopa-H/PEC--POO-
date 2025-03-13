@@ -332,21 +332,26 @@ public abstract class EntidadMovil extends Entidad {
     
     @Override
     public Entidad clone() {
-
-        // Clonamos las propiedades de la superclase adyacente
-        EntidadMovil entidadCopia = (EntidadMovil) super.clone();
-
-        // Clonamos los atributos específicos de esta clase
-        entidadCopia.enTrayecto = this.enTrayecto;
-        if (this.ubicacionDestino != null) {
-            entidadCopia.ubicacionDestino = this.ubicacionDestino.clone(); // Si es necesario clonar, como es un objeto Ubicacion
+        Entidad entidadCopia = super.clone();
+        
+        if (entidadCopia instanceof EntidadMovil) {
+            // Clonamos las propiedades de la superclase adyacente
+            EntidadMovil entidadMovilCopia = ((EntidadMovil) entidadCopia);
+    
+            // Clonamos los atributos específicos de esta clase
+            entidadMovilCopia.enTrayecto = this.enTrayecto;
+            if (this.ubicacionDestino != null) {
+                entidadMovilCopia.ubicacionDestino = this.ubicacionDestino.clone(); // Si es necesario clonar, como es un objeto Ubicacion
+            }
+            if (this.trayecto != null) {
+                entidadMovilCopia.trayecto = new ArrayList<>(this.trayecto); // Crea una nueva lista con los mismos elementos (si quieres duplicar la lista, no solo la referencia)
+            }
+            entidadMovilCopia.entidadDestino = this.entidadDestino; // Dependiendo del tipo, puede que necesites hacer un clon de entidadDestino si es un objeto mutable
+            entidadMovilCopia.entidadSeguida = this.entidadSeguida; // Lo mismo con entidadSeguida
+            entidadMovilCopia.siguiendoEntidad = this.siguiendoEntidad;
+            
+            return entidadMovilCopia;
         }
-        if (this.trayecto != null) {
-            entidadCopia.trayecto = new ArrayList<>(this.trayecto); // Crea una nueva lista con los mismos elementos (si quieres duplicar la lista, no solo la referencia)
-        }
-        entidadCopia.entidadDestino = this.entidadDestino; // Dependiendo del tipo, puede que necesites hacer un clon de entidadDestino si es un objeto mutable
-        entidadCopia.entidadSeguida = this.entidadSeguida; // Lo mismo con entidadSeguida
-        entidadCopia.siguiendoEntidad = this.siguiendoEntidad;
         
         return entidadCopia;
     }

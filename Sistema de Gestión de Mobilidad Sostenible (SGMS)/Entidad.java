@@ -53,18 +53,9 @@ public class Entidad
         this.id = id;
     }
     
-    /**
-     * Método para representar la entidad móvil en forma de cadena de texto.
-     * 
-     * @return Información de la entidad y su ubicación.
-     */
-    public String getTipoEntidad() {
-        return toString();
-    }
-    
     // Acción que hace a las entidades hacer sus funciones dependiendo de su estado
     public void actuar(Ciudad ciudad) {
-        System.out.println("La entidad no tiene ninguna acción asignada");
+        // System.out.println("La entidad no tiene ninguna acción asignada");
     }
        
     // Implementación del método clone()

@@ -68,7 +68,7 @@ public class Simulacion extends JFrame {
                         // Mostrar el nombre de la entidad que está en la celda si existe
                         for (Entidad entidad : ciudad.getEntidades()) {
                             if (entidad.getUbicacion().getPosX() == row && entidad.getUbicacion().getPosY() == col) {
-                                statusLabel.setText("Objeto en (" + row + "," + col + "): " + entidad.getTipoEntidad());
+                                statusLabel.setText("Objeto en (" + row + "," + col + "): " + entidad.toString());
                                 return;
                             }
                         }
@@ -216,28 +216,13 @@ public class Simulacion extends JFrame {
     // Método para retroceder al estado anterior
     private void retrocederEstado(Ciudad ciudad) {
         if (historialEstados.size() != step) {
-            System.out.println("El retroceso de estados se ha desincronizado!");
+            throw new IllegalStateException("El sistema de retroceso de estados se ha desincronizado!");
         }
-        
-        System.out.println("Se imprimen vainas");
-        for (Estado estado : historialEstados) {
-           for (Entidad entidad : estado.obtenerEstadoEntidades()) {
-                if (entidad instanceof Usuario && entidad.getId() == 0) {
-                    System.out.println(entidad.toString());
-                }
-            } 
-        }
-        
         
         if (!historialEstados.isEmpty()) {
             Estado estadoAnterior = historialEstados.remove(historialEstados.size() - 1); // Recupera el último estado
-            setGridButtons(estadoAnterior.obtenerEstadoCuadricula()); // Restaura la cuadrícula
             
-            for (Entidad entidad : estadoAnterior.obtenerEstadoEntidades()) {
-                if (entidad instanceof Usuario && entidad.getId() == 0) {
-                    System.out.println(entidad.toString());
-                }
-            }
+            setGridButtons(estadoAnterior.obtenerEstadoCuadricula()); // Restaura la cuadrícula
             
             ciudad.setEntidades(estadoAnterior.obtenerEstadoEntidades()); // Restaura las entidades
             
@@ -251,6 +236,8 @@ public class Simulacion extends JFrame {
         while (simulationRunning) {
             
             if (runningForward) {
+                System.out.println("avanzaad!");
+                
                 // Se hace que todas las entidades actúen según su estado (moverse)
                 for (Entidad entidad : ciudad.getEntidades()) {
                     entidad.actuar(ciudad);
@@ -263,6 +250,8 @@ public class Simulacion extends JFrame {
                 step++;
 
             } else if (runningBackward && step > 0) {
+                System.out.println("retrocedeeed!");
+                
                 // Se tira para atrás
                 retrocederEstado(ciudad);
                 

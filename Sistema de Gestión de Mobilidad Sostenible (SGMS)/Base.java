@@ -57,17 +57,23 @@ public class Base extends EntidadFija
     }
     
     @Override
-    public Base clone() {
-        // Primero, clonamos la entidad base (superclase)
-        Base baseCopia = (Base) super.clone();  // Clonamos la superclase (EntidadFija)
+    public Entidad clone() {
+        Entidad entidadCopia = super.clone();
+        
+        if (entidadCopia instanceof Base) {
+            // Primero, clonamos la entidad base (superclase)
+            Base entidadBaseCopia = (Base) entidadCopia;
     
-        // Ahora, clonamos la lista de vehículos
-        baseCopia.vehiculos = new ArrayList<>();
-        for (Vehiculo v : this.vehiculos) {
-            baseCopia.vehiculos.add(v.clone());  // Asumimos que Vehiculo también tiene un método clone()
-        }
+            // Ahora, clonamos la lista de vehículos
+            entidadBaseCopia.vehiculos = new ArrayList<>();
+            for (Vehiculo v : this.vehiculos) {
+                entidadBaseCopia.vehiculos.add((Vehiculo) v.clone());
+            }
 
-        return baseCopia;
+            return entidadBaseCopia;
+        }
+        
+        return entidadCopia;
     }
     
     @Override

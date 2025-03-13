@@ -64,19 +64,25 @@ abstract public class Vehiculo extends EntidadMovil
     }
 
     @Override
-    public Vehiculo clone() {
-        // Clonamos las propiedades de la superclase
-        Vehiculo vehiculoCopia = (Vehiculo) super.clone();
+    public Entidad clone() {
+        Entidad entidadCopia = super.clone();        
         
-        // Clonamos los atributos específicos de la clase Vehiculo
-        vehiculoCopia.autonomiaBateria = this.autonomiaBateria;
+        if (entidadCopia instanceof Vehiculo) {
+            // Clonamos las propiedades de la superclase
+            Vehiculo entidadVehiculoCopia = (Vehiculo) entidadCopia;
+            
+            // Clonamos los atributos específicos de la clase Vehiculo
+            entidadVehiculoCopia.autonomiaBateria = this.autonomiaBateria;
+            
+            // Clonamos la lista de fallos mecánicos (si es mutable)
+            if (this.fallosMecanicos != null) {
+                entidadVehiculoCopia.fallosMecanicos = new ArrayList<>(this.fallosMecanicos);
+            }
         
-        // Clonamos la lista de fallos mecánicos (si es mutable)
-        if (this.fallosMecanicos != null) {
-            vehiculoCopia.fallosMecanicos = new ArrayList<>(this.fallosMecanicos);
+            return entidadVehiculoCopia; 
         }
-    
-        return vehiculoCopia;
+        
+        return entidadCopia;
     }
     
     @Override
