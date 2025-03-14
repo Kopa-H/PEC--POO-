@@ -10,8 +10,10 @@ import java.awt.Color;
 public class Base extends EntidadFija
 {
     private static int contadorInstancias = 0;
-    // instance variables - replace the example below with your own
-    private ArrayList<Vehiculo> vehiculos; // Vehículos almacenados dentro de la base
+
+    public ArrayList<Vehiculo> vehiculosDisponibles; // Vehículos almacenados dentro de la base disponibles para ser usados
+    
+    public ArrayList<Vehiculo> vehiculosInhabilitados; // Aquí están los vehículos sin batería (el técnico debe recargarla) y los averiados
 
     /**
      * Constructor for objects of class Base
@@ -21,7 +23,8 @@ public class Base extends EntidadFija
         super(x, y);
         setColor(Color.RED);
 
-        vehiculos = new ArrayList<>();
+        vehiculosDisponibles = new ArrayList<>();
+        vehiculosInhabilitados = new ArrayList<>();
         
         setId(contadorInstancias);
         contadorInstancias++;
@@ -33,15 +36,29 @@ public class Base extends EntidadFija
      * @param  y  a sample parameter for a method
      * @return    the sum of x and y
      */
-    public void agregarVehiculo(Vehiculo v) {
-        vehiculos.add(v);
+    public void agregarVehiculoDisponible(Vehiculo v) {
+        vehiculosDisponibles.add(v);
     }
     
-    // Sirve para sacar el numero de vehiculos de un tipo que tiene la base
-    private int getNumeroVehiculos(Class<?> claseVehiculo) {
+    // Sirve para sacar el numero de vehiculos disponibles de un tipo que tiene la base
+    private int getNumeroVehiculosDisponibles(Class<?> claseVehiculo) {
         int num = 0;
         
-        for (Vehiculo vehiculo : vehiculos) {
+        for (Vehiculo vehiculo : vehiculosDisponibles) {
+            // Comparamos el tipo de la clase del vehículo con el tipo proporcionado
+            if (vehiculo.getClass().equals(claseVehiculo)) {
+                num++;
+            }
+        }
+        
+        return num; // Recuerda devolver el resultado
+    }
+    
+    // Sirve para sacar el numero de vehiculos inhabilitados de un tipo que tiene la base
+    private int getNumeroVehiculosInhabilitados(Class<?> claseVehiculo) {
+        int num = 0;
+        
+        for (Vehiculo vehiculo : vehiculosInhabilitados) {
             // Comparamos el tipo de la clase del vehículo con el tipo proporcionado
             if (vehiculo.getClass().equals(claseVehiculo)) {
                 num++;
@@ -58,7 +75,8 @@ public class Base extends EntidadFija
         
     @Override
     public String toString() {
-       return String.format("%s  |  Vehiculos: [motos = %d | bicis = %d | patinetes = %d]",
-            super.toString(), getNumeroVehiculos(Moto.class), getNumeroVehiculos(Bicicleta.class), getNumeroVehiculos(Patinete.class));
+       return String.format("%s  |  vehiculosDisponibles: [motos = %d | bicis = %d | patinetes = %d]  |  vehiculosInhabilitados: [motos = %d | bicis = %d | patinetes = %d]",
+            super.toString(), getNumeroVehiculosDisponibles(Moto.class), getNumeroVehiculosDisponibles(Bicicleta.class), getNumeroVehiculosDisponibles(Patinete.class),
+            getNumeroVehiculosInhabilitados(Moto.class), getNumeroVehiculosInhabilitados(Bicicleta.class), getNumeroVehiculosInhabilitados(Patinete.class));
     }
 }

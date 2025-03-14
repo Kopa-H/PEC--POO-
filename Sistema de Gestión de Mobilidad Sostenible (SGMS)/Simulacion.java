@@ -142,7 +142,7 @@ public class Simulacion extends JFrame {
                     runningBackward = true;
                 }
             
-                sliderLabel.setText("Velocidad (milisegundos): " + Math.abs(simulationSpeed) + (sliderValue < 0 ? " (retroceso)" : " (avance)"));
+                sliderLabel.setText("Velocidad: " + Math.abs(simulationSpeed) + (sliderValue < 0 ? " (retroceso)" : " (avance)"));
             }
         });
         // Panel para el slider y su etiqueta
@@ -231,10 +231,6 @@ public class Simulacion extends JFrame {
             setGridButtons(estadoAnterior.obtenerEstadoCuadricula()); // Restaura la cuadrícula
             
             ciudad.setEntidades(estadoAnterior.obtenerEstadoEntidades()); // Restaura las entidades
-            
-            System.out.println("Se ha tirado hacia atrás la simulación");
-        } else {
-            System.out.println("No hay más estados anteriores.");
         }
     }
     
@@ -265,7 +261,6 @@ public class Simulacion extends JFrame {
             actualizarEstadoVisual(ciudad);
             stepLabel.setText("Paso: " + step);
             Utilities.gestionarDelay(simulationSpeed);
-            System.out.println(simulationSpeed);
         }
     }
     

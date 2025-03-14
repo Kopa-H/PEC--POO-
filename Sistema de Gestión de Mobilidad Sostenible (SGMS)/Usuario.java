@@ -58,19 +58,6 @@ public class Usuario extends Persona {
         
     }
     
-    /**
-     * Alquila un vehículo
-     *
-     */
-    public void alquilarVehiculo(Ubicacion locInicial, Ubicacion locFinal, Vehiculo.TipoVehiculo tipoV) {
-        if (tipoV == Vehiculo.TipoVehiculo.BICI || tipoV == Vehiculo.TipoVehiculo.PATINETE) {
-            // Base baseInicial = consultarBase();
-            // Base baseFinal = consultarBase();
-        } else if (tipoV == Vehiculo.TipoVehiculo.MOTO) {
-            // Ubicacion coords = consultarCoordsViaje(); 
-        }
-    }
-    
     public void reservarVehiculo() {
         if (tipoMembresia != TipoMembresia.PREMIUM) {
             return;
@@ -89,7 +76,7 @@ public class Usuario extends Persona {
             // Se añade el fallo al arraylist de la base
         }
     }
-    
+
     public double getSaldo() {
         return saldo;
     }

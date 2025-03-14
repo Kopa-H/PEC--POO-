@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Clase para generar valores aleatorios, como direcciones y nombres.
@@ -73,5 +74,39 @@ public class RandomGenerator implements Serializable {
         } while (ciudad.posicionOcupada(ubi));  // Comprobar si la ubicación está ocupada
         
         return ubi;
+    }
+    
+    public Vehiculo getVehiculoDisponibleRandom(Base base) {
+        // Verificar si la lista no está vacía
+        if (base.vehiculosDisponibles.isEmpty()) {
+            return null;
+        }
+    
+        // Devolver un vehículo aleatorio usando la instancia de Random
+        return base.vehiculosDisponibles.get(random.nextInt(base.vehiculosDisponibles.size()));
+    }
+    
+    public Entidad getEntidadRandom(Ciudad ciudad, Entidad entidadExcluida, Class<?> clase) {
+        // Lista para almacenar las entidades que cumplen con los criterios
+        ArrayList<Entidad> entidadesCumplidas = new ArrayList<>();
+        
+        // Recorremos todas las entidades de la ciudad
+        for (Entidad entidad : ciudad.getEntidades()) {
+            // Comprobamos si la entidad es de la clase indicada y no es la excluida
+            if (clase.isInstance(entidad) && entidad != entidadExcluida) {
+                entidadesCumplidas.add(entidad);
+            }
+        }
+        
+        // Si no se encontraron entidades que cumplieran el criterio, retornamos null
+        if (entidadesCumplidas.isEmpty()) {
+            return null;
+        }
+        
+        // Generamos un número aleatorio dentro del rango de la lista de entidades
+        int indexRandom = random.nextInt(entidadesCumplidas.size());
+        
+        // Devolvemos la entidad aleatoria
+        return entidadesCumplidas.get(indexRandom);
     }
 }
