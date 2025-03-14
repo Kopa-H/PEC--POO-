@@ -33,6 +33,9 @@ public class Simulacion extends JFrame {
     public static final int ROWS = Ciudad.ROWS;
     public static final int COLUMNS = Ciudad.COLUMNS;
     
+    public static final int MAX_ESTADOS_GUARDADOS = 1000000;
+    public static final int ESTADOS_ELIMINADOS_SOBRECARGA = 100;
+    
     private boolean simulationRunning = true;
     private boolean runningForward = false;
     private boolean runningBackward = false;
@@ -214,6 +217,14 @@ public class Simulacion extends JFrame {
     
         // Crear un nuevo estado con las copias
         Estado estadoActual = new Estado(copiaCuadricula, copiaEntidades);
+        
+        // Verificar si el historial ha superado el límite máximo de estados guardados
+        if (historialEstados.size() > MAX_ESTADOS_GUARDADOS) {
+            // Eliminar los primeros 100 estados
+            for (int i = 0; i < ESTADOS_ELIMINADOS_SOBRECARGA; i++) {
+                historialEstados.remove(0);
+            }
+        }
         
         // Guardar el estado actual en la lista de historial de estados
         historialEstados.add(estadoActual);
