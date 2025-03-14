@@ -23,7 +23,7 @@ public class Simulacion extends JFrame {
     private JLabel statusLabel; // JLabel para mostrar el nombre del objeto
     private JLabel stepLabel;
     
-    public static final int MAX_SIMULATION_SPEED = 500;
+    public static final int MAX_SIMULATION_SPEED = 1000;
     public int simulationSpeed = 0;
     
     // Tamaño fijo de la ventana donde se muestra el estado de gridButtons
@@ -72,7 +72,7 @@ public class Simulacion extends JFrame {
                         // Mostrar el nombre de la entidad que está en la celda si existe
                         for (Entidad entidad : ciudad.getEntidades()) {
                             if (entidad.getUbicacion().getPosX() == row && entidad.getUbicacion().getPosY() == col) {
-                                statusLabel.setText("Objeto en (" + row + "," + col + "): " + entidad.toString());
+                                statusLabel.setText(entidad.toString());
                                 return;
                             }
                         }
@@ -218,7 +218,6 @@ public class Simulacion extends JFrame {
         // Crear un nuevo estado con las copias
         Estado estadoActual = new Estado(copiaCuadricula, copiaEntidades);
         
-        // Verificar si el historial ha superado el límite máximo de estados guardados
         if (historialEstados.size() > MAX_ESTADOS_GUARDADOS) {
             // Eliminar los primeros 100 estados
             for (int i = 0; i < ESTADOS_ELIMINADOS_SOBRECARGA; i++) {

@@ -16,7 +16,7 @@ public class Patinete extends Vehiculo {
     public Patinete(int posX, int posY) {
         // initialise instance variables
         super(posX, posY, MAX_DISTANCIA_BATERIA);
-        setColor(Color.GREEN);
+        setColor(Color.GRAY);
         
         setId(contadorInstancias);
         contadorInstancias++;

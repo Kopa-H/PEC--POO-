@@ -18,7 +18,7 @@ public class Bicicleta extends Vehiculo
     {
         // initialise instance variables
         super(posX, posY, MAX_DISTANCIA_BATERIA);
-        setColor(Color.GREEN);
+        setColor(Color.PINK);
         
         setId(contadorInstancias);
         contadorInstancias++;

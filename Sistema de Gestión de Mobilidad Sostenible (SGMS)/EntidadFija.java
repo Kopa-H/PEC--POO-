@@ -5,11 +5,9 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-public class EntidadFija extends Entidad
+public abstract class EntidadFija extends Entidad
 {
-     public EntidadFija() {       
-        super();
-    }
+
     /**
      * Constructor for objects of class EntidadFija
      */

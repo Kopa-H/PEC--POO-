@@ -21,16 +21,6 @@ public class Persona extends EntidadMovil
         nombre = randomGenerator.getNombreRandom();
     }
     
-    /**
-     * Constructor for objects of class Persona
-     */
-    public Persona()
-    {
-        // Se inicializa el nombre de la Persona como " "
-        super();
-        nombre = randomGenerator.getNombreRandom();
-    }
-    
     @Override
     public void actuar(Ciudad ciudad) {
         super.actuar(ciudad);
@@ -74,5 +64,10 @@ public class Persona extends EntidadMovil
     @Override
     public String toString() {
         return super.toString() + "  |  Nombre: " + nombre;
+    }
+    
+    @Override
+    public String toSimpleString() {
+        return "[" + getClass().getSimpleName() + "  |  Id: " + this.getId() + "  |  Nombre: " + nombre + "]";
     }
 }

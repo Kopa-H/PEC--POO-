@@ -15,10 +15,6 @@ public abstract class Entidad implements Serializable
     // Variable de instancia para almacenar el ID único de cada usuario
     private int id;
     
-    public Entidad() {       
-        ubicacion = new Ubicacion(0, 0); // Ubicación inicial en (0,0)
-    }
-    
     /**
      * Constructor que permite inicializar la EntidadMovil en una ubicación específica.
      * 
@@ -75,5 +71,9 @@ public abstract class Entidad implements Serializable
     @Override
     public String toString() {
         return "Ubi: " + ubicacion.toString() + "  |  Id: " + id + "  |  Tipo: " + getClass().getSimpleName();
+    }
+    
+    public String toSimpleString() {
+        return "[" + getClass().getSimpleName() + "  |  Id: " + this.getId() + "]";
     }
 }

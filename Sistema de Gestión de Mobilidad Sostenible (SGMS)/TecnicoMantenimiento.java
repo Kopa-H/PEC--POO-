@@ -32,7 +32,7 @@ public class TecnicoMantenimiento extends Trabajador
                     Vehiculo vehiculo = (Vehiculo) entidad;
                     if (vehiculo.getPorcentajeBateria() < 20) {
                         vehiculoAsignado = vehiculo;
-                        System.out.println("El técnico de mantenimiento " + toString() + " se ha asignado el vehículo para cargar su batería " + vehiculoAsignado.toString());
+                        System.out.println("[" + toSimpleString() + "] se ha asignado [" + vehiculoAsignado.toSimpleString() + "] para cargar su batería");
                     }
                 }
             }
@@ -64,11 +64,11 @@ public class TecnicoMantenimiento extends Trabajador
                     
                     // La persona planea un trayecto hacia la base más cercana
                     Base base = (Base) ciudad.encontrarEntidadMasCercana(this, Base.class);
-                    planearTrayecto(base.getUbicacion());
+                    planearTrayecto(base.getUbicacion(), base);
                     
                 } else {
                     // Si el vehículo NO está en una base y aun no se ha comenzado el trayecto planea un trayecto hacia el vehículo
-                    planearTrayecto(vehiculoAsignado.getUbicacion());
+                    planearTrayecto(vehiculoAsignado.getUbicacion(), vehiculoAsignado);
                 }
             }            
         }

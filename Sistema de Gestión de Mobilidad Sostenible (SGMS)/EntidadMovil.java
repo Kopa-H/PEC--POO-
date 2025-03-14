@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * Clase EntidadMovil que representa un objeto que puede moverse por el tablero.
  */
-public class EntidadMovil extends Entidad {
+public abstract class EntidadMovil extends Entidad {
     public enum Direcciones {
         UP, DOWN, RIGHT, LEFT
     }
@@ -23,10 +23,7 @@ public class EntidadMovil extends Entidad {
      * Constructor para objetos de la clase EntidadMovil.
      * Inicializa la ubicación en las coordenadas (0,0) por defecto.
      */
-    public EntidadMovil() {       
-        super();
-    }
-    
+
     /**
      * Constructor que permite inicializar la EntidadMovil en una ubicación específica.
      * 
@@ -135,7 +132,7 @@ public class EntidadMovil extends Entidad {
     /**
      * Método que hace que el vehículo inicie un trayecto
      */
-    public void planearTrayecto(Ubicacion ubiDestino) {
+    public void planearTrayecto(Ubicacion ubiDestino, Entidad entidadDestino) {
         int actualX, actualY, destinoX, destinoY, desplazX, desplazY;
         
         destinoX = ubiDestino.getPosX();
@@ -178,6 +175,12 @@ public class EntidadMovil extends Entidad {
 
         // Activar estado de trayecto
         enTrayecto = true;
+        
+        if (entidadDestino != null) {
+            System.out.println(toSimpleString() + " ha comenzado un viaje hacia " + entidadDestino.toSimpleString());
+        } else {
+            System.out.println(toSimpleString() + " ha comenzado un viaje hacia " + ubiDestino.toString());
+        }
     }
     
     public void terminarTrayecto() {
@@ -189,23 +192,19 @@ public class EntidadMovil extends Entidad {
     }
     
     public void seguirTrayecto(Ciudad ciudad) {
+        if (this instanceof Patinete || this instanceof Bicicleta) {
+            System.out.println("HOAODASDASDLSA");
+        }
+        
         // Verificamos si aún hay movimientos por hacer
         if (!trayecto.isEmpty()) {
-            // Se verifica que la entidad seguida NO está en movimiento
+            // Se verifica que la entidad seguida NO está en movimiento. En este caso se termina el trayecto
             if (entidadDestino instanceof EntidadMovil && ((EntidadMovil) entidadDestino).enTrayecto) {
-    
-                if (entidadDestino != null) {
-                    System.out.println("La entidad " + toString() + " ha abandonado su trayecto a " + entidadDestino.toString() + " porque está en movimiento!");
-                } else {
-                    System.out.println("La entidad " + toString() + " ha abandonado su trayecto a " + ubicacionDestino.toString() + " porque está en movimiento!");
-                }
-    
                 terminarTrayecto();
             }
             
             // Si la entidad que se está moviendo es un vehículo y se queda sin batería, se termina su trayecto y por ende el de su pasajero
             if (entidadDestino instanceof Vehiculo && ((Vehiculo) entidadDestino).getPorcentajeBateria() < 0) {
-                System.out.println("La entidad " + toString() + " ha abandonado su trayecto a " + entidadDestino.toString() + " porque la batería está agotada!");
                 terminarTrayecto();
                 return;
             }
@@ -239,53 +238,47 @@ public class EntidadMovil extends Entidad {
         } else {
             // Si se ha terminado el trayecto
             RandomGenerator randomGenerator = new RandomGenerator();
-            
-            if (entidadDestino != null) {
-                System.out.println("La entidad " + toString() + " ha completado su trayecto a " + entidadDestino.toString() + "!");
-            } else {
-                System.out.println("La entidad " + toString() + " ha completado su trayecto a " + ubicacionDestino.toString() + "!");
-            }
     
             enTrayecto = false;
             siguiendoEntidad = false;
             ubicacionDestino = null;
     
-            // Si se ha llegado a una base, se verifica si hay una bici o patinete y se coge para ir a una dirección random
-            if (entidadDestino instanceof Base) {
-                // Obtenemos la base
-                Base baseDestino = (Base) entidadDestino;
+            if ((this instanceof Bicicleta || this instanceof Patinete) && entidadDestino instanceof Base) {
+                System.out.println("LA BISII O PATIN LLEGA A LA BASE DESTINO!");
+                
+                ((Base) entidadDestino).agregarVehiculoDisponible((Vehiculo) this);
+            }
             
-                // Usamos el randomGenerator que ya tienes para elegir un vehículo disponible
+             // Si se ha llegado a una base, se verifica si hay una bici o patinete y se coge para ir a una dirección random
+            if (this instanceof Persona && entidadDestino instanceof Base baseDestino) {
                 Vehiculo vehiculoEscogido = randomGenerator.getVehiculoDisponibleRandom(baseDestino);
                 
-                // Verificamos si hay un vehículo disponible
                 if (vehiculoEscogido != null) {
-                    // Comenzamos el seguimiento del vehículo escogido
-                    empezarSeguimiento(vehiculoEscogido);
-            
-                    //Obtenemos una base aleatoria entre todas sin incluir la actual
                     Base baseEscogida = (Base) randomGenerator.getEntidadRandom(ciudad, baseDestino, Base.class);
                     
-                    // Planeamos el trayecto hacia esa ubicación
-                    entidadSeguida.planearTrayecto(baseEscogida.getUbicacion());
-                    System.out.println(toString() + " ha comenzado un viaje hacia " + baseEscogida.toString());
-            
-                    // Retiramos el vehículo escogido de los disponibles en la base
-                    baseDestino.vehiculosDisponibles.remove(vehiculoEscogido);
+                    if (baseEscogida != null) {
+                        vehiculoEscogido.planearTrayecto(baseEscogida.getUbicacion(), baseEscogida);
+
+                        
+                        empezarSeguimiento(vehiculoEscogido);
+
+                        
+                        baseDestino.vehiculosDisponibles.remove(vehiculoEscogido);
+                    } else {
+                        System.out.println("No hay bases destino disponibles en la ciudad.");
+                    }
                 } else {
-                    // Si no hay vehículos disponibles, podemos manejar el caso
                     System.out.println("No hay vehículos disponibles en la base.");
                 }
             }
     
-            // Si se ha llegado a una moto, se sube y la moto planea un trayecto hacia una dirección aleatoria
-            if (entidadDestino instanceof Moto) {
-                empezarSeguimiento((EntidadMovil) entidadDestino);
-    
+            // Si se ha llegado a una moto, se sube y planea un trayecto hacia una dirección aleatoria
+            if (entidadDestino instanceof Moto moto) {
                 // La moto comienza un rumbo hacia una posición aleatoria de la ciudad
                 Ubicacion ubicacion = randomGenerator.getUbicacionLibreRandom(ciudad);
-                entidadSeguida.planearTrayecto(ubicacion);
-                System.out.println(toString() + " ha comenzado un viaje hacia " + ubicacionDestino);
+                moto.planearTrayecto(ubicacion, null);
+            
+                empezarSeguimiento(moto);
             }
     
             entidadDestino = null;
@@ -295,6 +288,8 @@ public class EntidadMovil extends Entidad {
     public void empezarSeguimiento(EntidadMovil entidadPorSeguir) {
         entidadSeguida = entidadPorSeguir;
         siguiendoEntidad = true;
+        
+        System.out.println(this.toSimpleString() + " ha comenzado a seguir a " + entidadSeguida.toSimpleString());
     }
 
     
@@ -337,12 +332,9 @@ public class EntidadMovil extends Entidad {
             Ubicacion ubiEntidad = entidad.getUbicacion();
         
             // Planear trayecto hacia la entidad
-            planearTrayecto(ubiEntidad);
+            planearTrayecto(ubiEntidad, entidad);
             
             entidadDestino = entidad;
-            
-            // Imprimir mensaje con el toString de la entidad que ha planeado el trayecto
-            System.out.println(this.toString() + " ha planeado un trayecto hacia " + entidadDestino.toString() + " más cercana.");
             return true;
         }
         return false;
@@ -357,7 +349,7 @@ public class EntidadMovil extends Entidad {
         }
         
         if (siguiendoEntidad) {
-            str += "  |  entidadSeguida = [" + entidadSeguida.toString() + "]";
+            str += "  |  entidadSeguida = [" + entidadSeguida.toSimpleString() + "]";
         }
         
         if (entidadDestino != null) {

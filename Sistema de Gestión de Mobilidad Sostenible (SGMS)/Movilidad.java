@@ -25,7 +25,7 @@ public class Movilidad {
         
         for (int i = 0; i < cantidad; i++) {
             Ubicacion ubi = randomGenerator.getUbicacionLibreRandom(ciudad);
-            System.out.println("Se ha añadido una " + tipoEntidad.getSimpleName() + " en: [" + ubi.getPosX() + " | " + ubi.getPosY() + "]");
+            System.out.println("Se ha añadido una " + tipoEntidad.getSimpleName() + " en:" + ubi.toString());
             
             try {
                 // Crear la entidad de acuerdo con el tipo y la ubicación
@@ -38,11 +38,13 @@ public class Movilidad {
                         // Añadir bici
                         Bicicleta bici = new Bicicleta(ubi.getPosX(), ubi.getPosY());
                         base.agregarVehiculoDisponible(bici);
+                        ciudad.addElement(bici); 
                         System.out.println("Se ha añadido una bici a la base.");
 
                         // Añadir patinete
                         Patinete patinete = new Patinete(ubi.getPosX(), ubi.getPosY());
                         base.agregarVehiculoDisponible(patinete);
+                        ciudad.addElement(patinete); 
                         System.out.println("Se ha añadido un patinete a la base.");
                     }
                 }

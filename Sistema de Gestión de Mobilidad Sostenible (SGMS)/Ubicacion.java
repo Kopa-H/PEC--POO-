@@ -10,8 +10,8 @@ import java.io.Serializable;
 public class Ubicacion implements Serializable
 {
     // instance variables - replace the example below with your own
-    private int posX;
-    private int posY;
+    private Integer posX = null;
+    private Integer posY = null;
 
     /**
      * Constructor para crear una ubicación con coordenadas dadas.
@@ -22,12 +22,10 @@ public class Ubicacion implements Serializable
         this.posX = x;
         this.posY = y;
     }
-
-    /**
-     * Constructor por defecto, establece las coordenadas a (0, 0).
-     */
+    
     public Ubicacion() {
-        this(0, 0);
+        this.posX = 0;
+        this.posY = 0;
     }
     
     public void setUbicacion(Ubicacion ubi) {
@@ -77,14 +75,12 @@ public class Ubicacion implements Serializable
     public int hashCode() {
         return Objects.hash(posX, posY);
     }
-    
-    // Método clone para Ubicacion
-    public Ubicacion clone() {
-        return new Ubicacion(this.posX, this.posY);  // Clonamos los valores
-    }
-    
+ 
     @Override
     public String toString() {
-        return "[" + posX + " | "+ posY + "]";
+        String x = (posX != null) ? posX.toString() : "undefined";
+        String y = (posY != null) ? posY.toString() : "undefined";
+        
+        return "[" + x + " | " + y + "]";
     }
 }
