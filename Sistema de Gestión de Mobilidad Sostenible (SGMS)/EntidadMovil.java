@@ -349,7 +349,7 @@ public abstract class EntidadMovil extends Entidad {
         }
         
         if (siguiendoEntidad) {
-            str += "  |  entidadSeguida = [" + entidadSeguida.toSimpleString() + "]";
+            str += "  |  entidadSeguida = " + entidadSeguida.toSimpleString();
         }
         
         if (entidadDestino != null) {
