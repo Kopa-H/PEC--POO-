@@ -20,7 +20,6 @@ public class Simulacion extends JFrame {
     private JButton[][] gridButtons; // Matriz para almacenar los botones de la cuadrícula
     
     private int step; // Recuento de pasos
-    private JLabel statusLabel; // JLabel para mostrar el nombre del objeto
     private JLabel stepLabel;
     
     public static final int MAX_SIMULATION_SPEED = 1000;
@@ -41,8 +40,17 @@ public class Simulacion extends JFrame {
     private boolean runningBackward = false;
     
     private ArrayList<Estado> historialEstados;
+
+    private JLabel statusLabel = new JLabel("Estado inicial"); // JLabel para mostrar el nombre del objeto
+    private JPanel statusPanel = new JPanel(new BorderLayout()); // Usa BorderLayout para que el texto ocupe todo el ancho
+    // Crear un JTextArea para mostrar las descripciones de las entidades
+    JTextArea descripcionArea = new JTextArea();
+    private JScrollPane scrollPane = new JScrollPane(descripcionArea);
     
-    public JPanel statusPanel = new JPanel(new BorderLayout()); // Usa BorderLayout para que el texto ocupe todo el ancho
+    JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -MAX_SIMULATION_SPEED, MAX_SIMULATION_SPEED, simulationSpeed);
+    
+    JLabel sliderLabel = new JLabel("Ajustar velocidad: " + simulationSpeed, JLabel.CENTER);
+    JPanel sliderPanel = new JPanel();
     
     public Simulacion(Ciudad ciudad) {
 
@@ -58,7 +66,12 @@ public class Simulacion extends JFrame {
         // Configuramos el panel con GridLayout
         JPanel gridPanel = new JPanel(new GridLayout(ROWS, COLUMNS));
         
+        statusPanel.add(scrollPane, BorderLayout.CENTER);  // Asegura que se estire en el centro
         
+        descripcionArea.setEditable(false);  // No permitir edición
+        descripcionArea.setLineWrap(true);   // Permitir el ajuste de línea
+        descripcionArea.setWrapStyleWord(true); // Ajustar palabras completas
+        descripcionArea.setRows(5);  // Ajusta el tamaño del área de texto si es necesario
         
         // Crear los botones y agregarlos al panel
         for (int i = 0; i < ROWS; i++) {
@@ -78,11 +91,10 @@ public class Simulacion extends JFrame {
         
                     @Override
                     public void mouseExited(MouseEvent e) {
-                        // Limpiar el JLabel cuando el ratón salga del botón
-                        statusLabel.setText(" ");
-                        statusPanel.removeAll();  // Limpiar el panel de descripciones
-                        statusPanel.revalidate();  // Revalidar el panel
-                        statusPanel.repaint();  // Redibujar el panel
+                         // Restablecer el contenido del JLabel a un mensaje predeterminado en lugar de eliminar componentes
+                        statusLabel.setText("Estado inicial");
+                        statusPanel.revalidate(); // Asegurar que se actualice correctamente
+                        statusPanel.repaint();    // Redibujar el panel para reflejar el cambio
                     }
                 });
         
@@ -99,52 +111,20 @@ public class Simulacion extends JFrame {
         stepPanel.add(stepLabel);
     
         // Crear el slider para controlar la velocidad
-        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -MAX_SIMULATION_SPEED, MAX_SIMULATION_SPEED, simulationSpeed);
         speedSlider.setMajorTickSpacing(500);
         speedSlider.setMinorTickSpacing(100);
         speedSlider.setPaintTicks(true);
         speedSlider.setPaintLabels(true);
         // Etiquetas para el slider
-        JLabel sliderLabel = new JLabel("Ajustar velocidad: " + simulationSpeed, JLabel.CENTER);
         
         // Añadir un ChangeListener al slider para cambiar la velocidad y dirección
         speedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                int sliderValue = speedSlider.getValue();
-                
-                // Definir un rango alrededor de 0 como la "zona muerta"
-                int deadZone = 5;
-                
-                // Si el valor del slider está dentro de la zona muerta, se pausa la simulación
-                if (Math.abs(sliderValue) <= deadZone) {
-                    simulationSpeed = 0;
-                    runningForward = false;
-                    runningBackward = false;
-                    
-                    // Mover el slider al centro (0)
-                    speedSlider.setValue(0);
-                } 
-                // Si el slider está en valores positivos, la simulación avanza
-                else if (sliderValue > deadZone) {
-                    simulationSpeed = sliderValue;
- 
-                    runningForward = true;
-                    runningBackward = false;
-                } 
-                // Si el slider está en valores negativos, la simulación retrocede
-                else if (sliderValue < -deadZone) {
-                    simulationSpeed = -sliderValue; // La velocidad de retroceso será la magnitud del valor
-
-                    runningForward = false;
-                    runningBackward = true;
-                }
-            
-                sliderLabel.setText("Velocidad: " + Math.abs(simulationSpeed) + (sliderValue < 0 ? " (retroceso)" : " (avance)"));
+                actualizarEstadoSlider();
             }
         });
         // Panel para el slider y su etiqueta
-        JPanel sliderPanel = new JPanel();
         sliderPanel.setLayout(new BorderLayout());
         sliderPanel.add(sliderLabel, BorderLayout.NORTH);
         sliderPanel.add(speedSlider, BorderLayout.CENTER);
@@ -179,13 +159,9 @@ public class Simulacion extends JFrame {
     
     // Método para actualizar el estado del panel
     public void actualizarEstadoPanel(Ciudad ciudad, int row, int col) {
-        // Crear un JTextArea para mostrar las descripciones de las entidades
-        JTextArea descripcionArea = new JTextArea();
-        descripcionArea.setEditable(false);  // No permitir edición
-        descripcionArea.setLineWrap(true);   // Permitir el ajuste de línea
-        descripcionArea.setWrapStyleWord(true); // Ajustar palabras completas
-        descripcionArea.setRows(5);  // Ajusta el tamaño del área de texto si es necesario
-    
+
+        descripcionArea.setText("");  // Limpiar el JTextArea antes de agregar nuevas descripciones
+        
         // Iterar sobre todas las entidades en la ciudad
         for (Entidad entidad : ciudad.getEntidades()) {
             // Comprobar si la entidad está en la casilla (row, col)
@@ -198,15 +174,48 @@ public class Simulacion extends JFrame {
         // Si hay descripciones, mostrar el JTextArea
         if (descripcionArea.getText().length() > 0) {
             // Actualizar el panel en el GUI
-            statusPanel.removeAll();  // Limpiar cualquier componente previo
-            JScrollPane scrollPane = new JScrollPane(descripcionArea);
-            statusPanel.add(scrollPane, BorderLayout.CENTER);  // Asegura que se estire en el centro
+            //statusPanel.removeAll();  // Limpiar cualquier componente previo
+            
+
             statusPanel.revalidate();  // Revalidar el panel para que se redibuje
             statusPanel.repaint();  // Redibujar el panel
         } else {
             // Si no hay entidades, mostrar que está vacío
             statusLabel.setText("Vacío en (" + row + "," + col + ")");
         }
+    }
+    
+    public void actualizarEstadoSlider() {
+        int sliderValue = speedSlider.getValue();
+                
+        // Definir un rango alrededor de 0 como la "zona muerta"
+        int deadZone = 5;
+        
+        // Si el valor del slider está dentro de la zona muerta, se pausa la simulación
+        if (Math.abs(sliderValue) <= deadZone) {
+            simulationSpeed = 0;
+            runningForward = false;
+            runningBackward = false;
+            
+            // Mover el slider al centro (0)
+            speedSlider.setValue(0);
+        } 
+        // Si el slider está en valores positivos, la simulación avanza
+        else if (sliderValue > deadZone) {
+            simulationSpeed = sliderValue;
+
+            runningForward = true;
+            runningBackward = false;
+        } 
+        // Si el slider está en valores negativos, la simulación retrocede
+        else if (sliderValue < -deadZone) {
+            simulationSpeed = -sliderValue; // La velocidad de retroceso será la magnitud del valor
+
+            runningForward = false;
+            runningBackward = true;
+        }
+    
+        sliderLabel.setText("Velocidad: " + Math.abs(simulationSpeed) + (sliderValue < 0 ? " (retroceso)" : " (avance)"));
     }
     
     public JButton[][] getGridButtons() {
