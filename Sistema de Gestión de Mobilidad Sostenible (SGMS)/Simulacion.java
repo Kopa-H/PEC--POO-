@@ -1,13 +1,8 @@
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
 import java.io.IOException;
+import java.awt.Color;
+
 
 /**
  * Write a description of class Simulacion here.
@@ -15,19 +10,14 @@ import java.io.IOException;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Simulacion extends JFrame {
+public class Simulacion {
         
     private JButton[][] gridButtons; // Matriz para almacenar los botones de la cuadrícula
     
     private int step; // Recuento de pasos
-    private JLabel stepLabel;
     
-    public static final int MAX_SIMULATION_SPEED = 1000;
+    public static final int MAX_SIMULATION_SPEED = 300;
     public int simulationSpeed = 0;
-    
-    // Tamaño fijo de la ventana donde se muestra el estado de gridButtons
-    private static final int HORIZONTAL_WINDOW_SIZE = 1500;
-    private static final int VERTICAL_WINDOW_SIZE = 1000;
     
     public static final int ROWS = Ciudad.ROWS;
     public static final int COLUMNS = Ciudad.COLUMNS;
@@ -35,187 +25,21 @@ public class Simulacion extends JFrame {
     public static final int MAX_ESTADOS_GUARDADOS = 1000000;
     public static final int ESTADOS_ELIMINADOS_SOBRECARGA = 100;
     
-    private boolean simulationRunning = true;
-    private boolean runningForward = false;
-    private boolean runningBackward = false;
+    public boolean simulationRunning = true;
+    public boolean runningForward = false;
+    public boolean runningBackward = false;
     
     private ArrayList<Estado> historialEstados;
-
-    private JLabel statusLabel = new JLabel("Estado inicial"); // JLabel para mostrar el nombre del objeto
-    private JPanel statusPanel = new JPanel(new BorderLayout()); // Usa BorderLayout para que el texto ocupe todo el ancho
-    // Crear un JTextArea para mostrar las descripciones de las entidades
-    JTextArea descripcionArea = new JTextArea();
-    private JScrollPane scrollPane = new JScrollPane(descripcionArea);
     
-    JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -MAX_SIMULATION_SPEED, MAX_SIMULATION_SPEED, simulationSpeed);
-    
-    JLabel sliderLabel = new JLabel("Ajustar velocidad: " + simulationSpeed, JLabel.CENTER);
-    JPanel sliderPanel = new JPanel();
+    Interfaz interfaz;
     
     public Simulacion(Ciudad ciudad) {
-
         historialEstados = new ArrayList<>();
-        
         gridButtons = new JButton[ROWS][COLUMNS];
-        step = 0; // Inicializamos el contador de pasos
+        step = 0;
         
-        setTitle("Simulación de Ciudad");
-        setSize(600, 600); 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    
-        // Configuramos el panel con GridLayout
-        JPanel gridPanel = new JPanel(new GridLayout(ROWS, COLUMNS));
-        
-        statusPanel.add(scrollPane, BorderLayout.CENTER);  // Asegura que se estire en el centro
-        
-        descripcionArea.setEditable(false);  // No permitir edición
-        descripcionArea.setLineWrap(true);   // Permitir el ajuste de línea
-        descripcionArea.setWrapStyleWord(true); // Ajustar palabras completas
-        descripcionArea.setRows(5);  // Ajusta el tamaño del área de texto si es necesario
-        
-        // Crear los botones y agregarlos al panel
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMNS; j++) {
-                JButton button = new JButton();
-                button.setBackground(Color.WHITE); // Color inicial de las celdas
-                gridButtons[i][j] = button;
-        
-                // Agregar MouseListener al botón
-                final int row = i;
-                final int col = j;
-                button.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        actualizarEstadoPanel(ciudad, row, col);
-                    }
-        
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-                         // Restablecer el contenido del JLabel a un mensaje predeterminado en lugar de eliminar componentes
-                        statusLabel.setText("Estado inicial");
-                        statusPanel.revalidate(); // Asegurar que se actualice correctamente
-                        statusPanel.repaint();    // Redibujar el panel para reflejar el cambio
-                    }
-                });
-        
-                gridPanel.add(button);
-            }
-        }
-    
-        // Añadir el panel de la cuadrícula a la ventana
-        add(gridPanel, BorderLayout.CENTER);
-    
-        // Crear un JPanel para el recuento de pasos
-        JPanel stepPanel = new JPanel();
-        stepLabel = new JLabel("Paso: " + step);
-        stepPanel.add(stepLabel);
-    
-        // Crear el slider para controlar la velocidad
-        speedSlider.setMajorTickSpacing(500);
-        speedSlider.setMinorTickSpacing(100);
-        speedSlider.setPaintTicks(true);
-        speedSlider.setPaintLabels(true);
-        // Etiquetas para el slider
-        
-        // Añadir un ChangeListener al slider para cambiar la velocidad y dirección
-        speedSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                actualizarEstadoSlider();
-            }
-        });
-        // Panel para el slider y su etiqueta
-        sliderPanel.setLayout(new BorderLayout());
-        sliderPanel.add(sliderLabel, BorderLayout.NORTH);
-        sliderPanel.add(speedSlider, BorderLayout.CENTER);
-        
-        // Panel para el slider y su etiqueta
-        JPanel southPanel = new JPanel();
-        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
-        
-        // Agregar stepPanel encima
-        southPanel.add(stepPanel);
-        
-        // Agregar un pequeño espacio entre stepPanel y sliderPanel
-        southPanel.add(Box.createVerticalStrut(10));  // Ajusta el tamaño según lo que necesites
-    
-        // Agregar el sliderPanel debajo
-        southPanel.add(sliderPanel);
-        
-        // Agregar el botón de detener simulación
-        southPanel.add(Box.createVerticalStrut(10));
-    
-        // Añadir el statusPanel al norte
-        add(statusPanel, BorderLayout.NORTH);
-    
-        // Añadir el panel southPanel al SOUTH de la ventana
-        add(southPanel, BorderLayout.SOUTH);
-    
-        // Configurar pantalla completa
-        setExtendedState(JFrame.MAXIMIZED_BOTH);  // Pantalla completa
-    
-        setVisible(true);
-    }
-    
-    // Método para actualizar el estado del panel
-    public void actualizarEstadoPanel(Ciudad ciudad, int row, int col) {
-
-        descripcionArea.setText("");  // Limpiar el JTextArea antes de agregar nuevas descripciones
-        
-        // Iterar sobre todas las entidades en la ciudad
-        for (Entidad entidad : ciudad.getEntidades()) {
-            // Comprobar si la entidad está en la casilla (row, col)
-            if (entidad.getUbicacion().getPosX() == row && entidad.getUbicacion().getPosY() == col) {
-                // Agregar la descripción de la entidad al JTextArea
-                descripcionArea.append(entidad.toString() + "\n");
-            }
-        }
-    
-        // Si hay descripciones, mostrar el JTextArea
-        if (descripcionArea.getText().length() > 0) {
-            // Actualizar el panel en el GUI
-            //statusPanel.removeAll();  // Limpiar cualquier componente previo
-            
-
-            statusPanel.revalidate();  // Revalidar el panel para que se redibuje
-            statusPanel.repaint();  // Redibujar el panel
-        } else {
-            // Si no hay entidades, mostrar que está vacío
-            statusLabel.setText("Vacío en (" + row + "," + col + ")");
-        }
-    }
-    
-    public void actualizarEstadoSlider() {
-        int sliderValue = speedSlider.getValue();
-                
-        // Definir un rango alrededor de 0 como la "zona muerta"
-        int deadZone = 5;
-        
-        // Si el valor del slider está dentro de la zona muerta, se pausa la simulación
-        if (Math.abs(sliderValue) <= deadZone) {
-            simulationSpeed = 0;
-            runningForward = false;
-            runningBackward = false;
-            
-            // Mover el slider al centro (0)
-            speedSlider.setValue(0);
-        } 
-        // Si el slider está en valores positivos, la simulación avanza
-        else if (sliderValue > deadZone) {
-            simulationSpeed = sliderValue;
-
-            runningForward = true;
-            runningBackward = false;
-        } 
-        // Si el slider está en valores negativos, la simulación retrocede
-        else if (sliderValue < -deadZone) {
-            simulationSpeed = -sliderValue; // La velocidad de retroceso será la magnitud del valor
-
-            runningForward = false;
-            runningBackward = true;
-        }
-    
-        sliderLabel.setText("Velocidad: " + Math.abs(simulationSpeed) + (sliderValue < 0 ? " (retroceso)" : " (avance)"));
+        // Se crea la interfaz
+        interfaz = new Interfaz(this, ciudad, gridButtons, step);
     }
     
     public JButton[][] getGridButtons() {
@@ -305,7 +129,6 @@ public class Simulacion extends JFrame {
             }
             
             actualizarEstadoVisual(ciudad);
-            stepLabel.setText("Paso: " + step);
             Utilities.gestionarDelay(simulationSpeed);
         }
     }
@@ -332,9 +155,8 @@ public class Simulacion extends JFrame {
     
             mostrarEntidad(ubi, color); // Actualiza la posición en la interfaz gráfica
         }
-    
-        // Redibujar el JFrame (si es necesario)
-        repaint();
+        
+        interfaz.actualizarStepLabel(step);
     }
     
     // Método que actualiza visualmente la posición de una entidad en la cuadrícula
