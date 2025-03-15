@@ -10,8 +10,10 @@ import java.awt.Color;
  */
 public class Movilidad {
 
-    static Ciudad ciudad = new Ciudad();
-    static Simulacion simulacion = new Simulacion(ciudad);
+    private static Ciudad ciudad = new Ciudad();
+    private static Simulacion simulacion = new Simulacion(ciudad);
+    
+    private static final int VEHICULOS_INICIALES_EN_BASE = 20;
     
     /**
      * Método para agregar n entidades de un tipo específico en ubicaciones aleatorias.
@@ -35,7 +37,7 @@ public class Movilidad {
                 if (entidad instanceof Base) {
                     Base base = (Base) entidad;
                     
-                    for (int j = 0; j < 2; j++) {
+                    for (int j = 0; j < VEHICULOS_INICIALES_EN_BASE; j++) {
                         // Añadir bici
                         Bicicleta bici = new Bicicleta(ubi.getPosX(), ubi.getPosY());
                         base.agregarVehiculoDisponible(bici);

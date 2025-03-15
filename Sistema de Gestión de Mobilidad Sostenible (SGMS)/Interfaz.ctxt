@@ -1,9 +1,7 @@
 #BlueJ class context
 comment0.target=Interfaz
-comment0.text=\r\n\ Interfaz\ gr\u00E1fica\ de\ la\ simulaci\u00F3n\ de\ ciudad.\r\n
 comment1.params=simulacion\ ciudad\ gridButtons\ step
 comment1.target=Interfaz(Simulacion,\ Ciudad,\ javax.swing.JButton[][],\ int)
-comment1.text=\r\n\ Constructor\ para\ la\ interfaz\ de\ simulaci\u00F3n.\r\n
 comment2.params=e
 comment2.target=void\ mouseEntered(java.awt.event.MouseEvent)
 comment3.params=e
