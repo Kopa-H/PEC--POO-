@@ -56,7 +56,7 @@ public class Simulacion {
     /**
      * Captura el estado actual de la simulación y lo guarda en el historial de estados.
      */
-    public void guardarEstado(Ciudad ciudad) {
+    public void guardarEstado() {
         // Crear una copia profunda del estado actual del grid de botones (interfaz)
         JButton[][] copiaCuadricula = new JButton[Ciudad.ROWS][Ciudad.COLUMNS];
         for (int i = 0; i < Ciudad.ROWS; i++) {
@@ -93,7 +93,7 @@ public class Simulacion {
     }
     
     // Método para retroceder al estado anterior
-    private void retrocederEstado(Ciudad ciudad) {
+    private void retrocederEstado() {
         if (historialEstados.size() != step) {
             throw new IllegalStateException("El sistema de retroceso de estados se ha desincronizado!");
         }
@@ -107,7 +107,7 @@ public class Simulacion {
         }
     }
     
-    public void runSimulacion(Ciudad ciudad) {       
+    public void runSimulacion() {       
         while (simulationRunning) {
             
             if (runningForward) {
@@ -118,7 +118,7 @@ public class Simulacion {
                 }
         
                 // Se almacena el estado actual de la simulación para poder retroceder
-                guardarEstado(ciudad);
+                guardarEstado();
                 
                 // Incrementar el contador de pasos
                 step++;
@@ -126,17 +126,17 @@ public class Simulacion {
             } else if (runningBackward && step > 0) {
                 
                 // Se tira para atrás
-                retrocederEstado(ciudad);
+                retrocederEstado();
                 
                 step--;
             }
             
-            actualizarEstadoVisual(ciudad);
+            actualizarEstadoVisual();
             Utilities.gestionarDelay(simulationSpeed);
         }
     }
     
-     public void actualizarEstadoVisual(Ciudad ciudad) {
+     public void actualizarEstadoVisual() {
         // Limpiar la cuadrícula visual (poner todos los botones en blanco)
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
@@ -181,7 +181,7 @@ public class Simulacion {
      * @param tipoEntidad El tipo de entidad a agregar (por ejemplo, Usuario, Moto, Base).
      * @param ciudad La ciudad en la que se agregan las entidades.
      */
-    private <T extends Entidad> void agregarEntidad(int cantidad, Class<T> tipoEntidad, Ciudad ciudad) {
+    private <T extends Entidad> void agregarEntidad(int cantidad, Class<T> tipoEntidad) {
         RandomGenerator randomGenerator = new RandomGenerator();
         
         for (int i = 0; i < cantidad; i++) {
@@ -224,18 +224,18 @@ public class Simulacion {
     
     public void iniciarDemo() {
         // Añadimos n usuarios
-        agregarEntidad(6, Usuario.class, ciudad);
+        agregarEntidad(6, Usuario.class);
         
         // Añadimos n trabajadores de mantenimiento
-        agregarEntidad(1, TecnicoMantenimiento.class, ciudad);
+        agregarEntidad(1, TecnicoMantenimiento.class);
         
         // Añadimos n trabajadores de mecánica
-        agregarEntidad(1, Mecanico.class, ciudad);
+        agregarEntidad(1, Mecanico.class);
         
         // Añadimos n motos en ubicaciones aleatorias
-        agregarEntidad(5, Moto.class, ciudad);
+        agregarEntidad(5, Moto.class);
 
         // Añadimos n bases con vehículos (en este caso, ya se añadieron en el método anterior)
-        agregarEntidad(3, Base.class, ciudad);
+        agregarEntidad(3, Base.class);
     }
 }

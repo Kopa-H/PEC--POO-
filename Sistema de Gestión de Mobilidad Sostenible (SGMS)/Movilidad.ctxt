@@ -1,10 +1,7 @@
 #BlueJ class context
 comment0.target=Movilidad
 comment0.text=\r\n\ Se\ trata\ de\ la\ clase\ principal\ del\ programa,\ encargada\ de\ poner\ a\ funcionar\ el\ sistema.\r\n\r\n\ @author\ KOPA\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=cantidad\ tipoEntidad\ ciudad
-comment1.target=void\ agregarEntidad(int,\ java.lang.Class,\ Ciudad)
-comment1.text=\r\n\ M\u00E9todo\ para\ agregar\ n\ entidades\ de\ un\ tipo\ espec\u00EDfico\ en\ ubicaciones\ aleatorias.\r\n\ \r\n\ @param\ cantidad\ La\ cantidad\ de\ entidades\ a\ agregar.\r\n\ @param\ tipoEntidad\ El\ tipo\ de\ entidad\ a\ agregar\ (por\ ejemplo,\ Usuario,\ Moto,\ Base).\r\n\ @param\ ciudad\ La\ ciudad\ en\ la\ que\ se\ agregan\ las\ entidades.\r\n
-comment2.params=args
-comment2.target=void\ main(java.lang.String[])
-comment2.text=\r\n\ Funci\u00F3n\ principal\ que\ ejecuta\ el\ sistema.\r\n\ \r\n\ @param\ args\ \ Los\ argumentos\ de\ la\ l\u00EDnea\ de\ comandos\ proporcionados\ al\ ejecutar\ el\ programa.\r\n
-numComments=3
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment1.text=\r\n\ Funci\u00F3n\ principal\ que\ ejecuta\ el\ sistema.\r\n\ \r\n\ @param\ args\ \ Los\ argumentos\ de\ la\ l\u00EDnea\ de\ comandos\ proporcionados\ al\ ejecutar\ el\ programa.\r\n
+numComments=2
