@@ -17,6 +17,6 @@ comment6.target=void\ recargarSaldo(double)
 comment7.params=
 comment7.target=Usuario.TipoMembresia\ getTipoMembresia()
 comment8.params=entidad
-comment8.target=void\ informarFalloMecanico(Entidad)
+comment8.target=void\ alertarFalloMecanico(Entidad)
 comment8.text=\r\n\ Informar\ de\ un\ problema\ con\ un\ veh\u00EDculo\ o\ con\ una\ base\ de\ bicicletas\ o\ patinetes\r\n
 numComments=9

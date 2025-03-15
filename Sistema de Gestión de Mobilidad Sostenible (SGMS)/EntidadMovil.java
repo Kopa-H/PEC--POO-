@@ -99,8 +99,8 @@ public abstract class EntidadMovil extends Entidad {
         ubicacion.setPosY(nuevaPosY);
         
         // Si la entidad móvil por moverse es un vehículo se resta su batería
-        if (this instanceof Vehiculo) {
-            ((Vehiculo) this).restarBateria();
+        if (this instanceof Vehiculo vehiculo) {
+            vehiculo.restarBateria();
         }
     }
 
@@ -200,9 +200,18 @@ public abstract class EntidadMovil extends Entidad {
             }
             
             // Si la entidad que se está moviendo es un vehículo y se queda sin batería, se termina su trayecto y por ende el de su pasajero
-            if (entidadDestino instanceof Vehiculo && ((Vehiculo) entidadDestino).getPorcentajeBateria() < 0) {
-                terminarTrayecto();
-                return;
+            if (entidadDestino instanceof Vehiculo  vehiculo) {
+                // Si el vehículo al que se está siguiendo sufre un fallo mecánico
+                if (vehiculo.tieneFalloMecanico()) {
+                    vehiculo.activarFalloMecanico();
+                    terminarTrayecto();
+                    return;
+                }
+                
+                if (vehiculo.getPorcentajeBateria() < 0) {
+                    terminarTrayecto();
+                    return;
+                }
             }
     
             // Tomamos el primer movimiento en la lista
@@ -244,11 +253,16 @@ public abstract class EntidadMovil extends Entidad {
             }
             
              // Si se ha llegado a una base, se verifica si hay una bici o patinete y se coge para ir a una dirección random
-            if (this instanceof Persona && entidadDestino instanceof Base baseDestino) {
+            if (this instanceof Usuario usuario && entidadDestino instanceof Base baseDestino) {
                 Vehiculo vehiculoEscogido = randomGenerator.getVehiculoDisponibleRandom(baseDestino);
                 
                 if (vehiculoEscogido != null) {
                     Base baseEscogida = (Base) randomGenerator.getEntidadRandom(ciudad, baseDestino, Base.class);
+            
+                    // El usuario alerta de fallo mecánico si la base lo tiene
+                    if (baseEscogida.tieneFalloMecanico()) {
+                        usuario.alertarFalloMecanico(baseEscogida);
+                    }
                     
                     if (baseEscogida != null) {
                         vehiculoEscogido.planearTrayecto(baseEscogida.getUbicacion(), baseEscogida);
@@ -292,6 +306,8 @@ public abstract class EntidadMovil extends Entidad {
     }
     
     public void actuar(Ciudad ciudad) {
+        super.actuar(ciudad);
+        
         if (enTrayecto) {
             seguirTrayecto(ciudad);
         } else {
@@ -308,6 +324,10 @@ public abstract class EntidadMovil extends Entidad {
     }
     
     public void seguirEntidadMovil(Entidad entidad) {
+        if (this instanceof Usuario usuario && entidad.tieneFalloMecanico()) {
+            usuario.alertarFalloMecanico(entidad);
+        }
+        
         ubicacion.setUbicacion(entidad.getUbicacion());
     }
     

@@ -30,12 +30,13 @@ public class Mecanico extends Trabajador
     }
     
     public void trabajar() {
+        entidadAsignada.restaurarEstadoMecanico();
+        
+        if (!(entidadAsignada.tieneFalloMecanico())) {
+            terminarTrabajo();
+        }
     }
 
-    public void repararVehiculo() {
-        
-    }
-    
     public void emitirFactura() {
         
     }

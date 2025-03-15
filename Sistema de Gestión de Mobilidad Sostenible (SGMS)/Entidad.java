@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Write a description of class Entidad here.
@@ -16,7 +17,14 @@ public abstract class Entidad implements Serializable
     // Variable de instancia para almacenar el ID único de cada usuario
     private int id;
     
+    // Variable que va aumentando la probabilidad de que los usuarios reporten fallos mecanicos cuanto más baja está
+    private int estadoMecanico; // [0-100]
+    
+    // Variable registra si la entidad sufre un daño mecánico. En ese caso, el próximo usuario en interactuar con ella lo notificará y el mecánico lo arreglará.
+    private boolean tieneFalloMecanico = false;
     private boolean tieneAlertaFalloMecanico = false;
+    
+    public static final int ESTADO_MECANICO_PERFECTO = 500;
     
     /**
      * Constructor que permite inicializar la EntidadMovil en una ubicación específica.
@@ -65,9 +73,57 @@ public abstract class Entidad implements Serializable
         return tieneAlertaFalloMecanico;
     }
     
-    // Acción que hace a las entidades hacer sus funciones dependiendo de su estado
+    public boolean tieneFalloMecanico() {
+        return tieneFalloMecanico;
+    }
+    
+    public void deteriorarEstadoMecanico() {        
+        if (estadoMecanico >= 0) {
+            estadoMecanico--;
+        }
+    }
+    
+    public void restaurarEstadoMecanico() {
+        estadoMecanico++;
+        
+        if (estadoMecanico >= 70) {
+            desactivarFalloMecanico();
+            desactivarAlertaFalloMecanico();
+        }
+    }
+    
+    public double getProbabilidadFalloMecanico() {
+        // Regla de tres inversa: si estadoMecanico es 0, fallo 100%; si es estadoMaximo, fallo 0%.
+        double probabilidad = 1 - (double) estadoMecanico / ESTADO_MECANICO_PERFECTO;
+        return probabilidad * 100; // Retorna la probabilidad como un porcentaje
+    }
+    
+    // Función que se llama si ocurre un fallo mecánico
+    public void activarFalloMecanico() {
+        tieneFalloMecanico = true;
+        System.out.println("¡Fallo mecánico activado!");
+    }
+    
+    public void desactivarFalloMecanico() {
+        tieneFalloMecanico = false;
+    }
+    
+    // Acción que ejecuta el deterioro y posibilidad de fallo
     public void actuar(Ciudad ciudad) {
-        // System.out.println("La entidad no tiene ninguna acción asignada");
+        Random random = new Random();
+        
+        this.deteriorarEstadoMecanico();
+        
+        // Obtiene la probabilidad de fallo mecánico
+        double probabilidadFallo = getProbabilidadFalloMecanico();
+        
+        // Genera un número aleatorio entre 0 y 100
+        double numeroAleatorio = random.nextDouble() * 100;
+        
+        // Si el número aleatorio es menor que la probabilidad de fallo, produce un fallo
+        if (numeroAleatorio < probabilidadFallo) {
+            activarFalloMecanico();
+        }
     }
     
     // Método para hacer una copia profunda de una entidad

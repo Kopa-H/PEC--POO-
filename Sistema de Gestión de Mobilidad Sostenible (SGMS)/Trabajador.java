@@ -27,15 +27,6 @@ abstract public class Trabajador extends Persona
     }
     
     @Override
-    public String toString() {
-        String str = super.toString();  // Llamamos al toString de Trabajador
-        if (entidadAsignada != null) {
-            str += "  |  Entidad asignada: (" + entidadAsignada + " )";  // Añadimos el vehículo si está asignado
-        }
-        return str;
-    }
-    
-    @Override
     public void actuar(Ciudad ciudad) {
         super.actuar(ciudad);
         
@@ -88,4 +79,13 @@ abstract public class Trabajador extends Persona
     }
     
     abstract public boolean intentarAsignarVehiculo(Entidad entidad);
+    
+    @Override
+    public String toString() {
+        String str = super.toString();  // Llamamos al toString de Trabajador
+        if (entidadAsignada != null) {
+            str += "  |  Entidad asignada: (" + entidadAsignada + " )";  // Añadimos el vehículo si está asignado
+        }
+        return str;
+    }
 }

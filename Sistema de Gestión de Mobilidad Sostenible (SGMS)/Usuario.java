@@ -68,7 +68,7 @@ public class Usuario extends Persona {
     /**
      * Informar de un problema con un vehículo o con una base de bicicletas o patinetes
      */
-    public void informarFalloMecanico(Entidad entidad) {
+    public void alertarFalloMecanico(Entidad entidad) {
         if (entidad instanceof Vehiculo || entidad instanceof Base) {
             entidad.activarAlertaFalloMecanico();
         }

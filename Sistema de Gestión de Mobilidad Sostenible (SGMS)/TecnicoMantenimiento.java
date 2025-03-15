@@ -22,15 +22,9 @@ public class TecnicoMantenimiento extends Trabajador
     public void actuar(Ciudad ciudad) {        
          // Asciende en la jerarquía de clases y hereda las funciones de actuación de EntidadMovil
         super.actuar(ciudad);
-        
-        if (entidadAsignada != null && !enTrayecto) {
-            
-   
-        }
     }
     
     public void trabajar() {
-        
         // El técnico de mantenimiento sólo se encarga de los vehículos
         if (entidadAsignada instanceof Vehiculo vehiculoAsignado) {
             // Recarga la batería del vehículo

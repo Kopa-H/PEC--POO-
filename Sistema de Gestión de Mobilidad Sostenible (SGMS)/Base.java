@@ -67,11 +67,6 @@ public class Base extends EntidadFija
         
         return num; // Recuerda devolver el resultado
     }
-    
-    @Override
-    public void actuar(Ciudad ciudad) {
-        // System.out.println("La base no tiene nada que hacer");
-    }
         
     @Override
     public String toString() {
