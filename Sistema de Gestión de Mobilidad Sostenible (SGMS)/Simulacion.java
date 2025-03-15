@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.io.IOException;
 import java.awt.Color;
 
-
 /**
  * Write a description of class Simulacion here.
  *
@@ -104,7 +103,7 @@ public class Simulacion {
         }
     }
     
-    public void runSimulacion(Ciudad ciudad) {        
+    public void runSimulacion(Ciudad ciudad) {       
         while (simulationRunning) {
             
             if (runningForward) {
@@ -133,8 +132,7 @@ public class Simulacion {
         }
     }
     
-    // Método que actualiza el estado de la ciudad
-    public void actualizarEstadoVisual(Ciudad ciudad) {
+     public void actualizarEstadoVisual(Ciudad ciudad) {
         // Limpiar la cuadrícula visual (poner todos los botones en blanco)
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
@@ -146,13 +144,19 @@ public class Simulacion {
         Ubicacion ubi = new Ubicacion();
         Color color;
         int x, y;
+        boolean entidadVisible;
         for (Entidad entidad : ciudad.getEntidades()) {
             x = entidad.getUbicacion().getPosX();
             y = entidad.getUbicacion().getPosY();
-    
+            
+            // Si su posición coincide con una base, entonces no se muestra
+            if (!(entidad instanceof Base) && ciudad.posicionOcupadaPor(entidad.getUbicacion(), Base.class)) {
+                continue;
+            }
+        
             ubi.setUbicacion(x, y);
             color = entidad.getColor();
-    
+        
             mostrarEntidad(ubi, color); // Actualiza la posición en la interfaz gráfica
         }
         

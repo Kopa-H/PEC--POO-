@@ -41,6 +41,7 @@ public class TecnicoMantenimiento extends Trabajador
             
             // Si el técnico NO está yendo a ningún sitio
             if (!enTrayecto) {
+    
                 // Si el vehículo está en una base
                 if (ciudad.posicionOcupadaPor(vehiculoAsignado.getUbicacion(), Base.class)) {
                     
@@ -63,7 +64,7 @@ public class TecnicoMantenimiento extends Trabajador
                     vehiculoAsignado.empezarSeguimiento(this);
                     
                     // La persona planea un trayecto hacia la base más cercana
-                    Base base = (Base) ciudad.encontrarEntidadMasCercana(this, Base.class);
+                    Base base = (Base) ciudad.encontrarEntidadUsableMasCercana(this, Base.class);
                     planearTrayecto(base.getUbicacion(), base);
                     
                 } else {
@@ -72,6 +73,19 @@ public class TecnicoMantenimiento extends Trabajador
                 }
             }            
         }
+    }
+    
+    @Override
+    public boolean intentarAsignarVehiculo(Entidad entidad) {
+        
+        if (!(entidad instanceof Vehiculo vehiculo)) {
+            return false;
+        }
+        
+        if (vehiculo.getPorcentajeBateria() < 20) {
+            return true;         
+        }
+        return false;
     }
     
     public void terminarTrabajo() {

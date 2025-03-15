@@ -15,9 +15,7 @@ abstract public class Vehiculo extends EntidadMovil
     
     // Contiene el valor de distancia que puede recorrer el vehículo (indicador de la batería)
     private int autonomiaBateria;
-    
-    private ArrayList<FalloMecanico> fallosMecanicos;
-    
+        
     public enum TipoVehiculo {
         MOTO, BICI, PATINETE;
     }
@@ -31,8 +29,6 @@ abstract public class Vehiculo extends EntidadMovil
         
         this.DISTANCIA_MAX_BATERIA = distanciaMaxBateria;
         autonomiaBateria = distanciaMaxBateria;
-        
-        fallosMecanicos = new ArrayList<>();
     }
        
     /**

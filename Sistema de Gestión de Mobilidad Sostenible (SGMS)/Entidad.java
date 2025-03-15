@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Write a description of class Entidad here.
@@ -14,6 +15,8 @@ public abstract class Entidad implements Serializable
     
     // Variable de instancia para almacenar el ID único de cada usuario
     private int id;
+    
+    private boolean tieneAlertaFalloMecanico = false;
     
     /**
      * Constructor que permite inicializar la EntidadMovil en una ubicación específica.
@@ -48,6 +51,18 @@ public abstract class Entidad implements Serializable
     
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void activarAlertaFalloMecanico() {
+        tieneAlertaFalloMecanico = true;
+    }
+    
+    public void desactivarAlertaFalloMecanico() {
+        tieneAlertaFalloMecanico = false;
+    }
+    
+    public boolean tieneAlertaFalloMecanico() {
+        return tieneAlertaFalloMecanico;
     }
     
     // Acción que hace a las entidades hacer sus funciones dependiendo de su estado

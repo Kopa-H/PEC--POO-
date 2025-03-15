@@ -16,6 +16,18 @@ public class Mecanico extends Trabajador
         super(posX, posY);
         setColor(Color.CYAN);
     }
+    
+    @Override
+    public boolean intentarAsignarVehiculo(Entidad entidad) {
+        
+        if (entidad instanceof Vehiculo || entidad instanceof Base base) {
+            if (entidad.tieneAlertaFalloMecanico()) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     public void repararVehiculo() {
         

@@ -38,5 +38,22 @@ abstract public class Trabajador extends Persona
     @Override
     public void actuar(Ciudad ciudad) {
         super.actuar(ciudad);
+        
+        // Si no tiene ningún vehículo asignado, busca uno que necesite atención
+        if (vehiculoAsignado == null) {
+            // Se itera sobre todos los vehículos y se escoge el primero que se encuentre sin batería
+            for (Entidad entidad : ciudad.getEntidades()) {
+                if (entidad instanceof Vehiculo) {
+                    
+                    Vehiculo vehiculo = (Vehiculo) entidad;
+                    if (this.intentarAsignarVehiculo()) {
+                        vehiculoAsignado = vehiculo;
+                        System.out.println("[" + toSimpleString() + "] se ha asignado [" + vehiculoAsignado.toSimpleString() + "] para trabajar en él");
+                    }                   
+                }
+            }
+        }
     }
+    
+    abstract public boolean intentarAsignarVehiculo();
 }

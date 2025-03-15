@@ -191,11 +191,7 @@ public abstract class EntidadMovil extends Entidad {
             entidadDestino = null;
     }
     
-    public void seguirTrayecto(Ciudad ciudad) {
-        if (this instanceof Patinete || this instanceof Bicicleta) {
-            System.out.println("HOAODASDASDLSA");
-        }
-        
+    public void seguirTrayecto(Ciudad ciudad) {       
         // Verificamos si aún hay movimientos por hacer
         if (!trayecto.isEmpty()) {
             // Se verifica que la entidad seguida NO está en movimiento. En este caso se termina el trayecto
@@ -243,9 +239,7 @@ public abstract class EntidadMovil extends Entidad {
             siguiendoEntidad = false;
             ubicacionDestino = null;
     
-            if ((this instanceof Bicicleta || this instanceof Patinete) && entidadDestino instanceof Base) {
-                System.out.println("LA BISII O PATIN LLEGA A LA BASE DESTINO!");
-                
+            if ((this instanceof Bicicleta || this instanceof Patinete) && entidadDestino instanceof Base) {               
                 ((Base) entidadDestino).agregarVehiculoDisponible((Vehiculo) this);
             }
             
@@ -323,7 +317,7 @@ public abstract class EntidadMovil extends Entidad {
         if (Math.random() < probabilidad) {
             
             // Encontrar la entidad más cercana
-            Entidad entidad = ciudad.encontrarEntidadMasCercana(this, tipoEntidad);
+            Entidad entidad = ciudad.encontrarEntidadUsableMasCercana(this, tipoEntidad);
             
             if (entidad == null || entidad.getUbicacion() == null) {
                 return false;

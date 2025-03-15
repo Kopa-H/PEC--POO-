@@ -40,40 +40,10 @@ public class Usuario extends Persona {
             intentarPlanearTrayecto(ciudad, Moto.class);
         }
     }
-
-    /**
-     * Muestra en la interfaz los vehículos disponibles y sus niveles de bateria
-     *  - Coordenadas de todas las motos.
-     *  - ID y coordenadas de las bases con bicis o patinetes.
-     *
-     */
-    public void consultarVehiculosDisponibles() {
-        
-        // Se itera sobre la lista de motos
-            // Se muestran las motos disponibles, su tipo, sus coordenadas y su nivel de batería
-        
-        // Se itera sobre la lista de bases
-            // Se muestra la base en caso de que tenga alguna bici o patinete disponible
-            // Se muestra los vehículos disponibles que existen, su tipo, sus coordenadas y su nivel de batería
-        
-    }
     
     public void reservarVehiculo() {
         if (tipoMembresia != TipoMembresia.PREMIUM) {
             return;
-        }
-    }
-    
-    /**
-     * Informar de un problema con un vehículo o con una base de bicicletas o patinetes
-     *
-     */
-    public void informarFalloMecanico(Vehiculo v, String descripcion) {
-        if (v instanceof Moto) {
-            // v.agregarFalloMecanico(descripcion);
-        } else {
-            // Se le pregunta al usuario qué base es la que tiene un fallo
-            // Se añade el fallo al arraylist de la base
         }
     }
 
@@ -93,5 +63,14 @@ public class Usuario extends Persona {
     
     public TipoMembresia getTipoMembresia() {
         return tipoMembresia;
+    }
+    
+    /**
+     * Informar de un problema con un vehículo o con una base de bicicletas o patinetes
+     */
+    public void informarFalloMecanico(Entidad entidad) {
+        if (entidad instanceof Vehiculo || entidad instanceof Base) {
+            entidad.activarAlertaFalloMecanico();
+        }
     }
 }

@@ -29,7 +29,7 @@ public class Ciudad {
         entidades.add(entidad);
     }
     
-    public Entidad encontrarEntidadMasCercana(EntidadMovil entidadBuscando, Class<?> tipoEntidad) {
+    public Entidad encontrarEntidadUsableMasCercana(EntidadMovil entidadBuscando, Class<?> tipoEntidad) {
         Entidad entidadMasCercana = null;
         int distanciaMinima = Integer.MAX_VALUE; // Inicializamos con el valor más alto posible
     
@@ -37,15 +37,22 @@ public class Ciudad {
         for (Entidad entidad : entidades) {
             // Comprobamos si la entidad es una instancia del tipo proporcionado
             if (tipoEntidad.isInstance(entidad)) {
-                // Si la entidad es una moto y está en trayecto, la ignoramos
-                if (tipoEntidad == Moto.class && ((Moto) entidad).enTrayecto) {
+                
+                // SE REALIZAN COMPROBACIONES DE QUE LA ENTIDAD ES VÁLIDA PARA SER USADA
+                
+                // Si la entidad tiene activado una alerta de fallo mecánico, se ignora
+                if (entidad.tieneAlertaFalloMecanico()) {
                     continue;
                 }
-    
-                // Calculamos la distancia Manhattan entre la ubicación actual y la entidad
-                int distancia = Math.abs(entidad.getUbicacion().getPosX() - entidadBuscando.getUbicacion().getPosX()) 
-                              + Math.abs(entidad.getUbicacion().getPosY() - entidadBuscando.getUbicacion().getPosY());
-                              
+                
+                // Si la entidad es una instancia de EntidadMovil, verificamos si está en trayecto
+                if (entidad instanceof EntidadMovil) {
+                    EntidadMovil entidadMovil = (EntidadMovil) entidad;
+                    if (entidadMovil.enTrayecto) {
+                        continue; // Si está en trayecto, la ignoramos
+                    }
+                }
+                
                 // Si la entidad es un Vehículo y quien busca es una Persona
                 if (entidad instanceof Vehiculo && entidadBuscando instanceof Usuario) {
                     Vehiculo vehiculo = (Vehiculo) entidad;
@@ -63,6 +70,11 @@ public class Ciudad {
     
                     // También debería añadir la lógica para descartar bicis o patinetes si no hay batería suficiente para alcanzar una base
                 }
+                
+    
+                // Calculamos la distancia Manhattan entre la ubicación actual y la entidad
+                int distancia = Math.abs(entidad.getUbicacion().getPosX() - entidadBuscando.getUbicacion().getPosX()) 
+                              + Math.abs(entidad.getUbicacion().getPosY() - entidadBuscando.getUbicacion().getPosY());
     
                 // Si la distancia calculada es menor que la distancia mínima, actualizamos la entidad más cercana
                 if (distancia < distanciaMinima) {

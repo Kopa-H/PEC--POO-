@@ -34,6 +34,7 @@ public class Movilidad {
                 // Si la entidad es una Base, se añaden vehículos
                 if (entidad instanceof Base) {
                     Base base = (Base) entidad;
+                    
                     for (int j = 0; j < 2; j++) {
                         // Añadir bici
                         Bicicleta bici = new Bicicleta(ubi.getPosX(), ubi.getPosY());
