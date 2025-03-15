@@ -28,6 +28,9 @@ public class Mecanico extends Trabajador
         
         return false;
     }
+    
+    public void trabajar() {
+    }
 
     public void repararVehiculo() {
         

@@ -23,55 +23,23 @@ public class TecnicoMantenimiento extends Trabajador
          // Asciende en la jerarquía de clases y hereda las funciones de actuación de EntidadMovil
         super.actuar(ciudad);
         
-        // Si no tiene ningún vehículo asignado, busca uno que necesite atención
-        if (vehiculoAsignado == null) {
-            // Se itera sobre todos los vehículos y se escoge el primero que se encuentre sin batería
-            for (Entidad entidad : ciudad.getEntidades()) {
-                if (entidad instanceof Vehiculo) {
-                    
-                    Vehiculo vehiculo = (Vehiculo) entidad;
-                    if (vehiculo.getPorcentajeBateria() < 20) {
-                        vehiculoAsignado = vehiculo;
-                        System.out.println("[" + toSimpleString() + "] se ha asignado [" + vehiculoAsignado.toSimpleString() + "] para cargar su batería");
-                    }
-                }
-            }
-        } else {
-            // Si hay un vehículo asignado
+        if (entidadAsignada != null && !enTrayecto) {
             
-            // Si el técnico NO está yendo a ningún sitio
-            if (!enTrayecto) {
+   
+        }
+    }
     
-                // Si el vehículo está en una base
-                if (ciudad.posicionOcupadaPor(vehiculoAsignado.getUbicacion(), Base.class)) {
-                    
-                    // Recarga la batería del vehículo
-                    vehiculoAsignado.sumarBateria();
-                    
-                    // Si se ha cargado la batería por completo, el trabajador abandona su labor
-                    if (((Vehiculo) vehiculoAsignado).getPorcentajeBateria() >= 100) {
-                        terminarTrabajo();
-                        
-                        // Si el vehículo recargado es una moto
-                        if (vehiculoAsignado instanceof Moto) {
-                            // El vehículo que ha sido cargado se mueve afuera de la base para que sea visible
-                            vehiculoAsignado.moverRandom(ciudad);
-                        }
-                    }
-
-                } else if (ciudad.posicionOcupadaPor(vehiculoAsignado.getUbicacion(), Vehiculo.class)) {                   
-                    // El vehículo sigue a la persona
-                    vehiculoAsignado.empezarSeguimiento(this);
-                    
-                    // La persona planea un trayecto hacia la base más cercana
-                    Base base = (Base) ciudad.encontrarEntidadUsableMasCercana(this, Base.class);
-                    planearTrayecto(base.getUbicacion(), base);
-                    
-                } else {
-                    // Si el vehículo NO está en una base y aun no se ha comenzado el trayecto planea un trayecto hacia el vehículo
-                    planearTrayecto(vehiculoAsignado.getUbicacion(), vehiculoAsignado);
-                }
-            }            
+    public void trabajar() {
+        
+        // El técnico de mantenimiento sólo se encarga de los vehículos
+        if (entidadAsignada instanceof Vehiculo vehiculoAsignado) {
+            // Recarga la batería del vehículo
+            vehiculoAsignado.sumarBateria();
+        
+            // Si se ha cargado la batería por completo, el trabajador abandona su labor
+            if (vehiculoAsignado.getPorcentajeBateria() >= 100) {
+                terminarTrabajo();
+            }
         }
     }
     
@@ -86,9 +54,5 @@ public class TecnicoMantenimiento extends Trabajador
             return true;         
         }
         return false;
-    }
-    
-    public void terminarTrabajo() {
-        vehiculoAsignado = null;   
     }
 }
