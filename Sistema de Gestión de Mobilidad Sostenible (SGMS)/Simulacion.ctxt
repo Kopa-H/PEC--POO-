@@ -1,8 +1,10 @@
 #BlueJ class context
 comment0.target=Simulacion
 comment0.text=\r\n\ Write\ a\ description\ of\ class\ Simulacion\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=ciudad
-comment1.target=Simulacion(Ciudad)
+comment1.params=
+comment1.target=Simulacion()
+comment10.params=
+comment10.target=void\ iniciarDemo()
 comment2.params=
 comment2.target=javax.swing.JButton[][]\ getGridButtons()
 comment3.params=newGridButtons
@@ -18,4 +20,7 @@ comment7.params=ciudad
 comment7.target=void\ actualizarEstadoVisual(Ciudad)
 comment8.params=ubi\ color
 comment8.target=void\ mostrarEntidad(Ubicacion,\ java.awt.Color)
-numComments=9
+comment9.params=cantidad\ tipoEntidad\ ciudad
+comment9.target=void\ agregarEntidad(int,\ java.lang.Class,\ Ciudad)
+comment9.text=\r\n\ M\u00E9todo\ para\ agregar\ n\ entidades\ de\ un\ tipo\ espec\u00EDfico\ en\ ubicaciones\ aleatorias.\r\n\ \r\n\ @param\ cantidad\ La\ cantidad\ de\ entidades\ a\ agregar.\r\n\ @param\ tipoEntidad\ El\ tipo\ de\ entidad\ a\ agregar\ (por\ ejemplo,\ Usuario,\ Moto,\ Base).\r\n\ @param\ ciudad\ La\ ciudad\ en\ la\ que\ se\ agregan\ las\ entidades.\r\n
+numComments=11
