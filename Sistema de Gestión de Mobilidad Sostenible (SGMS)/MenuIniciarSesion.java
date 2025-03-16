@@ -4,10 +4,13 @@ import java.awt.event.*;
 
 public class MenuIniciarSesion extends Menu {
 
-    private JButton botonIniciarSesion, botonCancelar;
+    private JButton botonCancelar;
 
     public MenuIniciarSesion() {
         super(); // Llamamos al constructor de la clase base Menu
+        
+        WINDOW_WIDTH = 200;
+        WINDOW_HEIGHT = 400;
     }
 
     @Override
@@ -17,49 +20,70 @@ public class MenuIniciarSesion extends Menu {
         // Panel con color de fondo verde claro
         panel.setBackground(Color.GREEN);
 
-        // Botones
-        botonIniciarSesion = new JButton("Iniciar Sesión");
-        botonCancelar = new JButton("Cancelar");
+        // Crear un arreglo de botones
+        JButton[] botones = {
+            new JButton("USUARIO NORMAL"),
+            new JButton("USUARIO PREMIUM"),
+            new JButton("TÉCNICO DE MANTENIMIENTO"),
+            new JButton("MECÁNICO"),
+            new JButton("ADMINISTRADOR")
+        };
 
-        // Estética profesional
-        Font font = new Font("Arial", Font.PLAIN, 16);
-        botonIniciarSesion.setFont(font);
-        botonCancelar.setFont(font);
+        // Aplicar la estética y añadir los botones al panel
+        for (JButton boton : botones) {
+            aplicarEsteticaBoton(boton);
+            panel.add(boton);
+        }
 
-        botonIniciarSesion.setBackground(new Color(0, 123, 255));
-        botonCancelar.setBackground(new Color(255, 0, 0));
-
-        botonIniciarSesion.setForeground(Color.WHITE);
-        botonCancelar.setForeground(Color.WHITE);
-
-        // Añadir los botones al panel
-        panel.add(botonIniciarSesion);
-        panel.add(botonCancelar);
-
-        // Funcionalidad de botones
-        botonIniciarSesion.addActionListener(new ActionListener() {
+        // Funcionalidad de los botones
+        botones[0].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                iniciarSesion();
+                abrirMenuPersonal("Usuario Normal");
             }
         });
 
-        botonCancelar.addActionListener(new ActionListener() {
+        botones[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cancelarSesion();
+                abrirMenuPersonal("Usuario Premium");
             }
         });
 
+        botones[2].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirMenuPersonal("Técnico de Mantenimiento");
+            }
+        });
+
+        botones[3].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirMenuPersonal("Mecánico");
+            }
+        });
+
+        botones[4].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirMenuPersonal("Administrador");
+            }
+        });
+        
         // Mostrar la ventana
         mostrarVentana();
     }
 
-    private void iniciarSesion() {
-        // Lógica para iniciar sesión
-        JOptionPane.showMessageDialog(frame, "Sesión iniciada");
+    private void aplicarEsteticaBoton(JButton boton) {
+        // Estética profesional para los botones
+        Font font = new Font("Arial", Font.PLAIN, 16);
+        boton.setFont(font);
+        boton.setBackground(new Color(0, 123, 255)); // Azul para los botones
+        boton.setForeground(Color.WHITE); // Color de texto blanco
+        boton.setPreferredSize(new Dimension(250, 40)); // Tamaño de los botones
     }
 
-    private void cancelarSesion() {
-        // Lógica para cancelar sesión
-        JOptionPane.showMessageDialog(frame, "Sesión cancelada");
+    private void abrirMenuPersonal(String tipoUsuario) {
+        // Crear el objeto MenuPersonal correspondiente al tipo de usuario
+        MenuPersonal menuPersonal = new MenuPersonal(tipoUsuario);
+
+        // Llamar al método para mostrar la interfaz del menu personal
+        menuPersonal.iniciarInterfaz();
     }
 }

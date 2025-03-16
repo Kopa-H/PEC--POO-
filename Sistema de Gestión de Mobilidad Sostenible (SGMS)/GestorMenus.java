@@ -9,6 +9,9 @@ public class GestorMenus extends Menu {
     public GestorMenus(Simulacion simulacion) {
         super(); // Llamamos al constructor de la clase base Menu
         this.simulacion = simulacion;
+        
+        WINDOW_WIDTH = 200;
+        WINDOW_HEIGHT = 400;
     }
 
     @Override
@@ -72,6 +75,7 @@ public class GestorMenus extends Menu {
 
     private void iniciarSesion() {
         // Aquí puedes iniciar otra interfaz de inicio de sesión
-        JOptionPane.showMessageDialog(frame, "Iniciando sesión...");
+        MenuIniciarSesion menuIniciarSesion = new MenuIniciarSesion();
+        menuIniciarSesion.iniciarInterfaz();
     }
 }
