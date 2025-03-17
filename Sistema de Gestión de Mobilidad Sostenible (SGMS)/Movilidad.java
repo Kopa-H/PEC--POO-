@@ -19,8 +19,6 @@ public class Movilidad {
      * @param args  Los argumentos de la línea de comandos proporcionados al ejecutar el programa.
      */
     public static void main(String[] args) {
-        
-        gestorMenus.iniciarMenu();
 
         simulacion.runSimulacion();
     }

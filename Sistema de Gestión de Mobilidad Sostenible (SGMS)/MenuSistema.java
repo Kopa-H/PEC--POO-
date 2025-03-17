@@ -6,23 +6,27 @@ import java.util.HashMap;
 public class MenuSistema extends Menu {
 
     private String tipoUsuario;
+    private GestorMenus gestorMenus;
 
     /**
      * Constructor para la clase MenuSistema
      * @param tipoUsuario Tipo de usuario que se pasará a la interfaz
      */
-    public MenuSistema(String tipoUsuario) {
+    public MenuSistema(String tipoUsuario, GestorMenus gestorMenus) {
         this.tipoUsuario = tipoUsuario;  // Asignamos el tipo de usuario
-        this.botones = new HashMap<>();  // Inicializamos el HashMap
-
-        frame.setTitle("Menú de " + tipoUsuario);
-
-        // Panel con color de fondo verde claro
-        panel.setBackground(Color.GREEN);
+        this.gestorMenus = gestorMenus;
         
         WINDOW_WIDTH = 500;
         WINDOW_HEIGHT = 400;
+
+        gestorMenus.frame.setTitle("Menú " + tipoUsuario);
+        crearPanel("Menu" + tipoUsuario);
+        panel.setBackground(Color.GREEN);
         
+        agregarBotonesMenu();
+    }
+    
+    private void agregarBotonesMenu() {
         // Dependiendo del tipo de usuario, los botones serán diferentes
         switch (tipoUsuario) {
             case "Administrador":
@@ -60,14 +64,6 @@ public class MenuSistema extends Menu {
                 }));
                 break;
         }
-
-        // Mostrar la ventana
-        //agregarBotonAtras(panel, "MenuIniciarSesion");  // Volver al menú principal
-    }
-
-    @Override
-    public void iniciarMenu() {
-        super.iniciarMenu();
     }
 
     private void agregarOpcionesAdministrador() {

@@ -1,34 +1,81 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Stack;
 
 public class GestorMenus extends Menu {
 
+    protected CardLayout cardLayout;  
+    protected JPanel panelsContainer;
+    protected Stack<JPanel> panelHistory = new Stack<>();
+    
     // Constructor
-    public GestorMenus() {    
-        crearVentana(); // Se crea una nueva ventana para GestorMenus, por la que se navegará a los distintos submenús
+    public GestorMenus() {            
+        cardLayout = new CardLayout();  
+        // Se crea un panel que usa la organización del cardLayout y que contendrá otros paneles
+        panelsContainer = new JPanel(cardLayout);  
         
+        crearNuevaVentana(); // Se crea una nueva ventana para GestorMenus, por la que se navegará a los distintos submenús
         frame.setTitle("Gestor Menús");  // Establece el título de la ventana
         
-        crearPanel();
+        crearPanel("GestorMenus");
         
         // Añadir los menús al contenedor CardLayout
-        container.add(panel, "GestorMenus");  // Añadir el panel principal al CardLayout
+        panelsContainer.add(panel, "GestorMenus");  // Añadir el panel principal al CardLayout
         
         // Crear y añadir el botón de iniciar sesión al HashMap
         botones.put("IniciarSesion", new Boton("Iniciar Sesión", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MenuIniciarSesion menuIniciarSesion = new MenuIniciarSesion(frame);
-                panels.put(MenuIniciarSesion.class, menuIniciarSesion.panel);  // Guardamos la instancia en el HashMap
-                navegarA(MenuIniciarSesion.class);  // Navegar usando la clase
+                iniciarMenuIniciarSesion();
             }
         }));
         
-        iniciarMenu();
+        agregarBotones();
+    }
+    
+    private void iniciarMenuIniciarSesion() {
+        MenuIniciarSesion menuIniciarSesion = new MenuIniciarSesion(this);
+    
+        // Al navegar a un nuevo panel, lo agregamos a la pila
+        panelHistory.push(panel);
+        agregarBotonAtras(menuIniciarSesion.panel);
+        panelsContainer.add(menuIniciarSesion.panel, "IniciarSesion");
+        navegarA(menuIniciarSesion.panel);
+    }
+    
+    
+    // Método para crear la ventana
+    protected void crearNuevaVentana() {
+        // Crear el JFrame para la ventana principal
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
+        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        
+        frame.add(panelsContainer);  
+        frame.setVisible(true);
+    }
+    
+    // Método para agregar un botón "Atrás" con funcionalidad
+    protected void agregarBotonAtras(JPanel panel) {
+        JButton botonAtras = new JButton("Atrás");
+        botonAtras.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (!panelHistory.isEmpty()) {
+                    // Obtener el último panel de la pila
+                    JPanel panelAnterior = panelHistory.pop();
+                    // Navegar al panel anterior
+                    cardLayout.show(panelsContainer, panelAnterior.getName());
+                }
+            }
+        });
+        agregarBotonPosicionado(panel, botonAtras, "left");
     }
 
-    @Override
-    public void iniciarMenu() {
-        super.iniciarMenu();
+    // Método para navegar a un nuevo panel y almacenar el panel actual en la pila
+    protected void navegarA(JPanel panel) {
+        // Mostrar el panel
+        cardLayout.show(panelsContainer, panel.getName());
+        
+        System.out.println("Navegando a " + panel.getName());
     }
 }
