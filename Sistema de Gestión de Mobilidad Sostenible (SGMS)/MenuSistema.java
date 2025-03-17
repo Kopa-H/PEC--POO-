@@ -16,6 +16,8 @@ public class MenuSistema extends Menu {
         this.tipoUsuario = tipoUsuario;  // Asignamos el tipo de usuario
         this.botones = new HashMap<>();  // Inicializamos el HashMap
         
+        agregarBotonAtras("MenuIniciarSesion");  // Volver al menú principal
+        
         WINDOW_WIDTH = 500;
         WINDOW_HEIGHT = 400;
     }

@@ -7,6 +7,8 @@ public class MenuIniciarSesion extends Menu {
 
     public MenuIniciarSesion() {
         super(); // Llamamos al constructor de la clase base Menu
+        
+        agregarBotonAtras("GestorMenus");  // Volver al menú principal
 
         WINDOW_WIDTH = 500;
         WINDOW_HEIGHT = 400;
