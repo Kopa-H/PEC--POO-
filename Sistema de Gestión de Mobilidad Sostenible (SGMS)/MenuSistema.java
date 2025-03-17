@@ -62,7 +62,7 @@ public class MenuSistema extends Menu {
         }
 
         // Mostrar la ventana
-        agregarBotonAtras("MenuIniciarSesion");  // Volver al menú principal
+        //agregarBotonAtras(panel, "MenuIniciarSesion");  // Volver al menú principal
     }
 
     @Override
