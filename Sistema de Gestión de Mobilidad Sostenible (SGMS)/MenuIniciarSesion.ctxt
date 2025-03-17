@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=MenuIniciarSesion
+comment1.params=
+comment1.target=MenuIniciarSesion()
+comment2.params=e
+comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment3.params=e
+comment3.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment4.params=e
+comment4.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment5.params=e
+comment5.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment6.params=e
+comment6.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment7.params=
+comment7.target=void\ iniciarInterfaz()
+comment8.params=tipoUsuario
+comment8.target=void\ abrirMenuPersonal(java.lang.String)
+numComments=9

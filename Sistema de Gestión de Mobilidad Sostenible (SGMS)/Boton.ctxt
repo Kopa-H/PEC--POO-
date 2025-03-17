@@ -1,9 +1,13 @@
 #BlueJ class context
 comment0.target=Boton
-comment1.params=boton\ accion
-comment1.target=Boton(javax.swing.JButton,\ java.awt.event.ActionListener)
+comment1.params=nombreBoton\ accion
+comment1.target=Boton(java.lang.String,\ java.awt.event.ActionListener)
 comment2.params=
 comment2.target=javax.swing.JButton\ getBoton()
 comment3.params=
-comment3.target=java.awt.event.ActionListener\ getAccion()
-numComments=4
+comment3.target=java.lang.String\ getNombreBoton()
+comment4.params=
+comment4.target=java.awt.event.ActionListener\ getAccion()
+comment5.params=
+comment5.target=void\ aplicarEstetica()
+numComments=6

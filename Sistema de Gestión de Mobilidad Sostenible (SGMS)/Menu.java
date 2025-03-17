@@ -30,23 +30,7 @@ public abstract class Menu {
         // Envolver el panel en un JScrollPane con scrollbar vertical
         scrollPane = new JScrollPane(panel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Scroll siempre visible
-        
-        // Crear los botones y añadirlos al HashMap
-        String[] nombreBotones = {"Usuario Normal", "Usuario Premium", "Técnico de Mantenimiento", "Mecánico", "Administrador"};
-        
-        for (String nombre : nombreBotones) {
-            Boton boton = new Boton(nombre, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    asignarFuncionesBotones(nombre);  // Usar el nombre del botón para asignar la acción
-                }
-            });
-            botones.put(nombre, boton);  // Añadir el Boton al HashMap
-            agregarBotonCentrado(boton.getBoton());  // Añadir al panel con el JButton dentro del objeto Boton
-        }
     }
-    
-    // Método abstracto para asignar funciones a los botones
-    abstract protected void asignarFuncionesBotones(String nombreBoton);
 
     // Método para agregar botones centrados con espaciado
     protected void agregarBotonCentrado(JButton boton) {

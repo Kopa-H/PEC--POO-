@@ -1,19 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MenuSistema extends Menu {
 
     private String tipoUsuario;
 
     /**
-     * Constructor para la clase MenuPersonal
+     * Constructor para la clase MenuSistema
      * @param tipoUsuario Tipo de usuario que se pasará a la interfaz
      */
     public MenuSistema(String tipoUsuario) {
         super();  // Llamamos al constructor de la clase base Menu
         this.tipoUsuario = tipoUsuario;  // Asignamos el tipo de usuario
+        this.botones = new HashMap<>();  // Inicializamos el HashMap
         
         WINDOW_WIDTH = 500;
         WINDOW_HEIGHT = 400;
@@ -29,85 +30,90 @@ public class MenuSistema extends Menu {
         // Dependiendo del tipo de usuario, los botones serán diferentes
         switch (tipoUsuario) {
             case "Administrador":
-                botones.add(new JButton(" ABRIR GESTOR DE PERSONAS "));
-                botones.add(new JButton(" ABRIR GESTOR DE VEHÍCULOS "));
-                
-                botones.add(new JButton(" VISUALIZAR ESTADOS BATERÍAS "));
-                botones.add(new JButton(" VISUALIZAR ESTADOS MECÁNICOS "));
-                botones.add(new JButton(" VISUALIZAR ESTADO DE BASES "));
-                botones.add(new JButton(" VISUALIZAR ESTADO PROMOCIONES "));
-                
-                botones.add(new JButton(" ASIGNAR TRABAJOS "));
-                botones.add(new JButton(" VISUALIZAR INTERACCIONES USUARIOS E IMPORTES "));
-                botones.add(new JButton(" VISUALIZAR INTERACCIONES VEHÍCULOS "));
-                botones.add(new JButton(" MODIFICAR TARIFAS "));
-                botones.add(new JButton(" VISUALIZAR ESTADÍSTICAS "));
+                agregarOpcionesAdministrador();
                 break;
 
             case "Usuario Normal":
-                agregarOpcionesUsuarioNormal(botones);
+                agregarOpcionesUsuarioNormal();
                 break;
 
             case "Usuario Premium":
-                agregarOpcionesUsuarioNormal(botones);
-                botones.add(new JButton("RESERVAR (hasta 20' antes)"));
+                agregarOpcionesUsuarioNormal();
+                botones.put("Reservar", new Boton("RESERVAR (hasta 20' antes)", new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        JOptionPane.showMessageDialog(frame, "Reservar seleccionada");
+                    }
+                }));
                 break;
 
             case "Técnico de Mantenimiento":
-                agregarOpcionesComunesTrabajadores(botones);
-                botones.add(new JButton("TRASLADAR VEHÍCULO"));
+                agregarOpcionesComunesTrabajadores();
+                botones.put("Trasladar Vehículo", new Boton("TRASLADAR VEHÍCULO", new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        JOptionPane.showMessageDialog(frame, "Trasladar vehículo seleccionada");
+                    }
+                }));
                 break;
 
             case "Mecánico":
-                agregarOpcionesComunesTrabajadores(botones);
-                botones.add(new JButton("GENERAR ÚLTIMA FACTURA"));
+                agregarOpcionesComunesTrabajadores();
+                botones.put("Generar Última Factura", new Boton("GENERAR ÚLTIMA FACTURA", new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        JOptionPane.showMessageDialog(frame, "Generar última factura seleccionada");
+                    }
+                }));
                 break;
         }
 
-        // Aplicar la estética y añadir los botones al panel
-        for (JButton boton : botones) {
-            aplicarEsteticaBoton(boton);
-            panel.add(boton);
-        }
-
-        // Funcionalidad de los botones
-        for (int i = 0; i < botones.size(); i++) {
-            int index = i;
-            JButton boton = botones.get(index);
-
-            boton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(frame, "Opción " + (index + 1) + " seleccionada");
-                }
-            });
+        // Añadir los botones al panel sin aplicar estética (la clase Boton ya lo hace)
+        for (String nombreBoton : botones.keySet()) {
+            Boton boton = botones.get(nombreBoton);
+            panel.add(boton.getBoton());
         }
 
         // Mostrar la ventana
         mostrarVentana();
     }
 
-    private void aplicarEsteticaBoton(JButton boton) {
-        Font font = new Font("Arial", Font.PLAIN, 16);
-        boton.setFont(font);
-        boton.setBackground(new Color(0, 123, 255));
-        boton.setForeground(Color.WHITE);
-        boton.setPreferredSize(new Dimension(250, 40));
-    }
-    
-    private void agregarOpcionesUsuarioNormal(ArrayList<JButton> botones) {
-        botones.add(new JButton("CONSULTAR VEHÍCULOS DISPONIBLES"));
-        botones.add(new JButton("ALQUILAR VEHÍCULO"));
-        botones.add(new JButton("ALERTAR FALLO MECÁNICO"));
-        botones.add(new JButton("VISUALIZACIÓN HISTORIAL DE VIAJES"));
-        botones.add(new JButton("CONSULTAR SALDO DISPONIBLE"));
-        botones.add(new JButton("RECARGAR SALDO"));
-        botones.add(new JButton("CONSULTAR MOTO CERCANA"));
+    private void agregarOpcionesAdministrador() {
+        botones.put("Abrir Gestor de Personas", new Boton("ABRIR GESTOR DE PERSONAS", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Gestor de personas abierto");
+            }
+        }));
+        botones.put("Abrir Gestor de Vehículos", new Boton("ABRIR GESTOR DE VEHÍCULOS", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Gestor de vehículos abierto");
+            }
+        }));
+        // Agregar más botones para Administrador aquí...
     }
 
-    private void agregarOpcionesComunesTrabajadores(ArrayList<JButton> botones) {
-        botones.add(new JButton("VER VEHÍCULO ASIGNADO"));
-        botones.add(new JButton("ASIGNAR VEHÍCULO"));
-        botones.add(new JButton("TRABAJAR"));
-        botones.add(new JButton("DEFINIR PERIODO INACTIVIDAD DEL VEHÍCULO"));
+    private void agregarOpcionesUsuarioNormal() {
+        botones.put("Consultar Vehículos Disponibles", new Boton("CONSULTAR VEHÍCULOS DISPONIBLES", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Consultando vehículos disponibles");
+            }
+        }));
+        botones.put("Alquilar Vehículo", new Boton("ALQUILAR VEHÍCULO", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Alquilar vehículo");
+            }
+        }));
+        // Agregar más botones para Usuario Normal aquí...
+    }
+
+    private void agregarOpcionesComunesTrabajadores() {
+        botones.put("Ver Vehículo Asignado", new Boton("VER VEHÍCULO ASIGNADO", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Viendo vehículo asignado");
+            }
+        }));
+        botones.put("Asignar Vehículo", new Boton("ASIGNAR VEHÍCULO", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Asignando vehículo");
+            }
+        }));
+        // Agregar más botones comunes aquí...
     }
 }

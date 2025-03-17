@@ -1,20 +1,42 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 
 public class MenuIniciarSesion extends Menu {
 
     public MenuIniciarSesion() {
         super(); // Llamamos al constructor de la clase base Menu
-        
+
         WINDOW_WIDTH = 500;
         WINDOW_HEIGHT = 400;
-        
-        roles.add("Usuario Normal");
-        roles.add("Usuario Premium");
-        roles.add("Técnico de Mantenimiento");
-        roles.add("Mecánico");
-        roles.add("Administrador");
+
+        // Definir roles directamente en el HashMap
+        botones.put("Usuario Normal", new Boton("Usuario Normal", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirMenuPersonal("Usuario Normal");
+            }
+        }));
+        botones.put("Usuario Premium", new Boton("Usuario Premium", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirMenuPersonal("Usuario Premium");
+            }
+        }));
+        botones.put("Técnico de Mantenimiento", new Boton("Técnico de Mantenimiento", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirMenuPersonal("Técnico de Mantenimiento");
+            }
+        }));
+        botones.put("Mecánico", new Boton("Mecánico", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirMenuPersonal("Mecánico");
+            }
+        }));
+        botones.put("Administrador", new Boton("Administrador", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirMenuPersonal("Administrador");
+            }
+        }));
     }
 
     @Override
@@ -24,23 +46,14 @@ public class MenuIniciarSesion extends Menu {
         // Panel con color de fondo verde claro
         panel.setBackground(Color.GREEN);
 
-        // Aplicar la estética y añadir los botones al panel
-        for (JButton boton : botones) {
-            aplicarEsteticaBoton(boton);
-            panel.add(boton);
+        // Añadir los botones al panel
+        for (String nombreBoton : botones.keySet()) {
+            Boton boton = botones.get(nombreBoton);
+            agregarBotonCentrado(boton.getBoton());
         }
-        
+
         // Mostrar la ventana
         mostrarVentana();
-    }
-
-    private void aplicarEsteticaBoton(JButton boton) {
-        // Estética profesional para los botones
-        Font font = new Font("Arial", Font.PLAIN, 16);
-        boton.setFont(font);
-        boton.setBackground(new Color(0, 123, 255)); // Azul para los botones
-        boton.setForeground(Color.WHITE); // Color de texto blanco
-        boton.setPreferredSize(new Dimension(250, 40)); // Tamaño de los botones
     }
 
     private void abrirMenuPersonal(String tipoUsuario) {
