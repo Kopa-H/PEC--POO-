@@ -4,13 +4,17 @@ import java.awt.event.*;
 
 public class MenuIniciarSesion extends Menu {
 
-    private JButton botonCancelar;
-
     public MenuIniciarSesion() {
         super(); // Llamamos al constructor de la clase base Menu
         
-        WINDOW_WIDTH = 200;
+        WINDOW_WIDTH = 500;
         WINDOW_HEIGHT = 400;
+        
+        roles.add("Usuario Normal");
+        roles.add("Usuario Premium");
+        roles.add("Técnico de Mantenimiento");
+        roles.add("Mecánico");
+        roles.add("Administrador");
     }
 
     @Override
@@ -20,51 +24,11 @@ public class MenuIniciarSesion extends Menu {
         // Panel con color de fondo verde claro
         panel.setBackground(Color.GREEN);
 
-        // Crear un arreglo de botones
-        JButton[] botones = {
-            new JButton("USUARIO NORMAL"),
-            new JButton("USUARIO PREMIUM"),
-            new JButton("TÉCNICO DE MANTENIMIENTO"),
-            new JButton("MECÁNICO"),
-            new JButton("ADMINISTRADOR")
-        };
-
         // Aplicar la estética y añadir los botones al panel
         for (JButton boton : botones) {
             aplicarEsteticaBoton(boton);
             panel.add(boton);
         }
-
-        // Funcionalidad de los botones
-        botones[0].addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                abrirMenuPersonal("Usuario Normal");
-            }
-        });
-
-        botones[1].addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                abrirMenuPersonal("Usuario Premium");
-            }
-        });
-
-        botones[2].addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                abrirMenuPersonal("Técnico de Mantenimiento");
-            }
-        });
-
-        botones[3].addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                abrirMenuPersonal("Mecánico");
-            }
-        });
-
-        botones[4].addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                abrirMenuPersonal("Administrador");
-            }
-        });
         
         // Mostrar la ventana
         mostrarVentana();

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class MenuSistema extends Menu {
 
-    private ArrayList<JButton> botones;
     private String tipoUsuario;
 
     /**
@@ -15,7 +14,6 @@ public class MenuSistema extends Menu {
     public MenuSistema(String tipoUsuario) {
         super();  // Llamamos al constructor de la clase base Menu
         this.tipoUsuario = tipoUsuario;  // Asignamos el tipo de usuario
-        botones = new ArrayList<>();  // Inicializamos el arreglo de botones
         
         WINDOW_WIDTH = 500;
         WINDOW_HEIGHT = 400;
@@ -33,10 +31,12 @@ public class MenuSistema extends Menu {
             case "Administrador":
                 botones.add(new JButton(" ABRIR GESTOR DE PERSONAS "));
                 botones.add(new JButton(" ABRIR GESTOR DE VEHÍCULOS "));
+                
                 botones.add(new JButton(" VISUALIZAR ESTADOS BATERÍAS "));
                 botones.add(new JButton(" VISUALIZAR ESTADOS MECÁNICOS "));
                 botones.add(new JButton(" VISUALIZAR ESTADO DE BASES "));
                 botones.add(new JButton(" VISUALIZAR ESTADO PROMOCIONES "));
+                
                 botones.add(new JButton(" ASIGNAR TRABAJOS "));
                 botones.add(new JButton(" VISUALIZAR INTERACCIONES USUARIOS E IMPORTES "));
                 botones.add(new JButton(" VISUALIZAR INTERACCIONES VEHÍCULOS "));

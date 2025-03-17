@@ -24,6 +24,8 @@ public class Simulacion {
     public static final int MAX_ESTADOS_GUARDADOS = 1000000;
     public static final int ESTADOS_ELIMINADOS_SOBRECARGA = 100;
     
+    private static final int VEHICULOS_INICIALES_EN_BASE = 4;
+    
     public boolean simulationRunning = true;
     public boolean runningForward = false;
     public boolean runningBackward = false;
@@ -172,8 +174,6 @@ public class Simulacion {
         gridButtons[ubi.getPosX()][ubi.getPosY()].setBackground(color); // Actualiza la celda correspondiente
     }
 
-    private static final int VEHICULOS_INICIALES_EN_BASE = 20;
-    
     /**
      * Método para agregar n entidades de un tipo específico en ubicaciones aleatorias.
      * 
@@ -222,18 +222,18 @@ public class Simulacion {
         }
     }
     
-    public void iniciarDemo() {
+    public void agregarGrupoEntidades() {
         // Añadimos n usuarios
         agregarEntidad(6, Usuario.class);
         
         // Añadimos n trabajadores de mantenimiento
-        agregarEntidad(1, TecnicoMantenimiento.class);
+        agregarEntidad(2, TecnicoMantenimiento.class);
         
         // Añadimos n trabajadores de mecánica
-        agregarEntidad(1, Mecanico.class);
+        agregarEntidad(2, Mecanico.class);
         
         // Añadimos n motos en ubicaciones aleatorias
-        agregarEntidad(5, Moto.class);
+        agregarEntidad(6, Moto.class);
 
         // Añadimos n bases con vehículos (en este caso, ya se añadieron en el método anterior)
         agregarEntidad(3, Base.class);

@@ -1,9 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class GestorMenus extends Menu {
-    private JButton botonMenuSimulacion, botonMenuIniciarSesion;
+    private JButton botonMenuIniciarSesion;
     private Simulacion simulacion;
 
     public GestorMenus(Simulacion simulacion) {
@@ -16,6 +17,7 @@ public class GestorMenus extends Menu {
 
     @Override
     public void iniciarInterfaz() {
+        
         // Configuración de la ventana
         frame.setTitle("Gestor de Menús");
 
@@ -23,29 +25,19 @@ public class GestorMenus extends Menu {
         panel.setBackground(Color.BLUE);
 
         // Botones
-        botonMenuSimulacion = new JButton(" - MENÚ SIMULACIÓN - ");
-        botonMenuIniciarSesion = new JButton(" - MENU SISTEMA - ");
+        botonMenuIniciarSesion = new JButton(" - INICIAR SESIÓN - ");
 
         // Estética profesional
         Font font = new Font("Arial", Font.PLAIN, 16);
-        botonMenuSimulacion.setFont(font);
         botonMenuIniciarSesion.setFont(font);
 
-        botonMenuSimulacion.setBackground(new Color(0, 123, 255));
         botonMenuIniciarSesion.setBackground(new Color(0, 123, 255));
 
-        botonMenuSimulacion.setForeground(Color.WHITE);
         botonMenuIniciarSesion.setForeground(Color.WHITE);
         // Añadir los botones al panel
-        panel.add(botonMenuSimulacion);
         panel.add(botonMenuIniciarSesion);
-
-        // Funcionalidad de botones
-        botonMenuSimulacion.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                iniciarMenuSimulacion();
-            }
-        });
+        
+        botonesGestorMenu.add(botonMenuIniciarSesion);
 
         botonMenuIniciarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -57,9 +49,10 @@ public class GestorMenus extends Menu {
         // Mostrar la ventana
         mostrarVentana();
     }
-
-    private void iniciarMenuSimulacion() {
-        simulacion.iniciarDemo();
+    
+    @Override
+    protected void asignarFuncionesBotones() {
+        
     }
 
     private void iniciarMenuIniciarSesion() {
