@@ -11,7 +11,7 @@ import java.awt.Color;
 public class Movilidad {
 
     private static Simulacion simulacion = new Simulacion();
-    private static GestorMenus gestorMenus = new GestorMenus(simulacion);
+    private static GestorMenus gestorMenus = new GestorMenus();
     
     /**
      * Función principal que ejecuta el sistema.
@@ -20,7 +20,7 @@ public class Movilidad {
      */
     public static void main(String[] args) {
         
-        gestorMenus.iniciarInterfaz();
+        gestorMenus.iniciarMenu();
 
         simulacion.runSimulacion();
     }

@@ -1,41 +1,36 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
 
 public class GestorMenus extends Menu {
 
-    public GestorMenus(Simulacion simulacion) {
-        super(); // Llamamos al constructor de la clase base Menu
+    private MenuIniciarSesion menuIniciarSesion;  // Menú de iniciar sesión
 
-        WINDOW_WIDTH = 500;
-        WINDOW_HEIGHT = 400;
-    }
-
-    @Override
-    public void iniciarInterfaz() {
-        // Configuración de la ventana
-        frame.setTitle("Gestor de Menús");
-
-        // Panel con color de fondo azul
-        panel.setBackground(Color.BLUE);
-
+    // Constructor
+    public GestorMenus() {
+        super();  // Llamamos al constructor de la clase base Menu
+        
+        // Inicializamos el menú de iniciar sesión
+        menuIniciarSesion = new MenuIniciarSesion();
+        
+        // Añadir los menús al contenedor CardLayout
+        container.add(panel, "GestorMenus");  // Añadir el panel principal al CardLayout
+        container.add(menuIniciarSesion.panel, "IniciarSesion");  // Añadir el panel de iniciar sesión
+        
         // Crear y añadir el botón de iniciar sesión al HashMap
         Boton botonMenuIniciarSesion = new Boton("Iniciar Sesión", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                iniciarMenuIniciarSesion();
+                navegarA("IniciarSesion");
             }
         });
-        botones.put("Iniciar Sesión", botonMenuIniciarSesion);  // Añadir el botón al HashMap
-        agregarBotonCentrado(botonMenuIniciarSesion.getBoton());  // Añadir al panel con el JButton dentro del objeto Boton
-
-        // Mostrar la ventana
-        mostrarVentana();
+        botones.put("IniciarSesion", botonMenuIniciarSesion);  
     }
 
-    private void iniciarMenuIniciarSesion() {
-        // Aquí puedes iniciar otra interfaz de inicio de sesión
-        MenuIniciarSesion menuIniciarSesion = new MenuIniciarSesion();
-        menuIniciarSesion.iniciarInterfaz();
+    @Override
+    public void iniciarMenu() {
+
+        super.iniciarMenu();
+        
+        System.out.println("SE INICIA EL GESTOR DE MENUS"); 
     }
 }

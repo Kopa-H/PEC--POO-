@@ -6,12 +6,13 @@ import java.util.HashMap;
 public class MenuIniciarSesion extends Menu {
 
     public MenuIniciarSesion() {
-        super(); // Llamamos al constructor de la clase base Menu
-        
-        agregarBotonAtras("GestorMenus");  // Volver al menú principal
-
         WINDOW_WIDTH = 500;
         WINDOW_HEIGHT = 400;
+        
+        frame.setTitle("Iniciar Sesión");
+
+        // Panel con color de fondo verde claro
+        panel.setBackground(Color.GREEN);
 
         // Definir roles directamente en el HashMap
         botones.put("Usuario Normal", new Boton("Usuario Normal", new ActionListener() {
@@ -39,30 +40,21 @@ public class MenuIniciarSesion extends Menu {
                 abrirMenuPersonal("Administrador");
             }
         }));
+        
+        agregarBotonAtras("GestorMenus");  // Volver al menú principal
     }
 
     @Override
-    public void iniciarInterfaz() {
-        frame.setTitle("Iniciar Sesión");
-
-        // Panel con color de fondo verde claro
-        panel.setBackground(Color.GREEN);
-
-        // Añadir los botones al panel
-        for (String nombreBoton : botones.keySet()) {
-            Boton boton = botones.get(nombreBoton);
-            agregarBotonCentrado(boton.getBoton());
-        }
-
-        // Mostrar la ventana
-        mostrarVentana();
+    public void iniciarMenu() {
+        
+        super.iniciarMenu();
     }
 
     private void abrirMenuPersonal(String tipoUsuario) {
         // Crear el objeto MenuPersonal correspondiente al tipo de usuario
-        MenuSistema menuSistema = new MenuSistema(tipoUsuario);
+        // MenuSistema menuSistema = new MenuSistema(tipoUsuario);
 
         // Llamar al método para mostrar la interfaz del menu personal
-        menuSistema.iniciarInterfaz();
+        // menuSistema.iniciarMenu();
     }
 }
