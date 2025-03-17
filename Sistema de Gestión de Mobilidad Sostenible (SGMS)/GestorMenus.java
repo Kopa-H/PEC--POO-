@@ -9,6 +9,9 @@ public class GestorMenus extends Menu {
     protected JPanel panelsContainer;
     protected Stack<JPanel> panelHistory = new Stack<>();
     
+    protected int WINDOW_WIDTH = 500;
+    protected int WINDOW_HEIGHT = 500;
+    
     // Constructor
     public GestorMenus() {            
         cardLayout = new CardLayout();  
@@ -51,6 +54,9 @@ public class GestorMenus extends Menu {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         
+        // Centrar la ventana en la pantalla
+        frame.setLocationRelativeTo(null);
+        
         frame.add(panelsContainer);  
         frame.setVisible(true);
     }
@@ -64,7 +70,7 @@ public class GestorMenus extends Menu {
                     // Obtener el último panel de la pila
                     JPanel panelAnterior = panelHistory.pop();
                     // Navegar al panel anterior
-                    cardLayout.show(panelsContainer, panelAnterior.getName());
+                    navegarA(panelAnterior);
                 }
             }
         });

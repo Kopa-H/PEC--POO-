@@ -14,6 +14,4 @@ comment6.params=e
 comment6.target=void\ actionPerformed(java.awt.event.ActionEvent)
 comment7.params=e
 comment7.target=void\ actionPerformed(java.awt.event.ActionEvent)
-comment8.params=tipoUsuario
-comment8.target=void\ abrirMenuSistema(java.lang.String)
-numComments=9
+numComments=8

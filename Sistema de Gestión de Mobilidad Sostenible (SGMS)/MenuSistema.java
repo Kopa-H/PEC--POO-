@@ -5,39 +5,44 @@ import java.util.HashMap;
 
 public class MenuSistema extends Menu {
 
-    private String tipoUsuario;
+    private TipoUsuario tipoUsuario;
     private GestorMenus gestorMenus;
+    private JFrame frame;
+    
+    protected int WINDOW_WIDTH = 600;
+    protected int WINDOW_HEIGHT = 700;
 
     /**
      * Constructor para la clase MenuSistema
      * @param tipoUsuario Tipo de usuario que se pasará a la interfaz
      */
-    public MenuSistema(String tipoUsuario, GestorMenus gestorMenus) {
+    public MenuSistema(TipoUsuario tipoUsuario, GestorMenus gestorMenus) {
         this.tipoUsuario = tipoUsuario;  // Asignamos el tipo de usuario
         this.gestorMenus = gestorMenus;
-        
-        WINDOW_WIDTH = 500;
-        WINDOW_HEIGHT = 400;
+        this.frame = gestorMenus.frame;
 
-        gestorMenus.frame.setTitle("Menú " + tipoUsuario);
-        crearPanel("Menu" + tipoUsuario);
+        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        frame.setTitle("Menú " + tipoUsuario.name());
+        crearPanel("Menu" + tipoUsuario.name());
         panel.setBackground(Color.GREEN);
         
         agregarBotonesMenu();
+        
+        agregarBotones();
     }
     
     private void agregarBotonesMenu() {
         // Dependiendo del tipo de usuario, los botones serán diferentes
         switch (tipoUsuario) {
-            case "Administrador":
+            case TipoUsuario.ADMINISTRADOR:
                 agregarOpcionesAdministrador();
                 break;
 
-            case "Usuario Normal":
+            case TipoUsuario.USUARIO_NORMAL:
                 agregarOpcionesUsuarioNormal();
                 break;
 
-            case "Usuario Premium":
+            case TipoUsuario.USUARIO_PREMIUM:
                 agregarOpcionesUsuarioNormal();
                 botones.put("Reservar", new Boton("RESERVAR (hasta 20' antes)", new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -46,7 +51,7 @@ public class MenuSistema extends Menu {
                 }));
                 break;
 
-            case "Técnico de Mantenimiento":
+            case TipoUsuario.TECNICO_MANTENIMIENTO:
                 agregarOpcionesComunesTrabajadores();
                 botones.put("Trasladar Vehículo", new Boton("TRASLADAR VEHÍCULO", new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -55,7 +60,7 @@ public class MenuSistema extends Menu {
                 }));
                 break;
 
-            case "Mecánico":
+            case TipoUsuario.MECANICO:
                 agregarOpcionesComunesTrabajadores();
                 botones.put("Generar Última Factura", new Boton("GENERAR ÚLTIMA FACTURA", new ActionListener() {
                     public void actionPerformed(ActionEvent e) {

@@ -8,11 +8,20 @@ public abstract class Menu {
     protected HashMap<String, Boton> botones;
     protected JPanel panel;                    
     protected JScrollPane scrollPane;
+    
+    // Tamaño ventanas por defecto (cada submenú puede alterarlo)
+    protected int WINDOW_WIDTH = 500;
+    protected int WINDOW_HEIGHT = 500;
         
     protected JFrame frame; 
     
-    protected int WINDOW_WIDTH = 500;
-    protected int WINDOW_HEIGHT = 500;
+    public enum TipoUsuario {
+        USUARIO_NORMAL,
+        USUARIO_PREMIUM,
+        TECNICO_MANTENIMIENTO,
+        MECANICO,
+        ADMINISTRADOR
+    }
 
     // Constructor
     public Menu() {
@@ -34,6 +43,7 @@ public abstract class Menu {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panel.setName(nombrePanel);  // Asignamos un nombre único al panel
+        System.out.println("Se crea el panel " + nombrePanel);
         
         scrollPane = new JScrollPane(panel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
