@@ -1,19 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
+import javax.swing.JScrollPane;
+import java.util.LinkedHashMap;
 
 // Clase abstracta para manejar los menús
-public abstract class Menu {
-    protected HashMap<String, Boton> botones;
-    protected JPanel panel;                    
-    protected JScrollPane scrollPane;
+public class Menu {
+    protected LinkedHashMap<String, Boton> botones;                 
     
     // Tamaño ventanas por defecto (cada submenú puede alterarlo)
     protected int WINDOW_WIDTH = 500;
     protected int WINDOW_HEIGHT = 500;
         
-    protected JFrame frame; 
+    protected JPanel panel;
+    protected JFrame frame;
     
     public enum TipoUsuario {
         USUARIO_NORMAL,
@@ -25,30 +25,52 @@ public abstract class Menu {
 
     // Constructor
     public Menu() {
-        botones = new HashMap<>();
+        botones = new LinkedHashMap<>();
     }
 
     // Método abstracto que las subclases implementarán para crear el menú específico
-    public void agregarBotones() {
-        // Añadir los botones al menú con sus funcionalidades en un HashMap
+    public void agregarBotones(LinkedHashMap<String, Boton> botones, JPanel panel) {
+        // Añadir los botones al menú con sus funcionalidades en el orden de inserción del LinkedHashMap
         for (String nombreBoton : botones.keySet()) {
             Boton boton = botones.get(nombreBoton);
             agregarBotonPosicionado(panel, boton.getBoton(), "middle");
         }       
     }
     
-    // Método para crear un panel
-    public void crearPanel(String nombrePanel) {
-        panel = new JPanel();
+    // Método para crear la ventana
+    protected JFrame crearNuevaVentana() {
+        // Crear el JFrame para la ventana principal
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
+        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        
+        // Centrar la ventana en la pantalla
+        frame.setLocationRelativeTo(null);
+         
+        frame.setVisible(true);
+        
+        return frame;
+    }
+    
+    // Método para crear un panel con desplazamiento
+    public JPanel crearPanel(String nombrePanel) {
+        JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panel.setName(nombrePanel);  // Asignamos un nombre único al panel
         System.out.println("Se crea el panel " + nombrePanel);
         
-        scrollPane = new JScrollPane(panel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        return panel;  // Retornar el panel envuelto en el scroll
     }
-
+    
+    public JScrollPane agregarScrollPanel(JPanel panel) {
+        // Envolver el panel en un JScrollPane
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        
+        return scrollPane;
+    }
+    
     // Método para agregar botones con posición controlada
     protected void agregarBotonPosicionado(JPanel panel, JButton boton, String posicion) {
         FlowLayout layout;

@@ -24,8 +24,6 @@ public class Simulacion {
     public static final int MAX_ESTADOS_GUARDADOS = 1000000;
     public static final int ESTADOS_ELIMINADOS_SOBRECARGA = 100;
     
-    private static final int VEHICULOS_INICIALES_EN_BASE = 4;
-    
     public boolean simulationRunning = true;
     public boolean runningForward = false;
     public boolean runningBackward = false;
@@ -180,47 +178,75 @@ public class Simulacion {
      * @param cantidad La cantidad de entidades a agregar.
      * @param tipoEntidad El tipo de entidad a agregar (por ejemplo, Usuario, Moto, Base).
      * @param ciudad La ciudad en la que se agregan las entidades.
+     * @return La última entidad creada.
      */
-    private <T extends Entidad> void agregarEntidad(int cantidad, Class<T> tipoEntidad) {
+    private <T extends Entidad> T agregarEntidad(int cantidad, Class<T> tipoEntidad) {
+        T ultimaEntidad = null;  // Variable para almacenar la última entidad creada
         RandomGenerator randomGenerator = new RandomGenerator();
         
         for (int i = 0; i < cantidad; i++) {
             Ubicacion ubi = randomGenerator.getUbicacionLibreRandom(ciudad);
-            System.out.println("Se ha añadido una " + tipoEntidad.getSimpleName() + " en:" + ubi.toString());
             
             try {
                 // Crear la entidad de acuerdo con el tipo y la ubicación
                 T entidad = tipoEntidad.getConstructor(int.class, int.class).newInstance(ubi.getPosX(), ubi.getPosY());
-                
-                // Si la entidad es una Base, se añaden vehículos
-                if (entidad instanceof Base) {
-                    Base base = (Base) entidad;
-                    
-                    for (int j = 0; j < VEHICULOS_INICIALES_EN_BASE; j++) {
-                        // Añadir bici
-                        Bicicleta bici = new Bicicleta(ubi.getPosX(), ubi.getPosY());
-                        base.agregarVehiculoDisponible(bici);
-                        ciudad.addElement(bici); 
-                        System.out.println("Se ha añadido una bici a la base.");
-
-                        // Añadir patinete
-                        Patinete patinete = new Patinete(ubi.getPosX(), ubi.getPosY());
-                        base.agregarVehiculoDisponible(patinete);
-                        ciudad.addElement(patinete); 
-                        System.out.println("Se ha añadido un patinete a la base.");
-                    }
-                }
-
+                ultimaEntidad = entidad;  // Actualizar la última entidad creada
+    
                 // Añadir la entidad a la ciudad
                 ciudad.addElement((Entidad) entidad);  
                 Color color = entidad.getColor();
                 this.mostrarEntidad(entidad.getUbicacion(), color);
+                System.out.println("Se ha añadido una " + tipoEntidad.getSimpleName() + " en:" + ubi.toString());
             
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        
+        return ultimaEntidad;  // Retornar la última entidad creada
     }
+    
+    public void agregarUsuarioNormal() {
+        agregarEntidad(1, Usuario.class);
+    }
+    
+    public void agregarUsuarioPremium() {
+        Usuario usuario = agregarEntidad(1, Usuario.class);
+        usuario.promocionarUsuario();
+    }
+    
+    public void agregarTecnicoMantenimiento() {
+        agregarEntidad(1, TecnicoMantenimiento.class);
+    }
+    
+    public void agregarMecanico() {
+        agregarEntidad(1, Mecanico.class);
+    }
+    
+    public void agregarMoto() {
+        agregarEntidad(1, Moto.class);
+    }
+    
+    public void agregarBase(int numBicicletas, int numPatinetes) {
+        Base base = agregarEntidad(1, Base.class);
+        
+        for (int i = 0; i < numBicicletas; i++) {
+            // Añadir bici
+            Bicicleta bici = new Bicicleta(base.getUbicacion().getPosX(), base.getUbicacion().getPosY());
+            base.agregarVehiculoDisponible(bici);
+            ciudad.addElement(bici); 
+            System.out.println("Se ha añadido una bici a la base.");
+        }
+        
+        for (int i = 0; i < numPatinetes; i++) {
+            // Añadir patinete
+            Patinete patinete = new Patinete(base.getUbicacion().getPosX(), base.getUbicacion().getPosY());
+            base.agregarVehiculoDisponible(patinete);
+            ciudad.addElement(patinete); 
+            System.out.println("Se ha añadido un patinete a la base.");
+        }
+    }
+
     
     public void agregarGrupoEntidades() {
         // Añadimos n usuarios

@@ -65,6 +65,10 @@ public class Usuario extends Persona {
         return tipoMembresia;
     }
     
+    public void promocionarUsuario() {
+        tipoMembresia = TipoMembresia.PREMIUM;
+    }
+    
     /**
      * Informar de un problema con un vehículo o con una base de bicicletas o patinetes
      */

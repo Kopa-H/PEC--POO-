@@ -259,12 +259,14 @@ public abstract class EntidadMovil extends Entidad {
                 if (vehiculoEscogido != null) {
                     Base baseEscogida = (Base) randomGenerator.getEntidadRandom(ciudad, baseDestino, Base.class);
             
-                    // El usuario alerta de fallo mecánico si la base lo tiene
-                    if (baseEscogida.tieneFalloMecanico()) {
-                        usuario.alertarFalloMecanico(baseEscogida);
-                    }
+
                     
                     if (baseEscogida != null) {
+                        // El usuario alerta de fallo mecánico si la base lo tiene
+                        if (baseEscogida.tieneFalloMecanico()) {
+                            usuario.alertarFalloMecanico(baseEscogida);
+                        }
+                        
                         vehiculoEscogido.planearTrayecto(baseEscogida.getUbicacion(), baseEscogida);
 
                         

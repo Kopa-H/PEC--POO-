@@ -10,30 +10,33 @@ public class MenuIniciarSesion extends Menu {
     
     protected int WINDOW_WIDTH = 400;
     protected int WINDOW_HEIGHT = 500;
+    
+    Simulacion simulacion;
 
-    public MenuIniciarSesion(GestorMenus gestorMenus) {
+    public MenuIniciarSesion(Simulacion simulacion, GestorMenus gestorMenus) {
+        this.simulacion = simulacion;
         this.gestorMenus = gestorMenus;
         this.frame = gestorMenus.frame;
         
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setTitle("Iniciar Sesión");  // Establece el título de la ventana
-        crearPanel("IniciarSesion");
+        this.panel = crearPanel("IniciarSesion");
         panel.setBackground(Color.GRAY);
 
         agregarBotonesMenu();
         
-        agregarBotones();
+        agregarBotones(botones, panel);
     }
     
     // Se le pasa como parámetro el tipo de usuario que ingresa al sistema, dandole unas opciones u otras
     private void iniciarMenuSistema(TipoUsuario tipoUsuario) {
         // Se añaden al contenedor de páginas las de cada tipo de usuario
-        MenuSistema menuSistema = new MenuSistema(tipoUsuario, gestorMenus);
+        MenuSistema menuSistema = new MenuSistema(simulacion, tipoUsuario, gestorMenus);
     
         // Al navegar a un nuevo panel, lo agregamos a la pila
         gestorMenus.panelHistory.push(panel);
         gestorMenus.agregarBotonAtras(menuSistema.panel);
-        gestorMenus.panelsContainer.add(menuSistema.panel, "Menu" + tipoUsuario.name());
+        gestorMenus.cardsPanel.add(menuSistema.panel, "Menu" + tipoUsuario.name());
         gestorMenus.navegarA(menuSistema.panel);
     }
 
