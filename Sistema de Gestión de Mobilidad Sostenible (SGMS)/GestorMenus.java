@@ -3,14 +3,14 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class GestorMenus extends Menu {
-    private JButton botonIniciarDemoSimulacion, botonIniciarSesion, button3, button4;
+    private JButton botonMenuSimulacion, botonMenuIniciarSesion;
     private Simulacion simulacion;
 
     public GestorMenus(Simulacion simulacion) {
         super(); // Llamamos al constructor de la clase base Menu
         this.simulacion = simulacion;
         
-        WINDOW_WIDTH = 200;
+        WINDOW_WIDTH = 500;
         WINDOW_HEIGHT = 400;
     }
 
@@ -23,45 +23,34 @@ public class GestorMenus extends Menu {
         panel.setBackground(Color.BLUE);
 
         // Botones
-        botonIniciarDemoSimulacion = new JButton("Iniciar Simulación");
-        botonIniciarSesion = new JButton("Iniciar Sesión");
-        button3 = new JButton("Botón 3");
-        button4 = new JButton("Botón 4");
+        botonMenuSimulacion = new JButton(" - MENÚ SIMULACIÓN - ");
+        botonMenuIniciarSesion = new JButton(" - MENU SISTEMA - ");
 
         // Estética profesional
         Font font = new Font("Arial", Font.PLAIN, 16);
-        botonIniciarDemoSimulacion.setFont(font);
-        botonIniciarSesion.setFont(font);
-        button3.setFont(font);
-        button4.setFont(font);
+        botonMenuSimulacion.setFont(font);
+        botonMenuIniciarSesion.setFont(font);
 
-        botonIniciarDemoSimulacion.setBackground(new Color(0, 123, 255));
-        botonIniciarSesion.setBackground(new Color(0, 123, 255));
-        button3.setBackground(new Color(0, 123, 255));
-        button4.setBackground(new Color(0, 123, 255));
+        botonMenuSimulacion.setBackground(new Color(0, 123, 255));
+        botonMenuIniciarSesion.setBackground(new Color(0, 123, 255));
 
-        botonIniciarDemoSimulacion.setForeground(Color.WHITE);
-        botonIniciarSesion.setForeground(Color.WHITE);
-        button3.setForeground(Color.WHITE);
-        button4.setForeground(Color.WHITE);
-
+        botonMenuSimulacion.setForeground(Color.WHITE);
+        botonMenuIniciarSesion.setForeground(Color.WHITE);
         // Añadir los botones al panel
-        panel.add(botonIniciarDemoSimulacion);
-        panel.add(botonIniciarSesion);
-        panel.add(button3);
-        panel.add(button4);
+        panel.add(botonMenuSimulacion);
+        panel.add(botonMenuIniciarSesion);
 
         // Funcionalidad de botones
-        botonIniciarDemoSimulacion.addActionListener(new ActionListener() {
+        botonMenuSimulacion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                iniciarDemoSimulacion();
+                iniciarMenuSimulacion();
             }
         });
 
-        botonIniciarSesion.addActionListener(new ActionListener() {
+        botonMenuIniciarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Abre otra interfaz de inicio de sesión
-                iniciarSesion();
+                iniciarMenuIniciarSesion();
             }
         });
 
@@ -69,11 +58,11 @@ public class GestorMenus extends Menu {
         mostrarVentana();
     }
 
-    private void iniciarDemoSimulacion() {
+    private void iniciarMenuSimulacion() {
         simulacion.iniciarDemo();
     }
 
-    private void iniciarSesion() {
+    private void iniciarMenuIniciarSesion() {
         // Aquí puedes iniciar otra interfaz de inicio de sesión
         MenuIniciarSesion menuIniciarSesion = new MenuIniciarSesion();
         menuIniciarSesion.iniciarInterfaz();

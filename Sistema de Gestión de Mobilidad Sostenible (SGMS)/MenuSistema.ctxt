@@ -1,7 +1,7 @@
 #BlueJ class context
-comment0.target=MenuPersonal
+comment0.target=MenuSistema
 comment1.params=tipoUsuario
-comment1.target=MenuPersonal(java.lang.String)
+comment1.target=MenuSistema(java.lang.String)
 comment1.text=\r\n\ Constructor\ para\ la\ clase\ MenuPersonal\r\n\ @param\ tipoUsuario\ Tipo\ de\ usuario\ que\ se\ pasar\u00E1\ a\ la\ interfaz\r\n
 comment2.params=
 comment2.target=void\ iniciarInterfaz()
@@ -9,4 +9,8 @@ comment3.params=e
 comment3.target=void\ actionPerformed(java.awt.event.ActionEvent)
 comment4.params=boton
 comment4.target=void\ aplicarEsteticaBoton(javax.swing.JButton)
-numComments=5
+comment5.params=botones
+comment5.target=void\ agregarOpcionesUsuarioNormal(java.util.ArrayList)
+comment6.params=botones
+comment6.target=void\ agregarOpcionesComunesTrabajadores(java.util.ArrayList)
+numComments=7

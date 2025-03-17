@@ -81,9 +81,9 @@ public class MenuIniciarSesion extends Menu {
 
     private void abrirMenuPersonal(String tipoUsuario) {
         // Crear el objeto MenuPersonal correspondiente al tipo de usuario
-        MenuPersonal menuPersonal = new MenuPersonal(tipoUsuario);
+        MenuSistema menuSistema = new MenuSistema(tipoUsuario);
 
         // Llamar al método para mostrar la interfaz del menu personal
-        menuPersonal.iniciarInterfaz();
+        menuSistema.iniciarInterfaz();
     }
 }

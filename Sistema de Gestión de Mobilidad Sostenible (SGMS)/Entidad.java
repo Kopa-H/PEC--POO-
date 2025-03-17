@@ -20,6 +20,8 @@ public abstract class Entidad implements Serializable
     // Variable que va aumentando la probabilidad de que los usuarios reporten fallos mecanicos cuanto más baja está
     private int estadoMecanico; // [0-100]
     
+    private int edad; // El número de steps que ha vivido la entidads
+    
     // Variable registra si la entidad sufre un daño mecánico. En ese caso, el próximo usuario en interactuar con ella lo notificará y el mecánico lo arreglará.
     private boolean tieneFalloMecanico = false;
     private boolean tieneAlertaFalloMecanico = false;
@@ -92,6 +94,10 @@ public abstract class Entidad implements Serializable
         }
     }
     
+    public void sumarEdad() {
+        edad++;
+    }
+    
     public double getProbabilidadFalloMecanico() {
         // Regla de tres inversa: si estadoMecanico es 0, fallo 100%; si es estadoMaximo, fallo 0%.
         double probabilidad = 1 - (double) estadoMecanico / ESTADO_MECANICO_PERFECTO;
@@ -113,6 +119,8 @@ public abstract class Entidad implements Serializable
         Random random = new Random();
         
         this.deteriorarEstadoMecanico();
+        
+        this.sumarEdad();
         
         // Obtiene la probabilidad de fallo mecánico
         double probabilidadFallo = getProbabilidadFalloMecanico();
