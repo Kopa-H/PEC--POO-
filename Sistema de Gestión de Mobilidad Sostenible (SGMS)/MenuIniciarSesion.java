@@ -42,11 +42,12 @@ public class MenuIniciarSesion extends Menu {
         }));
         
         agregarBotonAtras("GestorMenus");  // Volver al menú principal
+        
+        iniciarMenu();
     }
 
     @Override
     public void iniciarMenu() {
-        
         super.iniciarMenu();
     }
 

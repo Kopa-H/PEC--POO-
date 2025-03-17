@@ -17,20 +17,16 @@ public class GestorMenus extends Menu {
         container.add(panel, "GestorMenus");  // Añadir el panel principal al CardLayout
         container.add(menuIniciarSesion.panel, "IniciarSesion");  // Añadir el panel de iniciar sesión
         
-        // Crear y añadir el botón de iniciar sesión al HashMap
-        Boton botonMenuIniciarSesion = new Boton("Iniciar Sesión", new ActionListener() {
+         // Crear y añadir el botón de iniciar sesión al HashMap
+        botones.put("IniciarSesion", new Boton("Iniciar Sesión", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 navegarA("IniciarSesion");
             }
-        });
-        botones.put("IniciarSesion", botonMenuIniciarSesion);  
+        }));
     }
 
     @Override
     public void iniciarMenu() {
-
         super.iniciarMenu();
-        
-        System.out.println("SE INICIA EL GESTOR DE MENUS"); 
     }
 }

@@ -46,6 +46,8 @@ public abstract class Menu {
         for (String nombreBoton : botones.keySet()) {
             Boton boton = botones.get(nombreBoton);
             agregarBotonPosicionado(boton.getBoton(), "middle");
+            
+            System.out.println("Se ha agregado el botón: " + nombreBoton);
         }
 
         // Hacer visible la ventana
@@ -73,7 +75,7 @@ public abstract class Menu {
         JButton botonAtras = new JButton("Atrás");
         botonAtras.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(container, nombreMenuAnterior);  
+                navegarA(nombreMenuAnterior);
             }
         });
         agregarBotonPosicionado(botonAtras, "left");
@@ -81,6 +83,7 @@ public abstract class Menu {
 
     // Método para navegar entre las tarjetas del CardLayout
     protected void navegarA(String nombreMenu) {
+        System.out.println("Se navega hacia " + nombreMenu);
         cardLayout.show(container, nombreMenu);  
     }
 }
