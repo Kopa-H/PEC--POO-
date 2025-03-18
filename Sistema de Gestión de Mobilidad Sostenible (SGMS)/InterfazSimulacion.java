@@ -6,7 +6,7 @@ import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.text.*;
 
-public class Interfaz extends JFrame {
+public class InterfazSimulacion extends JFrame {
     private JLabel statusLabel = new JLabel("Estado inicial");
     private JPanel statusPanel = new JPanel(new BorderLayout());
     JTextPane descripcionPane = new JTextPane();  // Cambiado a JTextPane
@@ -24,7 +24,7 @@ public class Interfaz extends JFrame {
     private static final int HORIZONTAL_WINDOW_SIZE = 1500;
     private static final int VERTICAL_WINDOW_SIZE = 1000;
 
-    public Interfaz(Simulacion simulacion, Ciudad ciudad, JButton[][] gridButtons, int step) {
+    public InterfazSimulacion(Simulacion simulacion, Ciudad ciudad, JButton[][] gridButtons, int step) {
         setTitle("Simulación de Ciudad");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -32,7 +32,7 @@ public class Simulacion {
     
     private ArrayList<Estado> historialEstados;
     
-    Interfaz interfaz;
+    InterfazSimulacion interfaz;
     
     public Simulacion() {
         historialEstados = new ArrayList<>();
@@ -42,7 +42,7 @@ public class Simulacion {
         ciudad = new Ciudad();
         
         // Se crea la interfaz
-        interfaz = new Interfaz(this, ciudad, gridButtons, step);
+        interfaz = new InterfazSimulacion(this, ciudad, gridButtons, step);
     }
     
     public JButton[][] getGridButtons() {
@@ -262,6 +262,6 @@ public class Simulacion {
         agregarEntidad(6, Moto.class);
 
         // Añadimos n bases con vehículos (en este caso, ya se añadieron en el método anterior)
-        agregarEntidad(3, Base.class);
+        agregarBase(2, 2);
     }
 }

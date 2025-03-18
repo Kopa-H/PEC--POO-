@@ -76,14 +76,9 @@ public class MenuSistema extends Menu {
 
     private void agregarOpcionesAdministrador() {
         // Botones existentes
-        botones.put("Abrir Gestor de Personas", new Boton("ABRIR GESTOR DE PERSONAS", new ActionListener() {
+        botones.put("Abrir Gestor de Entidades", new Boton("ABRIR GESTOR DE ENTIDADES", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                iniciarGestorPersonas();
-            }
-        }));
-        botones.put("Abrir Gestor de Vehículos", new Boton("ABRIR GESTOR DE VEHÍCULOS", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                iniciarGestorVehiculos();
+                iniciarGestorEntidades();
             }
         }));
     
@@ -201,14 +196,14 @@ public class MenuSistema extends Menu {
     
     // APARTADO DE FUNCIONES DE SUBMENUS
     
-    public void iniciarGestorPersonas() {
+    public void iniciarGestorEntidades() {
         Menu menu = new Menu();
         JFrame frame = menu.crearNuevaVentana();
-        frame.setTitle("Gestor Personas");
+        frame.setTitle("Gestor Entidades");
         frame.setSize(600, 400);  // Ajusta el tamaño a tus necesidades
         
         // Crear el panel para el submenú
-        JPanel panel = menu.crearPanel("MenuGestorPersonas");
+        JPanel panel = menu.crearPanel("MenuGestorEntidades");
         
         // Crear un HashMap para los botones del submenú
         LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
@@ -234,25 +229,6 @@ public class MenuSistema extends Menu {
                 simulacion.agregarMecanico(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
             }
         }));
-        
-        // Agregar los botones al panel
-        agregarBotones(botones, panel);
-        
-        // Añadir el panel al JFrame
-        frame.add(panel);
-    }
-    
-    public void iniciarGestorVehiculos() {
-        Menu menu = new Menu();
-        JFrame frame = menu.crearNuevaVentana();
-        frame.setTitle("Gestor Vehículos");
-        frame.setSize(600, 400);  // Ajusta el tamaño a tus necesidades
-        
-        // Crear el panel para el submenú
-        JPanel panel = menu.crearPanel("MenuGestorVehiculos");
-        
-        // Crear un HashMap para los botones del submenú
-        LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
         
         // Crear y añadir los botones con sus funcionalidades
         botones.put("AgregarMoto", new Boton("Agregar Moto", new ActionListener() {
@@ -297,7 +273,6 @@ public class MenuSistema extends Menu {
                         }
                     }
                 });
-                
                 // Botón de cancelar para cerrar el diálogo sin hacer nada
                 JButton cancelarButton = new JButton("Cancelar");
                 cancelarButton.addActionListener(new ActionListener() {
@@ -318,6 +293,12 @@ public class MenuSistema extends Menu {
             }
         }));
         
+        botones.put("AgregarGrupoEntidades", new Boton("Agregar Grupo Entidades", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                simulacion.agregarGrupoEntidades(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
+            }
+        }));
+
         // Agregar los botones al panel
         agregarBotones(botones, panel);
         
