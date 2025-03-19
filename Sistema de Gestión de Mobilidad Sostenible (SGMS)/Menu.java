@@ -46,9 +46,7 @@ public class Menu {
         
         // Centrar la ventana en la pantalla
         frame.setLocationRelativeTo(null);
-         
-        frame.setVisible(true);
-        
+            
         return frame;
     }
     
@@ -61,8 +59,6 @@ public class Menu {
         
         // Centrar el dialogo en la pantalla
         dialog.setLocationRelativeTo(null);
-        
-        dialog.setVisible(true);
         
         return dialog;
     }

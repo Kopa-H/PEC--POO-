@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Stack;
 import javax.swing.JScrollPane;
+import java.util.LinkedHashMap;
 
 public class GestorMenus extends Menu {
 
@@ -35,6 +36,7 @@ public class GestorMenus extends Menu {
         // Añadir los menús al contenedor CardLayout
         cardsPanel.add(panel, "GestorMenus");  // Añadir el panel principal al CardLayout
         
+        LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
         // Crear y añadir el botón de iniciar sesión al HashMap
         botones.put("IniciarSesion", new Boton("Iniciar Sesión", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -43,6 +45,8 @@ public class GestorMenus extends Menu {
         }));
         
         agregarBotones(botones, panel);
+        
+        frame.setVisible(true);
     }
     
     private void iniciarMenuIniciarSesion() {

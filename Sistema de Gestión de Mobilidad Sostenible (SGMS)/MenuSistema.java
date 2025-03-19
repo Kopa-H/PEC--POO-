@@ -149,29 +149,32 @@ public class MenuSistema extends Menu {
         
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel("SeleccionClaseVehiculo");
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Dispone los componentes de forma vertical
-        
+
         // Crear un HashMap para los botones del submenú
         LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
+        String nombreBoton;
         
-        botones.put("SeleccionarMoto", new Boton("Moto", new ActionListener() {
+        nombreBoton = "Seleccionar Moto";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 claseVehiculoSeleccionado[0] = Moto.class;
-                frame.dispose(); // Cerrar el diálogo tras la selección
+                dialog.dispose(); // Cerrar el diálogo tras la selección
             }
         }));
         
-        botones.put("SeleccionarBicicleta", new Boton("Bicicleta", new ActionListener() {
+        nombreBoton = "Seleccionar Bicicleta";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 claseVehiculoSeleccionado[0] = Bicicleta.class;
-                frame.dispose(); // Cerrar el diálogo tras la selección
+                dialog.dispose(); // Cerrar el diálogo tras la selección
             }
         }));
         
-        botones.put("SeleccionarPatinete", new Boton("Patinete", new ActionListener() {
+        nombreBoton = "Seleccionar Patinete";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 claseVehiculoSeleccionado[0] = Patinete.class;
-                frame.dispose(); // Cerrar el diálogo tras la selección
+                dialog.dispose(); // Cerrar el diálogo tras la selección
             }
         }));
     
@@ -180,11 +183,12 @@ public class MenuSistema extends Menu {
         
         // Añadir el panel al JFrame
         dialog.add(agregarScroll(panel));
+        
+        dialog.setVisible(true);
 
         return claseVehiculoSeleccionado[0];  // Devolver el vehículo seleccionado
     }
         
-
     private void agregarOpcionesUsuarioNormal() {
         botones.put("Consultar Vehículos Disponibles", new Boton("CONSULTAR VEHÍCULOS DISPONIBLES", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -202,6 +206,10 @@ public class MenuSistema extends Menu {
                 
                 // Añadir el scroll
                 frame.add(agregarScroll(panel));
+                
+                frame.setVisible(true);
+                
+                actualizarEntidadesMostradas(panel);
                 
                 // Configurar el Timer para actualizar el panel cada 1 segundo (1000 milisegundos)
                 Timer timer = new Timer(1000, new ActionListener() {
@@ -416,5 +424,7 @@ public class MenuSistema extends Menu {
         
         // Añadir el panel al JFrame
         frame.add(agregarScroll(panel));
+        
+        frame.setVisible(true);
     }
 }
