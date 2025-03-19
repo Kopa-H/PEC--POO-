@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=GestorMenus
-comment1.params=simulacion
-comment1.target=GestorMenus(Simulacion)
+comment1.params=simulacion\ ciudad
+comment1.target=GestorMenus(Simulacion,\ Ciudad)
 comment2.params=e
 comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
 comment3.params=

@@ -34,12 +34,12 @@ public class Simulacion {
     
     InterfazSimulacion interfaz;
     
-    public Simulacion() {
+    public Simulacion(Ciudad ciudad) {
+        this.ciudad = ciudad;
+        
         historialEstados = new ArrayList<>();
         gridButtons = new JButton[ROWS][COLUMNS];
         step = 0;
-        
-        ciudad = new Ciudad();
         
         // Se crea la interfaz
         interfaz = new InterfazSimulacion(this, ciudad, gridButtons, step);

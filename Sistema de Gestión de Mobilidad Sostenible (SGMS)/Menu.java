@@ -63,7 +63,7 @@ public class Menu {
         return panel;  // Retornar el panel envuelto en el scroll
     }
     
-    public JScrollPane agregarScrollPanel(JPanel panel) {
+    public JScrollPane agregarScroll(JPanel panel) {
         // Envolver el panel en un JScrollPane
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

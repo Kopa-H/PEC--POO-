@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.LinkedHashMap;
+import javax.swing.JScrollPane;
+import java.util.ArrayList;
 
 public class MenuSistema extends Menu {
 
@@ -13,13 +15,16 @@ public class MenuSistema extends Menu {
     protected int WINDOW_HEIGHT = 700;
     
     Simulacion simulacion;
+    Ciudad ciudad;
 
     /**
      * Constructor para la clase MenuSistema
      * @param tipoUsuario Tipo de usuario que se pasará a la interfaz
      */
-    public MenuSistema(Simulacion simulacion, TipoUsuario tipoUsuario, GestorMenus gestorMenus) {
+    public MenuSistema(Simulacion simulacion, Ciudad ciudad, TipoUsuario tipoUsuario, GestorMenus gestorMenus) {
         this.simulacion = simulacion;
+        this.ciudad = ciudad;
+
         this.tipoUsuario = tipoUsuario;  // Asignamos el tipo de usuario
         this.gestorMenus = gestorMenus;
         this.frame = gestorMenus.frame;
@@ -135,12 +140,107 @@ public class MenuSistema extends Menu {
     private void agregarOpcionesUsuarioNormal() {
         botones.put("Consultar Vehículos Disponibles", new Boton("CONSULTAR VEHÍCULOS DISPONIBLES", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Consultando vehículos disponibles");
+                Menu menu = new Menu();
+                JFrame frame = menu.crearNuevaVentana();
+                frame.setTitle("Vehículos Disponibles");
+                frame.setSize(600, 400);  // Ajusta el tamaño a tus necesidades
+                
+                // Crear el panel para el submenú
+                JPanel panel = menu.crearPanel("VehiculosDisponibles");
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Dispone los componentes de forma vertical
+                
+                // Añadir el panel al frame
+                frame.add(panel);
+                
+                // Añadir el scroll
+                frame.add(agregarScroll(panel));
+                
+                // Configurar el Timer para actualizar el panel cada 1 segundo (1000 milisegundos)
+                Timer timer = new Timer(1000, new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        actualizarEntidadesMostradas(panel);
+                    }
+                });
+                
+                // Iniciar el Timer
+                timer.start();
+            }
+            
+            public void actualizarEntidadesMostradas(JPanel panel) {
+                // Limpiar el panel para actualizarlo con las nuevas entidades
+                panel.removeAll();
+                
+                // Verificar si hay entidades en la lista
+                if (ciudad.getEntidades().isEmpty()) {
+                    JLabel noEntidadesLabel = new JLabel("No existen entidades todavía.");
+                    panel.add(noEntidadesLabel);
+                } else {
+                    // Iterar sobre el ArrayList de entidades y añadir un JLabel para cada entidad
+                    for (Entidad entidad : ciudad.getEntidades()) {
+                        JLabel label = new JLabel(entidad.toString());  // Usar entidad.toString() para mostrar información
+                        panel.add(label);  // Añadir el JLabel al panel
+                    }
+                }
+            
+                // Refrescar el panel después de actualizar
+                panel.revalidate();
+                panel.repaint();
             }
         }));
+        
         botones.put("Alquilar Vehículo", new Boton("ALQUILAR VEHÍCULO", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Alquilar vehículo");
+                
+                Menu menu = new Menu();
+                JFrame frame = menu.crearNuevaVentana();
+                // Crear una nueva ventana para seleccionar el tipo de vehículo
+                frame.setTitle("Alquilar Vehículo");
+                frame.setSize(400, 300);
+                frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+        
+                // Usar un array de un solo elemento para que sea mutable
+                final String[] tipoVehiculoSeleccionado = {null};
+                
+                // Crear el panel para el submenú
+                JPanel panel = menu.crearPanel("MenuGestorEntidades");
+                
+                // Crear un HashMap para los botones del submenú
+                LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
+                
+                // Crear y añadir los botones con sus funcionalidades
+                
+                botones.put("Moto", new Boton("Moto", new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        tipoVehiculoSeleccionado[0] = "Moto";
+                        System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
+                        frame.dispose(); // Cerrar el menú tras la selección
+                        // Aquí puedes continuar con la lógica para el alquiler de la Moto
+                    }
+                }));
+        
+                botones.put("Patinete", new Boton("Patinete", new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        tipoVehiculoSeleccionado[0] = "Patinete";
+                        System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
+                        frame.dispose(); // Cerrar el menú tras la selección
+                        // Aquí puedes continuar con la lógica para el alquiler del Patinete
+                    }
+                }));
+        
+                botones.put("Bici", new Boton("Bici", new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        tipoVehiculoSeleccionado[0] = "Bici";
+                        System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
+                        frame.dispose(); // Cerrar el menú tras la selección
+                        // Aquí puedes continuar con la lógica para el alquiler de la Bici
+                    }
+                }));
+        
+                // Agregar los botones al panel
+                agregarBotones(botones, panel);
+        
+                // Añadir el panel al JFrame
+                frame.add(agregarScroll(panel));
             }
         }));
         botones.put("Alertar Fallo Mecánico", new Boton("ALERTAR FALLO MECÁNICO", new ActionListener() {
@@ -303,6 +403,6 @@ public class MenuSistema extends Menu {
         agregarBotones(botones, panel);
         
         // Añadir el panel al JFrame
-        frame.add(panel);
+        frame.add(agregarScroll(panel));
     }
 }

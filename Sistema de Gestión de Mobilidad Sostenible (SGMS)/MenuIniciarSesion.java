@@ -11,10 +11,12 @@ public class MenuIniciarSesion extends Menu {
     protected int WINDOW_WIDTH = 400;
     protected int WINDOW_HEIGHT = 500;
     
-    Simulacion simulacion;
+    private Simulacion simulacion;
+    private Ciudad ciudad;
 
-    public MenuIniciarSesion(Simulacion simulacion, GestorMenus gestorMenus) {
+    public MenuIniciarSesion(Simulacion simulacion, Ciudad ciudad, GestorMenus gestorMenus) {
         this.simulacion = simulacion;
+        this.ciudad = ciudad;
         this.gestorMenus = gestorMenus;
         this.frame = gestorMenus.frame;
         
@@ -31,7 +33,7 @@ public class MenuIniciarSesion extends Menu {
     // Se le pasa como parámetro el tipo de usuario que ingresa al sistema, dandole unas opciones u otras
     private void iniciarMenuSistema(TipoUsuario tipoUsuario) {
         // Se añaden al contenedor de páginas las de cada tipo de usuario
-        MenuSistema menuSistema = new MenuSistema(simulacion, tipoUsuario, gestorMenus);
+        MenuSistema menuSistema = new MenuSistema(simulacion, ciudad, tipoUsuario, gestorMenus);
     
         // Al navegar a un nuevo panel, lo agregamos a la pila
         gestorMenus.panelHistory.push(panel);

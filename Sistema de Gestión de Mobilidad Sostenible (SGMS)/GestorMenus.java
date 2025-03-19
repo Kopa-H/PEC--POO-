@@ -13,11 +13,13 @@ public class GestorMenus extends Menu {
     protected int WINDOW_WIDTH = 500;
     protected int WINDOW_HEIGHT = 500;
     
-    protected Simulacion simulacion;
+    private Simulacion simulacion;
+    private Ciudad ciudad;
     
     // Constructor
-    public GestorMenus(Simulacion simulacion) { 
+    public GestorMenus(Simulacion simulacion, Ciudad ciudad) { 
         this.simulacion = simulacion;
+        this.ciudad = ciudad;
         
         cardLayout = new CardLayout();
     
@@ -44,7 +46,7 @@ public class GestorMenus extends Menu {
     }
     
     private void iniciarMenuIniciarSesion() {
-        MenuIniciarSesion menuIniciarSesion = new MenuIniciarSesion(simulacion, this);
+        MenuIniciarSesion menuIniciarSesion = new MenuIniciarSesion(simulacion, ciudad, this);
     
         // Al navegar a un nuevo panel, lo agregamos a la pila
         panelHistory.push(panel);
