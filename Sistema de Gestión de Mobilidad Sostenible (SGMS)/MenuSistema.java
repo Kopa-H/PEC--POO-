@@ -11,6 +11,8 @@ public class MenuSistema extends Menu {
     private GestorMenus gestorMenus;
     private JFrame frame;
     
+    private Entidad entidadAccedida;
+    
     protected int WINDOW_WIDTH = 600;
     protected int WINDOW_HEIGHT = 700;
     
@@ -21,9 +23,10 @@ public class MenuSistema extends Menu {
      * Constructor para la clase MenuSistema
      * @param tipoUsuario Tipo de usuario que se pasará a la interfaz
      */
-    public MenuSistema(Simulacion simulacion, Ciudad ciudad, TipoUsuario tipoUsuario, GestorMenus gestorMenus) {
+    public MenuSistema(Simulacion simulacion, Ciudad ciudad, TipoUsuario tipoUsuario, GestorMenus gestorMenus, Entidad entidadAccedida) {
         this.simulacion = simulacion;
         this.ciudad = ciudad;
+        this.entidadAccedida = entidadAccedida;
 
         this.tipoUsuario = tipoUsuario;  // Asignamos el tipo de usuario
         this.gestorMenus = gestorMenus;
