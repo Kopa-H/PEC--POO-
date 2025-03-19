@@ -58,7 +58,6 @@ public class Menu {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panel.setName(nombrePanel);  // Asignamos un nombre único al panel
-        System.out.println("Se crea el panel " + nombrePanel);
         
         return panel;  // Retornar el panel envuelto en el scroll
     }

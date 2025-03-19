@@ -46,27 +46,24 @@ public class MenuIniciarSesion extends Menu {
     private Entidad identificarse(Class<?> claseEntidad) {
         // Crear un nuevo menú para pedir la ID del usuario
         Menu menu = new Menu();
-        JFrame frame = menu.crearNuevaVentana();
-        
-        // Configurar la ventana
-        frame.setTitle("Identificación de Usuario");
-        frame.setSize(400, 300);
-        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-        
+        JDialog dialog = new JDialog((Frame) null, "Identificación de Usuario", true); // Ventana modal
+        dialog.setSize(400, 300);
+        dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
+    
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel("MenuIdentificacionUsuario");
-        
+    
         // Crear un HashMap para los botones del submenú
         LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
-        
+    
         // Usar un array para hacer mutable la variable de la ID seleccionada
         final String[] idUsuario = {null};
         final Entidad[] entidadSeleccionada = {null};  // Variable para almacenar la entidad seleccionada
-        
+    
         // Crear el campo de texto para ingresar la ID
         JTextField idField = new JTextField();
         idField.setPreferredSize(new Dimension(200, 30));
-        
+    
         // Crear y añadir un botón para confirmar la ID
         botones.put("Confirmar ID", new Boton("Confirmar ID", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -77,10 +74,10 @@ public class MenuIniciarSesion extends Menu {
                     try {
                         idIngresada = Integer.parseInt(idUsuario[0]);
                     } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(frame, "La ID debe ser un número válido.", "Error de Identificación", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dialog, "La ID debe ser un número válido.", "Error de Identificación", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    
+    
                     boolean usuarioValido = false;
                     // Iterar sobre las entidades para verificar si la ID existe y corresponde a la clase correcta
                     for (Entidad entidad : ciudad.getEntidades()) {
@@ -88,31 +85,34 @@ public class MenuIniciarSesion extends Menu {
                             // Si la ID coincide y es del tipo correcto
                             usuarioValido = true;
                             entidadSeleccionada[0] = entidad; // Guardar la entidad seleccionada
-                            frame.dispose(); // Cerrar la ventana
+                            dialog.dispose(); // Cerrar la ventana modal
                             break;
                         }
                     }
-                    
+    
                     if (!usuarioValido) {
-                        JOptionPane.showMessageDialog(frame, "ID no válida o no corresponde a un " + (claseEntidad == null ? "Administrador" : claseEntidad.getSimpleName()), "Error de Identificación", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dialog, "ID no válida o no corresponde a un " + (claseEntidad == null ? "Administrador" : claseEntidad.getSimpleName()), "Error de Identificación", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Por favor, ingrese una ID válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dialog, "Por favor, ingrese una ID válida.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }));
-        
+    
         // Añadir el campo de texto al panel
         panel.add(new JLabel("Ingrese su ID de usuario:"));
         panel.add(idField);
-        
+    
         // Añadir el botón al panel
         agregarBotones(botones, panel);
-        
-        // Añadir el panel al JFrame
-        frame.add(agregarScroll(panel));
-
-        // Retorna la entidad seleccionada
+    
+        // Añadir el panel al JDialog
+        dialog.add(agregarScroll(panel));
+    
+        // Mostrar el JDialog como ventana modal
+        dialog.setVisible(true);
+    
+        // Retorna la entidad seleccionada después de que el diálogo se cierre
         return entidadSeleccionada[0];
     }
 
@@ -124,12 +124,13 @@ public class MenuIniciarSesion extends Menu {
                 iniciarMenuSistema(TipoUsuario.ADMINISTRADOR, null);
             }
         }));
+
         botones.put("Usuario Normal", new Boton("Usuario Normal", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Entidad entidadIdentificada = identificarse(Usuario.class);
-                System.out.println("Usuario identificado " + entidadIdentificada.toString());
                 
                 if (entidadIdentificada != null) {
+                    System.out.println("Usuario identificado como [" + entidadIdentificada.toString() + "]");
                     iniciarMenuSistema(TipoUsuario.USUARIO_NORMAL, entidadIdentificada);
                 }
             }
@@ -139,24 +140,27 @@ public class MenuIniciarSesion extends Menu {
                 Entidad entidadIdentificada = identificarse(Usuario.class);
                 
                 if (entidadIdentificada != null) {
+                    System.out.println("Usuario identificado como [" + entidadIdentificada.toString() + "]");
                     iniciarMenuSistema(TipoUsuario.USUARIO_PREMIUM, entidadIdentificada);
                 }
             }
         }));
         botones.put("Técnico de Mantenimiento", new Boton("Técnico de Mantenimiento", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              Entidad entidadIdentificada = identificarse(Usuario.class);
+              Entidad entidadIdentificada = identificarse(TecnicoMantenimiento.class);
                 
                 if (entidadIdentificada != null) {
+                    System.out.println("Usuario identificado como [" + entidadIdentificada.toString() + "]");
                     iniciarMenuSistema(TipoUsuario.TECNICO_MANTENIMIENTO, entidadIdentificada);
                 }
             }
         }));
         botones.put("Mecánico", new Boton("Mecánico", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               Entidad entidadIdentificada = identificarse(Usuario.class);
+               Entidad entidadIdentificada = identificarse(Mecanico.class);
                 
                 if (entidadIdentificada != null) {
+                    System.out.println("Usuario identificado como [" + entidadIdentificada.toString() + "]");
                     iniciarMenuSistema(TipoUsuario.MECANICO, entidadIdentificada);
                 }
             }
