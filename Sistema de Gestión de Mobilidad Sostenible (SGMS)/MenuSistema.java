@@ -11,7 +11,7 @@ public class MenuSistema extends Menu {
     private GestorMenus gestorMenus;
     private JFrame frame;
     
-    private Entidad entidadAccedida;
+    private Persona personaAccedida;
     
     protected int WINDOW_WIDTH = 600;
     protected int WINDOW_HEIGHT = 700;
@@ -23,10 +23,10 @@ public class MenuSistema extends Menu {
      * Constructor para la clase MenuSistema
      * @param tipoUsuario Tipo de usuario que se pasará a la interfaz
      */
-    public MenuSistema(Simulacion simulacion, Ciudad ciudad, TipoUsuario tipoUsuario, GestorMenus gestorMenus, Entidad entidadAccedida) {
+    public MenuSistema(Simulacion simulacion, Ciudad ciudad, TipoUsuario tipoUsuario, GestorMenus gestorMenus, Persona personaAccedida) {
         this.simulacion = simulacion;
         this.ciudad = ciudad;
-        this.entidadAccedida = entidadAccedida;
+        this.personaAccedida = personaAccedida;
 
         this.tipoUsuario = tipoUsuario;  // Asignamos el tipo de usuario
         this.gestorMenus = gestorMenus;
@@ -211,22 +211,22 @@ public class MenuSistema extends Menu {
                 LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
                 
                 // Crear y añadir los botones con sus funcionalidades
-                
                 botones.put("Moto", new Boton("Moto", new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         tipoVehiculoSeleccionado[0] = "Moto";
                         System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
+                        
                         frame.dispose(); // Cerrar el menú tras la selección
-                        // Aquí puedes continuar con la lógica para el alquiler de la Moto
-                    }
-                }));
-        
-                botones.put("Patinete", new Boton("Patinete", new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        tipoVehiculoSeleccionado[0] = "Patinete";
-                        System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
-                        frame.dispose(); // Cerrar el menú tras la selección
-                        // Aquí puedes continuar con la lógica para el alquiler del Patinete
+                        
+                        Entidad entidadPorAlquilar = ciudad.encontrarEntidadUsableMasCercana(personaAccedida, Moto.class);
+                        
+                        // Comprobar si se ha encontrado una entidad
+                        if (entidadPorAlquilar == null) {
+                            JOptionPane.showMessageDialog(frame, "No se ha podido encontrar ninguna moto disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        personaAccedida.planearTrayecto(entidadPorAlquilar.getUbicacion(), entidadPorAlquilar);
                     }
                 }));
         
@@ -234,8 +234,39 @@ public class MenuSistema extends Menu {
                     public void actionPerformed(ActionEvent e) {
                         tipoVehiculoSeleccionado[0] = "Bici";
                         System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
+                        
                         frame.dispose(); // Cerrar el menú tras la selección
-                        // Aquí puedes continuar con la lógica para el alquiler de la Bici
+                        
+                        // Se realiza el alquiler
+                        Entidad entidadPorAlquilar = ciudad.encontrarEntidadUsableMasCercana(personaAccedida, Bicicleta.class);
+                        
+                        // Comprobar si se ha encontrado una entidad
+                        if (entidadPorAlquilar == null) {
+                            JOptionPane.showMessageDialog(frame, "No se ha podido encontrar ninguna bicicleta disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        personaAccedida.planearTrayecto(entidadPorAlquilar.getUbicacion(), entidadPorAlquilar);
+                    }
+                }));
+                
+                botones.put("Patinete", new Boton("Patinete", new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        tipoVehiculoSeleccionado[0] = "Patinete";
+                        System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
+                        
+                        frame.dispose();
+                        
+                        // Se realiza el alquiler
+                        Entidad entidadPorAlquilar = ciudad.encontrarEntidadUsableMasCercana(personaAccedida, Patinete.class);
+                        
+                        // Comprobar si se ha encontrado una entidad
+                        if (entidadPorAlquilar == null) {
+                            JOptionPane.showMessageDialog(frame, "No se ha podido encontrar ningún patinete disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        personaAccedida.planearTrayecto(entidadPorAlquilar.getUbicacion(), entidadPorAlquilar);
                     }
                 }));
         
@@ -246,6 +277,7 @@ public class MenuSistema extends Menu {
                 frame.add(agregarScroll(panel));
             }
         }));
+        
         botones.put("Alertar Fallo Mecánico", new Boton("ALERTAR FALLO MECÁNICO", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Alertando de fallo mecánico");

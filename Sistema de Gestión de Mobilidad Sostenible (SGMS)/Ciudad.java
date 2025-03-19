@@ -84,10 +84,6 @@ public class Ciudad {
             }
         }
     
-        if (entidadMasCercana == null) {
-            System.out.println("No se ha encontrado ninguna entidad");
-        }
-    
         // Devolvemos la entidad más cercana, o null si no se encontró ninguna
         return entidadMasCercana;
     }

@@ -174,7 +174,8 @@ public abstract class EntidadMovil extends Entidad {
         }
 
         // Activar estado de trayecto
-        enTrayecto = true;
+        this.enTrayecto = true;
+        this.entidadDestino = entidadDestino;
         
         if (entidadDestino != null) {
             System.out.println(toSimpleString() + " ha comenzado un viaje hacia " + entidadDestino.toSimpleString());
@@ -333,7 +334,7 @@ public abstract class EntidadMovil extends Entidad {
         ubicacion.setUbicacion(entidad.getUbicacion());
     }
     
-    public boolean intentarPlanearTrayecto(Ciudad ciudad, Class<?> tipoEntidad) {
+    public void intentarPlanearTrayecto(Ciudad ciudad, Class<?> tipoEntidad) {
         double probabilidad = 0.01;
         
         if (Math.random() < probabilidad) {
@@ -342,18 +343,14 @@ public abstract class EntidadMovil extends Entidad {
             Entidad entidad = ciudad.encontrarEntidadUsableMasCercana(this, tipoEntidad);
             
             if (entidad == null || entidad.getUbicacion() == null) {
-                return false;
+                return;
             }
             
             Ubicacion ubiEntidad = entidad.getUbicacion();
         
             // Planear trayecto hacia la entidad
             planearTrayecto(ubiEntidad, entidad);
-            
-            entidadDestino = entidad;
-            return true;
         }
-        return false;
     }
     
     @Override

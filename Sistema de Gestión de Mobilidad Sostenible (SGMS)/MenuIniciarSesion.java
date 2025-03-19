@@ -32,9 +32,9 @@ public class MenuIniciarSesion extends Menu {
     }
     
     // Se le pasa como parámetro el tipo de usuario que ingresa al sistema, dandole unas opciones u otras
-    private void iniciarMenuSistema(TipoUsuario tipoUsuario, Entidad entidadAccedida) {
+    private void iniciarMenuSistema(TipoUsuario tipoUsuario, Persona personaAccedida) {
         // Se añaden al contenedor de páginas las de cada tipo de usuario
-        MenuSistema menuSistema = new MenuSistema(simulacion, ciudad, tipoUsuario, gestorMenus, entidadAccedida);
+        MenuSistema menuSistema = new MenuSistema(simulacion, ciudad, tipoUsuario, gestorMenus, personaAccedida);
     
         // Al navegar a un nuevo panel, lo agregamos a la pila
         gestorMenus.panelHistory.push(panel);
@@ -43,12 +43,14 @@ public class MenuIniciarSesion extends Menu {
         gestorMenus.navegarA(menuSistema.panel);
     }
     
-    private Entidad identificarse(Class<?> claseEntidad) {
-        // Crear un nuevo menú para pedir la ID del usuario
+    private Persona identificarse(Class<?> clasePersona) {
         Menu menu = new Menu();
         JDialog dialog = new JDialog((Frame) null, "Identificación de Usuario", true); // Ventana modal
         dialog.setSize(400, 300);
         dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
+        
+        // Centrar el diálogo en la pantalla
+        dialog.setLocationRelativeTo(null);
     
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel("MenuIdentificacionUsuario");
@@ -57,8 +59,8 @@ public class MenuIniciarSesion extends Menu {
         LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
     
         // Usar un array para hacer mutable la variable de la ID seleccionada
-        final String[] idUsuario = {null};
-        final Entidad[] entidadSeleccionada = {null};  // Variable para almacenar la entidad seleccionada
+        final String[] idPersona = {null};
+        final Persona[] personaSeleccionada = {null};  // Variable para almacenar la entidad seleccionada
     
         // Crear el campo de texto para ingresar la ID
         JTextField idField = new JTextField();
@@ -67,31 +69,31 @@ public class MenuIniciarSesion extends Menu {
         // Crear y añadir un botón para confirmar la ID
         botones.put("Confirmar ID", new Boton("Confirmar ID", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                idUsuario[0] = idField.getText();
-                if (idUsuario[0] != null && !idUsuario[0].isEmpty()) {
+                idPersona[0] = idField.getText();
+                if (idPersona[0] != null && !idPersona[0].isEmpty()) {
                     // Intentar convertir el String a int
                     int idIngresada = -1;
                     try {
-                        idIngresada = Integer.parseInt(idUsuario[0]);
+                        idIngresada = Integer.parseInt(idPersona[0]);
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(dialog, "La ID debe ser un número válido.", "Error de Identificación", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
     
-                    boolean usuarioValido = false;
+                    boolean personaValida = false;
                     // Iterar sobre las entidades para verificar si la ID existe y corresponde a la clase correcta
                     for (Entidad entidad : ciudad.getEntidades()) {
-                        if (entidad.getId() == idIngresada && claseEntidad.isInstance(entidad)) {
+                        if (entidad instanceof Persona && entidad.getId() == idIngresada && clasePersona.isInstance(entidad)) {
                             // Si la ID coincide y es del tipo correcto
-                            usuarioValido = true;
-                            entidadSeleccionada[0] = entidad; // Guardar la entidad seleccionada
+                            personaValida = true;
+                            personaSeleccionada[0] = (Persona) entidad; // Guardar la entidad seleccionada
                             dialog.dispose(); // Cerrar la ventana modal
                             break;
                         }
                     }
     
-                    if (!usuarioValido) {
-                        JOptionPane.showMessageDialog(dialog, "ID no válida o no corresponde a un " + (claseEntidad == null ? "Administrador" : claseEntidad.getSimpleName()), "Error de Identificación", JOptionPane.ERROR_MESSAGE);
+                    if (!personaValida) {
+                        JOptionPane.showMessageDialog(dialog, "ID no válida o no corresponde a un " + (clasePersona == null ? "Administrador" : clasePersona.getSimpleName()), "Error de Identificación", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
                     JOptionPane.showMessageDialog(dialog, "Por favor, ingrese una ID válida.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -113,7 +115,7 @@ public class MenuIniciarSesion extends Menu {
         dialog.setVisible(true);
     
         // Retorna la entidad seleccionada después de que el diálogo se cierre
-        return entidadSeleccionada[0];
+        return personaSeleccionada[0];
     }
 
 
@@ -127,41 +129,41 @@ public class MenuIniciarSesion extends Menu {
 
         botones.put("Usuario Normal", new Boton("Usuario Normal", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Entidad entidadIdentificada = identificarse(Usuario.class);
+                Persona personaIdentificada = identificarse(Usuario.class);
                 
-                if (entidadIdentificada != null) {
-                    System.out.println("Usuario identificado como [" + entidadIdentificada.toString() + "]");
-                    iniciarMenuSistema(TipoUsuario.USUARIO_NORMAL, entidadIdentificada);
+                if (personaIdentificada != null) {
+                    System.out.println("Usuario identificado como [" + personaIdentificada.toString() + "]");
+                    iniciarMenuSistema(TipoUsuario.USUARIO_NORMAL, personaIdentificada);
                 }
             }
         }));
         botones.put("Usuario Premium", new Boton("Usuario Premium", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Entidad entidadIdentificada = identificarse(Usuario.class);
+                Persona personaIdentificada = identificarse(Usuario.class);
                 
-                if (entidadIdentificada != null) {
-                    System.out.println("Usuario identificado como [" + entidadIdentificada.toString() + "]");
-                    iniciarMenuSistema(TipoUsuario.USUARIO_PREMIUM, entidadIdentificada);
+                if (personaIdentificada != null) {
+                    System.out.println("Usuario identificado como [" + personaIdentificada.toString() + "]");
+                    iniciarMenuSistema(TipoUsuario.USUARIO_PREMIUM, personaIdentificada);
                 }
             }
         }));
         botones.put("Técnico de Mantenimiento", new Boton("Técnico de Mantenimiento", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              Entidad entidadIdentificada = identificarse(TecnicoMantenimiento.class);
+              Persona personaIdentificada = identificarse(TecnicoMantenimiento.class);
                 
-                if (entidadIdentificada != null) {
-                    System.out.println("Usuario identificado como [" + entidadIdentificada.toString() + "]");
-                    iniciarMenuSistema(TipoUsuario.TECNICO_MANTENIMIENTO, entidadIdentificada);
+                if (personaIdentificada != null) {
+                    System.out.println("Usuario identificado como [" + personaIdentificada.toString() + "]");
+                    iniciarMenuSistema(TipoUsuario.TECNICO_MANTENIMIENTO, personaIdentificada);
                 }
             }
         }));
         botones.put("Mecánico", new Boton("Mecánico", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               Entidad entidadIdentificada = identificarse(Mecanico.class);
+               Persona personaIdentificada = identificarse(Mecanico.class);
                 
-                if (entidadIdentificada != null) {
-                    System.out.println("Usuario identificado como [" + entidadIdentificada.toString() + "]");
-                    iniciarMenuSistema(TipoUsuario.MECANICO, entidadIdentificada);
+                if (personaIdentificada != null) {
+                    System.out.println("Usuario identificado como [" + personaIdentificada.toString() + "]");
+                    iniciarMenuSistema(TipoUsuario.MECANICO, personaIdentificada);
                 }
             }
         }));

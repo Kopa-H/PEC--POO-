@@ -2,8 +2,8 @@
 comment0.target=MenuIniciarSesion
 comment1.params=simulacion\ ciudad\ gestorMenus
 comment1.target=MenuIniciarSesion(Simulacion,\ Ciudad,\ GestorMenus)
-comment2.params=claseEntidad
-comment2.target=Entidad\ identificarse(java.lang.Class)
+comment2.params=clasePersona
+comment2.target=Persona\ identificarse(java.lang.Class)
 comment3.params=e
 comment3.target=void\ actionPerformed(java.awt.event.ActionEvent)
 comment4.params=
