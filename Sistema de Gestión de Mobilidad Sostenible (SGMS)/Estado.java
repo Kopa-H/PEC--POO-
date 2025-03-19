@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import javax.swing.JButton;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Estado {
     private JButton[][] estadoCuadricula;
-    private ArrayList<Entidad> estadoEntidades;
+    private CopyOnWriteArrayList<Entidad> estadoEntidades;
 
-    public Estado(JButton[][] cuadricula, ArrayList<Entidad> entidades) {
+    public Estado(JButton[][] cuadricula, CopyOnWriteArrayList<Entidad> entidades) {
         this.estadoCuadricula = cuadricula;
         this.estadoEntidades = entidades;
     }
@@ -15,7 +16,7 @@ public class Estado {
         return estadoCuadricula;
     }
 
-    public ArrayList<Entidad> obtenerEstadoEntidades() {
+    public CopyOnWriteArrayList<Entidad> obtenerEstadoEntidades() {
         return estadoEntidades;
     }
 }

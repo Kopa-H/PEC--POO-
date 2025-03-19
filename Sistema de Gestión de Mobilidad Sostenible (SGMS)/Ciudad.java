@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.awt.Color;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Ciudad {
     // Variables de instancia
     
-    private ArrayList<Entidad> entidades; // Lista de entidades móviles en la ciudad
+    private CopyOnWriteArrayList<Entidad> entidades;
     
     public static final int ROWS = 50;
     public static final int COLUMNS = 50;
@@ -13,14 +14,14 @@ public class Ciudad {
      * Constructor para objetos de la clase Ciudad.
      */ 
     public Ciudad() {
-        entidades = new ArrayList<>(); // Inicializamos el lista de personas       
+        entidades = new CopyOnWriteArrayList<>(); // Inicializamos el lista de personas       
     }
     
-    public ArrayList<Entidad> getEntidades() {
+    public CopyOnWriteArrayList<Entidad> getEntidades() {
         return entidades;
     }
     
-    public void setEntidades(ArrayList<Entidad> newEntidades) {
+    public void setEntidades(CopyOnWriteArrayList<Entidad> newEntidades) {
         entidades = newEntidades;
     }
     

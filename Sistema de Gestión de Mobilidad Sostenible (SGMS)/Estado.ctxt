@@ -1,9 +1,9 @@
 #BlueJ class context
 comment0.target=Estado
 comment1.params=cuadricula\ entidades
-comment1.target=Estado(javax.swing.JButton[][],\ java.util.ArrayList)
+comment1.target=Estado(javax.swing.JButton[][],\ java.util.concurrent.CopyOnWriteArrayList)
 comment2.params=
 comment2.target=javax.swing.JButton[][]\ obtenerEstadoCuadricula()
 comment3.params=
-comment3.target=java.util.ArrayList\ obtenerEstadoEntidades()
+comment3.target=java.util.concurrent.CopyOnWriteArrayList\ obtenerEstadoEntidades()
 numComments=4

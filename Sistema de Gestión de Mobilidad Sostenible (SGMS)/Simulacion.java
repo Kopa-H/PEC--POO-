@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.io.IOException;
 import java.awt.Color;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Write a description of class Simulacion here.
@@ -67,7 +68,7 @@ public class Simulacion {
         }
     
         // Crear una copia profunda de las entidades usando el método deepCopy de Entidad
-        ArrayList<Entidad> copiaEntidades = new ArrayList<>();
+        CopyOnWriteArrayList<Entidad> copiaEntidades = new CopyOnWriteArrayList<>();
         for (Entidad entidad : ciudad.getEntidades()) {
             try {
                 // Usamos deepCopy para obtener una copia profunda de la entidad
@@ -193,7 +194,7 @@ public class Simulacion {
                 ultimaEntidad = entidad;  // Actualizar la última entidad creada
     
                 // Añadir la entidad a la ciudad
-                ciudad.addElement((Entidad) entidad);  
+                ciudad.addElement((Entidad) entidad);
                 Color color = entidad.getColor();
                 this.mostrarEntidad(entidad.getUbicacion(), color);
                 System.out.println("Se ha añadido una " + tipoEntidad.getSimpleName() + " en:" + ubi.toString());
