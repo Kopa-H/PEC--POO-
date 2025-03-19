@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class MenuIniciarSesion extends Menu {
     
@@ -55,9 +53,6 @@ public class MenuIniciarSesion extends Menu {
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel("MenuIdentificacionUsuario");
     
-        // Crear un HashMap para los botones del submenú
-        LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
-    
         // Usar un array para hacer mutable la variable de la ID seleccionada
         final String[] idPersona = {null};
         final Persona[] personaSeleccionada = {null};  // Variable para almacenar la entidad seleccionada
@@ -67,7 +62,7 @@ public class MenuIniciarSesion extends Menu {
         idField.setPreferredSize(new Dimension(200, 30));
     
         // Crear y añadir un botón para confirmar la ID
-        botones.put("Confirmar ID", new Boton("Confirmar ID", new ActionListener() {
+        menu.botones.put("Confirmar ID", new Boton("Confirmar ID", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 idPersona[0] = idField.getText();
                 if (idPersona[0] != null && !idPersona[0].isEmpty()) {
@@ -106,7 +101,7 @@ public class MenuIniciarSesion extends Menu {
         panel.add(idField);
     
         // Añadir el botón al panel
-        agregarBotones(botones, panel);
+        agregarBotones(menu.botones, panel);
     
         // Añadir el panel al JDialog
         dialog.add(agregarScroll(panel));

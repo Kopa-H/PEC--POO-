@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.LinkedHashMap;
 import javax.swing.JScrollPane;
 import java.util.ArrayList;
 
@@ -144,47 +143,45 @@ public class MenuSistema extends Menu {
         final Class<?>[] claseVehiculoSeleccionado = {null};
     
         Menu menu = new Menu();
-        JDialog dialog = menu.crearNuevoDialogo();
-        dialog.setTitle("Seleccionar Clase Vehículo");
+        JDialog dialogo = menu.crearNuevoDialogo();
+        dialogo.setTitle("Seleccionar Clase Vehículo");
         
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel("SeleccionClaseVehiculo");
 
-        // Crear un HashMap para los botones del submenú
-        LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
         String nombreBoton;
         
         nombreBoton = "Seleccionar Moto";
-        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+        menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 claseVehiculoSeleccionado[0] = Moto.class;
-                dialog.dispose(); // Cerrar el diálogo tras la selección
+                dialogo.dispose(); // Cerrar el diálogo tras la selección
             }
         }));
         
         nombreBoton = "Seleccionar Bicicleta";
-        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+        menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 claseVehiculoSeleccionado[0] = Bicicleta.class;
-                dialog.dispose(); // Cerrar el diálogo tras la selección
+                dialogo.dispose(); // Cerrar el diálogo tras la selección
             }
         }));
         
         nombreBoton = "Seleccionar Patinete";
-        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+        menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 claseVehiculoSeleccionado[0] = Patinete.class;
-                dialog.dispose(); // Cerrar el diálogo tras la selección
+                dialogo.dispose(); // Cerrar el diálogo tras la selección
             }
         }));
     
         // Agregar los botones al panel
-        agregarBotones(botones, panel);
+        agregarBotones(menu.botones, panel);
         
         // Añadir el panel al JFrame
-        dialog.add(agregarScroll(panel));
+        dialogo.add(agregarScroll(panel));
         
-        dialog.setVisible(true);
+        dialogo.setVisible(true);
 
         return claseVehiculoSeleccionado[0];  // Devolver el vehículo seleccionado
     }
@@ -325,43 +322,40 @@ public class MenuSistema extends Menu {
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel("MenuGestorEntidades");
         
-        // Crear un HashMap para los botones del submenú
-        LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
-        
         // Crear y añadir los botones con sus funcionalidades
-        botones.put("AgregarUsuarioNormal", new Boton("Agregar Usuario Normal", new ActionListener() {
+        menu.botones.put("AgregarUsuarioNormal", new Boton("Agregar Usuario Normal", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulacion.agregarUsuarioNormal(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
             }
         }));
-        botones.put("AgregarUsuarioPremium", new Boton("Agregar Usuario Premium", new ActionListener() {
+        menu.botones.put("AgregarUsuarioPremium", new Boton("Agregar Usuario Premium", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulacion.agregarUsuarioPremium(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
             }
         }));
-        botones.put("AgregarTecnicoMantenimiento", new Boton("Agregar Técnico Mantenimiento", new ActionListener() {
+        menu.botones.put("AgregarTecnicoMantenimiento", new Boton("Agregar Técnico Mantenimiento", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulacion.agregarTecnicoMantenimiento(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
             }
         }));
-        botones.put("AgregarMecanico", new Boton("Agregar Mecánico", new ActionListener() {
+        menu.botones.put("AgregarMecanico", new Boton("Agregar Mecánico", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulacion.agregarMecanico(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
             }
         }));
         
         // Crear y añadir los botones con sus funcionalidades
-        botones.put("AgregarMoto", new Boton("Agregar Moto", new ActionListener() {
+        menu.botones.put("AgregarMoto", new Boton("Agregar Moto", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulacion.agregarMoto(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
             }
         }));
-        botones.put("AgregarBase", new Boton("Agregar Base", new ActionListener() {
+        menu.botones.put("AgregarBase", new Boton("Agregar Base", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear una nueva ventana de diálogo para pedir las cantidades de bicicletas y patinetes
-                JDialog dialogo = new JDialog();
-                dialogo.setTitle("Agregar Base");
-                dialogo.setLayout(new GridLayout(3, 2));  // Para mostrar los campos y los botones de forma ordenada
+                Menu menu = new Menu();
+                JDialog dialogo = menu.crearNuevoDialogo();
+                dialogo.setTitle("Seleccionar Clase Vehículo");
                 
                 // Crear los campos de texto para ingresar el número de bicicletas y patinetes
                 JTextField bicicletasField = new JTextField();
@@ -405,22 +399,18 @@ public class MenuSistema extends Menu {
                 dialogo.add(aceptarButton);
                 dialogo.add(cancelarButton);
                 
-                // Configurar y mostrar el diálogo
-                dialogo.setSize(300, 150);
-                dialogo.setLocationRelativeTo(null);  // Centrar el diálogo
-                dialogo.setModal(true);  // Hacer el diálogo modal (bloquea la ventana principal)
                 dialogo.setVisible(true);
             }
         }));
         
-        botones.put("AgregarGrupoEntidades", new Boton("Agregar Grupo Entidades", new ActionListener() {
+        menu.botones.put("AgregarGrupoEntidades", new Boton("Agregar Grupo Entidades", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulacion.agregarGrupoEntidades(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
             }
         }));
 
         // Agregar los botones al panel
-        agregarBotones(botones, panel);
+        agregarBotones(menu.botones, panel);
         
         // Añadir el panel al JFrame
         frame.add(agregarScroll(panel));
