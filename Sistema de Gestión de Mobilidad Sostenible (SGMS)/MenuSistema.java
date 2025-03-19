@@ -139,6 +139,51 @@ public class MenuSistema extends Menu {
             }
         }));
     }
+    
+    public Class<?> seleccionarClaseVehiculo() {
+        final Class<?>[] claseVehiculoSeleccionado = {null};
+    
+        Menu menu = new Menu();
+        JDialog dialog = menu.crearNuevoDialogo();
+        dialog.setTitle("Seleccionar Clase Vehículo");
+        
+        // Crear el panel para el submenú
+        JPanel panel = menu.crearPanel("SeleccionClaseVehiculo");
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Dispone los componentes de forma vertical
+        
+        // Crear un HashMap para los botones del submenú
+        LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
+        
+        botones.put("SeleccionarMoto", new Boton("Moto", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                claseVehiculoSeleccionado[0] = Moto.class;
+                frame.dispose(); // Cerrar el diálogo tras la selección
+            }
+        }));
+        
+        botones.put("SeleccionarBicicleta", new Boton("Bicicleta", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                claseVehiculoSeleccionado[0] = Bicicleta.class;
+                frame.dispose(); // Cerrar el diálogo tras la selección
+            }
+        }));
+        
+        botones.put("SeleccionarPatinete", new Boton("Patinete", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                claseVehiculoSeleccionado[0] = Patinete.class;
+                frame.dispose(); // Cerrar el diálogo tras la selección
+            }
+        }));
+    
+        // Agregar los botones al panel
+        agregarBotones(botones, panel);
+        
+        // Añadir el panel al JFrame
+        dialog.add(agregarScroll(panel));
+
+        return claseVehiculoSeleccionado[0];  // Devolver el vehículo seleccionado
+    }
+        
 
     private void agregarOpcionesUsuarioNormal() {
         botones.put("Consultar Vehículos Disponibles", new Boton("CONSULTAR VEHÍCULOS DISPONIBLES", new ActionListener() {
@@ -190,91 +235,23 @@ public class MenuSistema extends Menu {
                 panel.repaint();
             }
         }));
-        
+
         botones.put("Alquilar Vehículo", new Boton("ALQUILAR VEHÍCULO", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                Class<?> claseVehiculo = seleccionarClaseVehiculo();
                 
-                Menu menu = new Menu();
-                JFrame frame = menu.crearNuevaVentana();
-                // Crear una nueva ventana para seleccionar el tipo de vehículo
-                frame.setTitle("Alquilar Vehículo");
-                frame.setSize(400, 300);
-                frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-        
-                // Usar un array de un solo elemento para que sea mutable
-                final String[] tipoVehiculoSeleccionado = {null};
+                if (claseVehiculo != null) {
                 
-                // Crear el panel para el submenú
-                JPanel panel = menu.crearPanel("MenuGestorEntidades");
-                
-                // Crear un HashMap para los botones del submenú
-                LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
-                
-                // Crear y añadir los botones con sus funcionalidades
-                botones.put("Moto", new Boton("Moto", new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        tipoVehiculoSeleccionado[0] = "Moto";
-                        System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
-                        
-                        frame.dispose(); // Cerrar el menú tras la selección
-                        
-                        Entidad entidadPorAlquilar = ciudad.encontrarEntidadUsableMasCercana(personaAccedida, Moto.class);
-                        
-                        // Comprobar si se ha encontrado una entidad
-                        if (entidadPorAlquilar == null) {
-                            JOptionPane.showMessageDialog(frame, "No se ha podido encontrar ninguna moto disponible.", "Error", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        
-                        personaAccedida.planearTrayecto(entidadPorAlquilar.getUbicacion(), entidadPorAlquilar);
+                    Entidad entidadPorAlquilar = ciudad.encontrarEntidadUsableMasCercana(personaAccedida, claseVehiculo);
+                    
+                    // Comprobar si se ha encontrado una entidad
+                    if (entidadPorAlquilar == null) {
+                        JOptionPane.showMessageDialog(frame, "No se ha podido encontrar ninguna moto disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
-                }));
-        
-                botones.put("Bici", new Boton("Bici", new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        tipoVehiculoSeleccionado[0] = "Bici";
-                        System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
-                        
-                        frame.dispose(); // Cerrar el menú tras la selección
-                        
-                        // Se realiza el alquiler
-                        Entidad entidadPorAlquilar = ciudad.encontrarEntidadUsableMasCercana(personaAccedida, Bicicleta.class);
-                        
-                        // Comprobar si se ha encontrado una entidad
-                        if (entidadPorAlquilar == null) {
-                            JOptionPane.showMessageDialog(frame, "No se ha podido encontrar ninguna bicicleta disponible.", "Error", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        
-                        personaAccedida.planearTrayecto(entidadPorAlquilar.getUbicacion(), entidadPorAlquilar);
-                    }
-                }));
-                
-                botones.put("Patinete", new Boton("Patinete", new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        tipoVehiculoSeleccionado[0] = "Patinete";
-                        System.out.println("Vehículo seleccionado: " + tipoVehiculoSeleccionado[0]);
-                        
-                        frame.dispose();
-                        
-                        // Se realiza el alquiler
-                        Entidad entidadPorAlquilar = ciudad.encontrarEntidadUsableMasCercana(personaAccedida, Patinete.class);
-                        
-                        // Comprobar si se ha encontrado una entidad
-                        if (entidadPorAlquilar == null) {
-                            JOptionPane.showMessageDialog(frame, "No se ha podido encontrar ningún patinete disponible.", "Error", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        
-                        personaAccedida.planearTrayecto(entidadPorAlquilar.getUbicacion(), entidadPorAlquilar);
-                    }
-                }));
-        
-                // Agregar los botones al panel
-                agregarBotones(botones, panel);
-        
-                // Añadir el panel al JFrame
-                frame.add(agregarScroll(panel));
+                    
+                    personaAccedida.planearTrayecto(entidadPorAlquilar.getUbicacion(), entidadPorAlquilar);
+                }
             }
         }));
         

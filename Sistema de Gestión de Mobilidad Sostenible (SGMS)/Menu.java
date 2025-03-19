@@ -52,6 +52,21 @@ public class Menu {
         return frame;
     }
     
+    // Método para crear un JDialog
+    protected JDialog crearNuevoDialogo() {
+        JDialog dialog = new JDialog(); // Sin especificar el Frame, se crea independiente
+        dialog.setModal(true); // Hace que sea modal
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        
+        // Centrar el dialogo en la pantalla
+        dialog.setLocationRelativeTo(null);
+        
+        dialog.setVisible(true);
+        
+        return dialog;
+    }
+    
     // Método para crear un panel con desplazamiento
     public JPanel crearPanel(String nombrePanel) {
         JPanel panel = new JPanel();

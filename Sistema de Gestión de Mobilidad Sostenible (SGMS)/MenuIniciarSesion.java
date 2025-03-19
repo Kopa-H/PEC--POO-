@@ -44,13 +44,13 @@ public class MenuIniciarSesion extends Menu {
     }
     
     private Persona identificarse(Class<?> clasePersona) {
-        Menu menu = new Menu();
-        JDialog dialog = new JDialog((Frame) null, "Identificación de Usuario", true); // Ventana modal
-        dialog.setSize(400, 300);
-        dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
-        
-        // Centrar el diálogo en la pantalla
-        dialog.setLocationRelativeTo(null);
+    Menu menu = new Menu();
+    JDialog dialog = new JDialog((Frame) null, "Identificación de Usuario", true); // Ventana modal
+    dialog.setSize(400, 300);
+    dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
+    
+    // Centrar el diálogo en la pantalla
+    dialog.setLocationRelativeTo(null);
     
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel("MenuIdentificacionUsuario");
