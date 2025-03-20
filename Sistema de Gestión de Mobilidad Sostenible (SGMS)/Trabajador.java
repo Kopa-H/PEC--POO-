@@ -18,6 +18,10 @@ abstract public class Trabajador extends Persona
         super(posX, posY);
     }
     
+    public Entidad getEntidadAsignada() {
+        return entidadAsignada;
+    }
+    
     public boolean isTrabajando() {
         if (entidadAsignada != null) {
             return true;

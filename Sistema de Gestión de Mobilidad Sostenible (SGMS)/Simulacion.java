@@ -166,6 +166,9 @@ public class Simulacion {
         }
         
         interfaz.actualizarStepLabel(step);
+        
+        // Sirve para que se actualice la información mostrada de la casilla señalada de la interfaz
+        interfaz.actualizarInfoCasillaSeleccionada(ciudad);
     }
     
     // Método que actualiza visualmente la posición de una entidad en la cuadrícula

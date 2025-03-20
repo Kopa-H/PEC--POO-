@@ -16,4 +16,6 @@ comment7.params=simulacion
 comment7.target=void\ actualizarEstadoSlider(Simulacion)
 comment8.params=step
 comment8.target=void\ actualizarStepLabel(int)
-numComments=9
+comment9.params=ciudad
+comment9.target=void\ actualizarInfoCasillaSeleccionada(Ciudad)
+numComments=10

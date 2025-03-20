@@ -58,7 +58,7 @@ public class Ciudad {
                 System.out.println("Se ha añadido una " + claseEntidad.getSimpleName() + " en: " + ubi.toString());
                 
                 // Si no existe ninguna base y se está añadiendo un vehículo, se agrega una base
-                if (encontrarEntidad(claseEntidad, 0) == null) {
+                if (encontrarEntidad(Base.class, 0) == null) {
                     agregarBase(simulacion, 2, 2);
                     System.out.println("Se ha añadido una Base dado que no existía ninguna en: " + ubi.toString());
                 }

@@ -203,8 +203,7 @@ public abstract class EntidadMovil extends Entidad {
             // Si la entidad que se está moviendo es un vehículo y se queda sin batería, se termina su trayecto y por ende el de su pasajero
             if (entidadDestino instanceof Vehiculo  vehiculo) {
                 // Si el vehículo al que se está siguiendo sufre un fallo mecánico
-                if (vehiculo.tieneFalloMecanico()) {
-                    vehiculo.activarFalloMecanico();
+                if (vehiculo.tieneAlertaFalloMecanico()) {
                     terminarTrayecto();
                     return;
                 }
@@ -259,8 +258,6 @@ public abstract class EntidadMovil extends Entidad {
                 
                 if (vehiculoEscogido != null) {
                     Base baseEscogida = (Base) randomGenerator.getEntidadRandom(ciudad, baseDestino, Base.class);
-            
-
                     
                     if (baseEscogida != null) {
                         // El usuario alerta de fallo mecánico si la base lo tiene
@@ -270,9 +267,7 @@ public abstract class EntidadMovil extends Entidad {
                         
                         vehiculoEscogido.planearTrayecto(baseEscogida.getUbicacion(), baseEscogida);
 
-                        
                         empezarSeguimiento(vehiculoEscogido);
-
                         
                         baseDestino.vehiculosDisponibles.remove(vehiculoEscogido);
                     } else {

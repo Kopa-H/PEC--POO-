@@ -23,6 +23,9 @@ public class InterfazSimulacion extends JFrame {
 
     private static final int HORIZONTAL_WINDOW_SIZE = 1500;
     private static final int VERTICAL_WINDOW_SIZE = 1000;
+    
+    private int rowSelected = 0;
+    private int colSelected = 0;
 
     public InterfazSimulacion(Simulacion simulacion, Ciudad ciudad, JButton[][] gridButtons, int step) {
         setTitle("Simulación de Ciudad");
@@ -68,6 +71,8 @@ public class InterfazSimulacion extends JFrame {
                     @Override
                     public void mouseEntered(MouseEvent e) {
                         if (!isLocked) {
+                            rowSelected = row;
+                            colSelected = col;
                             actualizarEstadoPanel(ciudad, row, col);
                         }
                     }
@@ -175,5 +180,9 @@ public class InterfazSimulacion extends JFrame {
 
     public void actualizarStepLabel(int step) {
         stepLabel.setText("Paso: " + step);
+    }
+    
+    public void actualizarInfoCasillaSeleccionada(Ciudad ciudad) {
+        actualizarEstadoPanel(ciudad, rowSelected, colSelected);
     }
 }
