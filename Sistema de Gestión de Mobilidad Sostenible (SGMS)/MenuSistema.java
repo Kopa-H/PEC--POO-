@@ -89,7 +89,7 @@ public class MenuSistema extends Menu {
     }
     
     public enum TipoInfoMostrada {
-        TODO, VEHICULOS, BATERIAS
+        VEHICULOS, BATERIAS, ESTADO_MECANICO
     }
     
     public void mostrarInfo(TipoInfoMostrada tipo) {
@@ -151,6 +151,17 @@ public class MenuSistema extends Menu {
                         }
                     }
                     break;
+                    
+                case ESTADO_MECANICO:
+                    // Iterar sobre el ArrayList de entidades y añadir un JLabel para cada entidad
+                    for (Entidad entidad : ciudad.getEntidades()) {
+                        if (entidad instanceof Vehiculo) {
+                        
+                            JLabel label = new JLabel(entidad.toSimpleString() + " con nivel de batería " + entidad.getPorcentajeEstadoMecanico() + "%");  // Usar entidad.toString() para mostrar información
+                            panel.add(label);  // Añadir el JLabel al panel
+                        }
+                    }
+                    break;
             } 
         }
     
@@ -173,9 +184,10 @@ public class MenuSistema extends Menu {
                 mostrarInfo(TipoInfoMostrada.BATERIAS);
             }
         }));
+        
         botones.put("Visualizar Estados Mecánicos", new Boton("VISUALIZAR ESTADOS MECÁNICOS", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Visualizando estados mecánicos");
+                mostrarInfo(TipoInfoMostrada.ESTADO_MECANICO);
             }
         }));
         botones.put("Visualizar Estado de Bases", new Boton("VISUALIZAR ESTADO DE BASES", new ActionListener() {
