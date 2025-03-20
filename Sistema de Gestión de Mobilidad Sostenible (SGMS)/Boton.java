@@ -10,14 +10,15 @@ public class Boton {
     private ActionListener accion;
 
     public Boton(String nombreBoton, ActionListener accion) {
-        this.boton = new JButton();
         this.nombre = nombreBoton;
         this.accion = accion;
         
-        this.accion = accion;
-        this.boton = new JButton(nombre);
+        // Crear el botón con el nombre
+        this.boton = new JButton(nombreBoton);
         this.boton.addActionListener(accion);
-        aplicarEstetica(); // Aplicamos la estética al botón en el momento de su creación
+        
+        // Aplicar la estética al botón
+        aplicarEstetica();
     }
 
     public JButton getBoton() {
@@ -32,14 +33,19 @@ public class Boton {
         return accion;
     }
     
-        private void aplicarEstetica() {
+    private void aplicarEstetica() {
         // Estética profesional para los botones
         Font font = new Font("Arial", Font.PLAIN, 16);
         boton.setFont(font);
         boton.setBackground(new Color(0, 123, 255)); // Azul para los botones
         boton.setForeground(Color.WHITE); // Color de texto blanco
-        boton.setPreferredSize(new Dimension(250, 40)); // Tamaño de los botones
+        
+        // Obtener el tamaño del texto y añadir un margen extra (por ejemplo, 10 píxeles en ambos ejes)
+        int width = boton.getPreferredSize().width + 20; // Añadir espacio extra (10 píxeles en ambos lados)
+        int height = boton.getPreferredSize().height + 10; // Añadir espacio extra arriba y abajo
+        
+        // Establecer el tamaño preferido con el margen extra
+        boton.setPreferredSize(new Dimension(width, height));
     }
 
 }
-
