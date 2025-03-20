@@ -56,7 +56,7 @@ public class Usuario extends Persona {
     }
     
     public void recargarSaldo(double x) {
-        if (saldo > 0) {
+        if (x > 0) {
             saldo += x;
         }
     }

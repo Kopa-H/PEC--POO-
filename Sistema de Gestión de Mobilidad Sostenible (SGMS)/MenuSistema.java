@@ -182,6 +182,150 @@ public class MenuSistema extends Menu {
         panel.revalidate();
         panel.repaint();
     }
+    
+        public Class<?> seleccionarClase(String tipo) {
+        final Class<?>[] claseSeleccionada = {null};
+
+        Menu menu = new Menu();
+        menu.nombre = "Seleccionar Clase";
+        JDialog dialogo = menu.crearNuevoDialogo();
+
+        // Crear el panel para el submenú
+        JPanel panel = menu.crearPanel();
+
+        String nombreBoton;
+
+        if (tipo.equalsIgnoreCase("vehiculo")) {
+            // Vehículos
+            nombreBoton = "Seleccionar Moto";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Moto.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Bicicleta";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Bicicleta.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Patinete";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Patinete.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+        } else if (tipo.equalsIgnoreCase("entidad")) {
+            // Entidades
+            nombreBoton = "Seleccionar Base";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Base.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Moto";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Moto.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Bicicleta";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Bicicleta.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Patinete";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Patinete.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+        }
+
+        // Agregar los botones al panel
+        agregarBotones(menu.botones, panel);
+
+        // Añadir el panel al JFrame
+        dialogo.add(agregarScroll(panel));
+
+        dialogo.setVisible(true);
+
+        return claseSeleccionada[0];  // Devolver la clase seleccionada
+    }
+    
+    public static int seleccionarIndice() {
+        final int[] indiceSeleccionado = {-1}; // -1 por defecto si no se selecciona un índice
+
+        // Crear el diálogo
+        Menu menu = new Menu();
+        menu.nombre = "Seleccionar Índice";
+        JDialog dialogo = menu.crearNuevoDialogo();
+
+        // Crear el panel para el submenú
+        JPanel panel = menu.crearPanel();
+
+        // Etiqueta para el campo de texto
+        JLabel etiqueta = new JLabel("Introduce un índice válido (0 o mayor):");
+        panel.add(etiqueta, BorderLayout.NORTH);
+
+        // Campo de texto para el índice
+        JTextField campoIndice = new JTextField(10);
+        panel.add(campoIndice, BorderLayout.CENTER);
+
+        // Botón para aceptar el índice
+        JButton botonAceptar = new JButton("Aceptar");
+        botonAceptar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int indice = Integer.parseInt(campoIndice.getText());
+                    if (indice >= 0) {
+                        indiceSeleccionado[0] = indice;
+                    } else {
+                        JOptionPane.showMessageDialog(dialogo, "El índice debe ser mayor o igual a 0.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(dialogo, "Por favor, introduce un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                dialogo.dispose(); // Cerrar el diálogo tras la selección
+            }
+        });
+
+        // Botón para cancelar
+        JButton botonCancelar = new JButton("Cancelar");
+        botonCancelar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dialogo.dispose(); // Cerrar el diálogo sin selección
+            }
+        });
+
+        // Agregar los botones al panel
+        JPanel botonesPanel = new JPanel();
+        botonesPanel.add(botonAceptar);
+        botonesPanel.add(botonCancelar);
+        panel.add(botonesPanel, BorderLayout.SOUTH);
+
+        // Añadir el panel al JFrame
+        dialogo.add(panel);
+
+        // Mostrar el diálogo
+        dialogo.pack();
+        dialogo.setVisible(true);
+
+        return indiceSeleccionado[0]; // Devolver el índice seleccionado
+    }
 
     private void agregarOpcionesAdministrador() {
         // Botones existentes
@@ -351,150 +495,6 @@ public class MenuSistema extends Menu {
         frame.setVisible(true);
     }
     
-    public Class<?> seleccionarClase(String tipo) {
-        final Class<?>[] claseSeleccionada = {null};
-
-        Menu menu = new Menu();
-        menu.nombre = "Seleccionar Clase";
-        JDialog dialogo = menu.crearNuevoDialogo();
-
-        // Crear el panel para el submenú
-        JPanel panel = menu.crearPanel();
-
-        String nombreBoton;
-
-        if (tipo.equalsIgnoreCase("vehiculo")) {
-            // Vehículos
-            nombreBoton = "Seleccionar Moto";
-            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    claseSeleccionada[0] = Moto.class;
-                    dialogo.dispose(); // Cerrar el diálogo tras la selección
-                }
-            }));
-
-            nombreBoton = "Seleccionar Bicicleta";
-            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    claseSeleccionada[0] = Bicicleta.class;
-                    dialogo.dispose(); // Cerrar el diálogo tras la selección
-                }
-            }));
-
-            nombreBoton = "Seleccionar Patinete";
-            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    claseSeleccionada[0] = Patinete.class;
-                    dialogo.dispose(); // Cerrar el diálogo tras la selección
-                }
-            }));
-        } else if (tipo.equalsIgnoreCase("entidad")) {
-            // Entidades
-            nombreBoton = "Seleccionar Base";
-            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    claseSeleccionada[0] = Base.class;
-                    dialogo.dispose(); // Cerrar el diálogo tras la selección
-                }
-            }));
-
-            nombreBoton = "Seleccionar Moto";
-            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    claseSeleccionada[0] = Moto.class;
-                    dialogo.dispose(); // Cerrar el diálogo tras la selección
-                }
-            }));
-
-            nombreBoton = "Seleccionar Bicicleta";
-            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    claseSeleccionada[0] = Bicicleta.class;
-                    dialogo.dispose(); // Cerrar el diálogo tras la selección
-                }
-            }));
-
-            nombreBoton = "Seleccionar Patinete";
-            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    claseSeleccionada[0] = Patinete.class;
-                    dialogo.dispose(); // Cerrar el diálogo tras la selección
-                }
-            }));
-        }
-
-        // Agregar los botones al panel
-        agregarBotones(menu.botones, panel);
-
-        // Añadir el panel al JFrame
-        dialogo.add(agregarScroll(panel));
-
-        dialogo.setVisible(true);
-
-        return claseSeleccionada[0];  // Devolver la clase seleccionada
-    }
-    
-    public static int seleccionarIndice() {
-        final int[] indiceSeleccionado = {-1}; // -1 por defecto si no se selecciona un índice
-
-        // Crear el diálogo
-        Menu menu = new Menu();
-        menu.nombre = "Seleccionar Índice";
-        JDialog dialogo = menu.crearNuevoDialogo();
-
-        // Crear el panel para el submenú
-        JPanel panel = menu.crearPanel();
-
-        // Etiqueta para el campo de texto
-        JLabel etiqueta = new JLabel("Introduce un índice válido (0 o mayor):");
-        panel.add(etiqueta, BorderLayout.NORTH);
-
-        // Campo de texto para el índice
-        JTextField campoIndice = new JTextField(10);
-        panel.add(campoIndice, BorderLayout.CENTER);
-
-        // Botón para aceptar el índice
-        JButton botonAceptar = new JButton("Aceptar");
-        botonAceptar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int indice = Integer.parseInt(campoIndice.getText());
-                    if (indice >= 0) {
-                        indiceSeleccionado[0] = indice;
-                    } else {
-                        JOptionPane.showMessageDialog(dialogo, "El índice debe ser mayor o igual a 0.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(dialogo, "Por favor, introduce un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                dialogo.dispose(); // Cerrar el diálogo tras la selección
-            }
-        });
-
-        // Botón para cancelar
-        JButton botonCancelar = new JButton("Cancelar");
-        botonCancelar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialogo.dispose(); // Cerrar el diálogo sin selección
-            }
-        });
-
-        // Agregar los botones al panel
-        JPanel botonesPanel = new JPanel();
-        botonesPanel.add(botonAceptar);
-        botonesPanel.add(botonCancelar);
-        panel.add(botonesPanel, BorderLayout.SOUTH);
-
-        // Añadir el panel al JFrame
-        dialogo.add(panel);
-
-        // Mostrar el diálogo
-        dialogo.pack();
-        dialogo.setVisible(true);
-
-        return indiceSeleccionado[0]; // Devolver el índice seleccionado
-    }
-    
     private void agregarOpcionesUsuarioNormal() {
         
         // CONSULTAR VEHÍCULOS DISPONIBLES
@@ -548,16 +548,97 @@ public class MenuSistema extends Menu {
                 JOptionPane.showMessageDialog(frame, "Visualizando historial de viajes");
             }
         }));
-        botones.put("Consultar Saldo Disponible", new Boton("CONSULTAR SALDO DISPONIBLE", new ActionListener() {
+        
+        String nombreBoton = "Consultar / Recargar Saldo";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Consultando saldo disponible");
+                Menu menu = new Menu();
+                menu.nombre = "Gestor Entidades";
+                JFrame frame = menu.crearNuevaVentana();
+                
+                // Crear el panel para el submenú
+                JPanel panel = menu.crearPanel();
+                
+                // Crear un JLabel para mostrar el saldo
+                JLabel saldoLabel = new JLabel("Saldo disponible: " + ((Usuario)personaAccedida).getSaldo() + "€");
+                panel.add(saldoLabel);
+                
+                String nombreBoton = "Recargar saldo";
+                menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        Menu menu = new Menu();
+                        menu.nombre = "Recargar saldo";
+                        
+                        // Crear un nuevo diálogo para la recarga de saldo
+                        JDialog dialogo = menu.crearNuevoDialogo();
+                        dialogo.setTitle("Recargar Saldo");
+                        
+                        // Crear un panel para añadir los elementos
+                        JPanel panel = new JPanel();
+                        dialogo.add(panel);
+                        
+                        // Crear el input para la cantidad a recargar
+                        JLabel label = new JLabel("Introduce la cantidad a recargar:");
+                        JTextField inputCantidad = new JTextField(10);  // Campo de texto para introducir la cantidad
+                        
+                        panel.add(label);
+                        panel.add(inputCantidad);
+                        
+                        // Botón de aceptar
+                        JButton aceptarButton = new JButton("Aceptar");
+                        aceptarButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                try {
+                                    // Obtener la cantidad introducida
+                                    double cantidad = Double.parseDouble(inputCantidad.getText());
+                                    
+                                    // Verificar que la cantidad sea mayor que 0
+                                    if (cantidad <= 0) {
+                                        JOptionPane.showMessageDialog(dialogo, "Introduce una cantidad mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
+                                    } else {
+                                        // Lógica para recargar el saldo
+                                        ((Usuario)personaAccedida).recargarSaldo(cantidad);
+                                        
+                                        // Actualizar el JLabel del saldo
+                                        saldoLabel.setText("Saldo disponible: " + ((Usuario)personaAccedida).getSaldo() + "€");
+                                        
+                                        dialogo.dispose();  // Cerrar el diálogo después de la recarga
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    // Manejar el error si no se introduce un número válido
+                                    JOptionPane.showMessageDialog(dialogo, "Introduce una cantidad válida", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                        });
+                        
+                        // Botón de cancelar
+                        JButton cancelarButton = new JButton("Cancelar");
+                        cancelarButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                dialogo.dispose();  // Cerrar el diálogo si se cancela la operación
+                            }
+                        });
+                        
+                        // Añadir los botones al panel
+                        panel.add(aceptarButton);
+                        panel.add(cancelarButton);
+                        
+                        // Ajustar el tamaño del diálogo y hacerlo visible
+                        dialogo.pack();
+                        dialogo.setVisible(true);
+                    }
+                }));
+        
+                // Agregar los botones al panel
+                agregarBotones(menu.botones, panel);
+                
+                // Añadir el panel al JFrame
+                frame.add(agregarScroll(panel));
+                
+                frame.setVisible(true);
             }
         }));
-        botones.put("Recargar Saldo", new Boton("RECARGAR SALDO", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Recargando saldo");
-            }
-        }));
+        
         botones.put("Consultar Moto Cercana", new Boton("CONSULTAR MOTO CERCANA", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Consultando moto cercana");
