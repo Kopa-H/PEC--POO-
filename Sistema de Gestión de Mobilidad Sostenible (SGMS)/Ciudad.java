@@ -30,14 +30,86 @@ public class Ciudad {
         entidades.add(entidad);
     }
     
-    public Entidad encontrarEntidadUsableMasCercana(EntidadMovil entidadBuscando, Class<?> tipoEntidad) {
+        /**
+     * Método para agregar n entidades de un tipo específico en ubicaciones aleatorias.
+     * 
+     * @param cantidad La cantidad de entidades a agregar.
+     * @param tipoEntidad El tipo de entidad a agregar (por ejemplo, Usuario, Moto, Base).
+     * @param ciudad La ciudad en la que se agregan las entidades.
+     * @return La última entidad creada.
+     */
+    public <T extends Entidad> T agregarEntidad(Simulacion simulacion, int cantidad, Class<T> claseEntidad) {
+        T ultimaEntidad = null;  // Variable para almacenar la última entidad creada
+        RandomGenerator randomGenerator = new RandomGenerator();
+        
+        for (int i = 0; i < cantidad; i++) {
+            Ubicacion ubi = randomGenerator.getUbicacionLibreRandom(this);
+            
+            try {
+                // Crear la entidad de acuerdo con el tipo y la ubicación
+                T entidad = claseEntidad.getConstructor(int.class, int.class).newInstance(ubi.getPosX(), ubi.getPosY());
+                ultimaEntidad = entidad;  // Actualizar la última entidad creada
+    
+                // Añadir la entidad a la ciudad
+                addElement((Entidad) entidad);
+                Color color = entidad.getColor();
+                simulacion.mostrarEntidad(entidad.getUbicacion(), color);
+                
+                System.out.println("Se ha añadido una " + claseEntidad.getSimpleName() + " en: " + ubi.toString());
+                
+                // Si no existe ninguna base y se está añadiendo un vehículo, se agrega una base
+                if (encontrarEntidad(claseEntidad, 0) == null) {
+                    agregarBase(simulacion, 2, 2);
+                    System.out.println("Se ha añadido una Base dado que no existía ninguna en: " + ubi.toString());
+                }
+            
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return ultimaEntidad;  // Retornar la última entidad creada
+    }
+    
+        
+    public void agregarBase(Simulacion simulacion, int numBicicletas, int numPatinetes) {
+        Base base = agregarEntidad(simulacion, 1, Base.class);
+        
+        for (int i = 0; i < numBicicletas; i++) {
+            // Añadir bici
+            Bicicleta bici = new Bicicleta(base.getUbicacion().getPosX(), base.getUbicacion().getPosY());
+            base.agregarVehiculoDisponible(bici);
+            addElement(bici); 
+            System.out.println("Se ha añadido una bici a la base.");
+        }
+        
+        for (int i = 0; i < numPatinetes; i++) {
+            // Añadir patinete
+            Patinete patinete = new Patinete(base.getUbicacion().getPosX(), base.getUbicacion().getPosY());
+            base.agregarVehiculoDisponible(patinete);
+            addElement(patinete); 
+            System.out.println("Se ha añadido un patinete a la base.");
+        }
+    }
+    
+    public Entidad encontrarEntidad(Class<?> claseEntidad, int indiceEntidad) {
+        for (Entidad entidad : entidades) {
+            if (claseEntidad.isInstance(entidad) && entidad.getId() == indiceEntidad) {
+                return entidad;
+            }
+        }
+        
+        return null;
+    }
+    
+    public Entidad encontrarEntidadUsableMasCercana(EntidadMovil entidadBuscando, Class<?> claseEntidad) {
         Entidad entidadMasCercana = null;
         int distanciaMinima = Integer.MAX_VALUE; // Inicializamos con el valor más alto posible
     
         // Iteramos sobre las entidades
         for (Entidad entidad : entidades) {
             // Comprobamos si la entidad es una instancia del tipo proporcionado
-            if (tipoEntidad.isInstance(entidad)) {
+            if (claseEntidad.isInstance(entidad)) {
                 
                 // SE REALIZAN COMPROBACIONES DE QUE LA ENTIDAD ES VÁLIDA PARA SER USADA
                 
@@ -100,11 +172,11 @@ public class Ciudad {
         return false; // La posición no está ocupada
     }
 
-    public boolean posicionOcupadaPor(Ubicacion ubicacion, Class<?> tipoEntidad) {
+    public boolean posicionOcupadaPor(Ubicacion ubicacion, Class<?> claseEntidad) {
         // Iterar sobre las entidades existentes
         for (Entidad entidad : entidades) {
             // Comprobamos si la entidad es una instancia del tipo proporcionado
-            if (tipoEntidad.isInstance(entidad)) {
+            if (claseEntidad.isInstance(entidad)) {
                 
                 if (entidad.getUbicacion().getPosX() == ubicacion.getPosX() && entidad.getUbicacion().getPosY() == ubicacion.getPosY()) {
                     return true; // La posición está ocupada por una entidad del tipo especificado

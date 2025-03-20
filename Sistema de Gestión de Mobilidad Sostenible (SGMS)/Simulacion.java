@@ -173,96 +173,41 @@ public class Simulacion {
         gridButtons[ubi.getPosX()][ubi.getPosY()].setBackground(color); // Actualiza la celda correspondiente
     }
 
-    /**
-     * Método para agregar n entidades de un tipo específico en ubicaciones aleatorias.
-     * 
-     * @param cantidad La cantidad de entidades a agregar.
-     * @param tipoEntidad El tipo de entidad a agregar (por ejemplo, Usuario, Moto, Base).
-     * @param ciudad La ciudad en la que se agregan las entidades.
-     * @return La última entidad creada.
-     */
-    private <T extends Entidad> T agregarEntidad(int cantidad, Class<T> tipoEntidad) {
-        T ultimaEntidad = null;  // Variable para almacenar la última entidad creada
-        RandomGenerator randomGenerator = new RandomGenerator();
-        
-        for (int i = 0; i < cantidad; i++) {
-            Ubicacion ubi = randomGenerator.getUbicacionLibreRandom(ciudad);
-            
-            try {
-                // Crear la entidad de acuerdo con el tipo y la ubicación
-                T entidad = tipoEntidad.getConstructor(int.class, int.class).newInstance(ubi.getPosX(), ubi.getPosY());
-                ultimaEntidad = entidad;  // Actualizar la última entidad creada
-    
-                // Añadir la entidad a la ciudad
-                ciudad.addElement((Entidad) entidad);
-                Color color = entidad.getColor();
-                this.mostrarEntidad(entidad.getUbicacion(), color);
-                System.out.println("Se ha añadido una " + tipoEntidad.getSimpleName() + " en:" + ubi.toString());
-            
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return ultimaEntidad;  // Retornar la última entidad creada
-    }
-    
     public void agregarUsuarioNormal() {
-        agregarEntidad(1, Usuario.class);
+        ciudad.agregarEntidad(this, 1, Usuario.class);
     }
     
     public void agregarUsuarioPremium() {
-        Usuario usuario = agregarEntidad(1, Usuario.class);
+        Usuario usuario = ciudad.agregarEntidad(this, 1, Usuario.class);
         usuario.promocionarUsuario();
     }
     
     public void agregarTecnicoMantenimiento() {
-        agregarEntidad(1, TecnicoMantenimiento.class);
+        ciudad.agregarEntidad(this, 1, TecnicoMantenimiento.class);
     }
     
     public void agregarMecanico() {
-        agregarEntidad(1, Mecanico.class);
+        ciudad.agregarEntidad(this, 1, Mecanico.class);
     }
     
     public void agregarMoto() {
-        agregarEntidad(1, Moto.class);
+        ciudad.agregarEntidad(this, 1, Moto.class);
     }
-    
-    public void agregarBase(int numBicicletas, int numPatinetes) {
-        Base base = agregarEntidad(1, Base.class);
-        
-        for (int i = 0; i < numBicicletas; i++) {
-            // Añadir bici
-            Bicicleta bici = new Bicicleta(base.getUbicacion().getPosX(), base.getUbicacion().getPosY());
-            base.agregarVehiculoDisponible(bici);
-            ciudad.addElement(bici); 
-            System.out.println("Se ha añadido una bici a la base.");
-        }
-        
-        for (int i = 0; i < numPatinetes; i++) {
-            // Añadir patinete
-            Patinete patinete = new Patinete(base.getUbicacion().getPosX(), base.getUbicacion().getPosY());
-            base.agregarVehiculoDisponible(patinete);
-            ciudad.addElement(patinete); 
-            System.out.println("Se ha añadido un patinete a la base.");
-        }
-    }
-
     
     public void agregarGrupoEntidades() {
         // Añadimos n usuarios
-        agregarEntidad(6, Usuario.class);
+        ciudad.agregarEntidad(this, 6, Usuario.class);
         
         // Añadimos n trabajadores de mantenimiento
-        agregarEntidad(2, TecnicoMantenimiento.class);
+        ciudad.agregarEntidad(this, 2, TecnicoMantenimiento.class);
         
         // Añadimos n trabajadores de mecánica
-        agregarEntidad(2, Mecanico.class);
+        ciudad.agregarEntidad(this, 2, Mecanico.class);
         
         // Añadimos n motos en ubicaciones aleatorias
-        agregarEntidad(6, Moto.class);
+        ciudad.agregarEntidad(this, 6, Moto.class);
 
         // Añadimos n bases con vehículos (en este caso, ya se añadieron en el método anterior)
-        agregarBase(2, 2);
+        ciudad.agregarBase(this, 2, 2);
     }
 }

@@ -27,14 +27,16 @@ public class GestorMenus extends Menu {
         // Se crea un JPanel que usa la organización de CardLayout
         cardsPanel = new JPanel(cardLayout);
 
-        frame = crearNuevaVentana(); // Se crea una nueva ventana para GestorMenus, por la que se navegará a los distintos submenús
+        Menu menu = new Menu();
+        menu.nombre = "Gestor Menús";
+
+        frame = menu.crearNuevaVentana(); // Se crea una nueva ventana para GestorMenus, por la que se navegará a los distintos submenús
         frame.add(cardsPanel); 
-        frame.setTitle("Gestor Menús");  // Establece el título de la ventana
         
-        panel = crearPanel("GestorMenus");
+        JPanel panel = menu.crearPanel();
         
         // Añadir los menús al contenedor CardLayout
-        cardsPanel.add(panel, "GestorMenus");  // Añadir el panel principal al CardLayout
+        cardsPanel.add(panel, menu.nombre);  // Añadir el panel principal al CardLayout
         
         LinkedHashMap<String, Boton> botones = new LinkedHashMap<>();
         // Crear y añadir el botón de iniciar sesión al HashMap
@@ -55,7 +57,7 @@ public class GestorMenus extends Menu {
         // Al navegar a un nuevo panel, lo agregamos a la pila
         panelHistory.push(panel);
         agregarBotonAtras(menuIniciarSesion.panel);
-        cardsPanel.add(menuIniciarSesion.panel, "IniciarSesion");
+        cardsPanel.add(menuIniciarSesion.panel, menuIniciarSesion.nombreMenuPrincipal);
         navegarA(menuIniciarSesion.panel);
     }
     

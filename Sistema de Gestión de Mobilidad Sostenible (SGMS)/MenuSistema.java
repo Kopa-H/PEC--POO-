@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,13 +11,14 @@ public class MenuSistema extends Menu {
     private GestorMenus gestorMenus;
     private JFrame frame;
     
-    private Persona personaAccedida;
+    protected String nombreMenuPrincipal;
     
     protected int WINDOW_WIDTH = 600;
     protected int WINDOW_HEIGHT = 700;
     
     Simulacion simulacion;
     Ciudad ciudad;
+    Persona personaAccedida;
 
     /**
      * Constructor para la clase MenuSistema
@@ -31,9 +33,14 @@ public class MenuSistema extends Menu {
         this.gestorMenus = gestorMenus;
         this.frame = gestorMenus.frame;
 
+        Menu menu = new Menu();
+        menu.nombre = "Menú " + tipoUsuario.name();
+        this.nombreMenuPrincipal = menu.nombre; 
+        
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        frame.setTitle("Menú " + tipoUsuario.name());
-        panel = crearPanel("Menu" + tipoUsuario.name());
+        frame.setTitle(menu.nombre);
+        
+        panel = menu.crearPanel();
         panel.setBackground(Color.GREEN);
         
         agregarBotonesMenu();
@@ -139,63 +146,264 @@ public class MenuSistema extends Menu {
         }));
     }
     
-    public Class<?> seleccionarClaseVehiculo() {
-        final Class<?>[] claseVehiculoSeleccionado = {null};
-    
+    public void iniciarGestorEntidades() {
         Menu menu = new Menu();
-        JDialog dialogo = menu.crearNuevoDialogo();
-        dialogo.setTitle("Seleccionar Clase Vehículo");
+        menu.nombre = "Gestor Entidades";
+        JFrame frame = menu.crearNuevaVentana();
         
         // Crear el panel para el submenú
-        JPanel panel = menu.crearPanel("SeleccionClaseVehiculo");
+        JPanel panel = menu.crearPanel();
+        
+        // Crear y añadir los botones con sus funcionalidades
+        menu.botones.put("AgregarUsuarioNormal", new Boton("Agregar Usuario Normal", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                simulacion.agregarUsuarioNormal(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
+            }
+        }));
+        menu.botones.put("AgregarUsuarioPremium", new Boton("Agregar Usuario Premium", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                simulacion.agregarUsuarioPremium(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
+            }
+        }));
+        menu.botones.put("AgregarTecnicoMantenimiento", new Boton("Agregar Técnico Mantenimiento", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                simulacion.agregarTecnicoMantenimiento(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
+            }
+        }));
+        menu.botones.put("AgregarMecanico", new Boton("Agregar Mecánico", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                simulacion.agregarMecanico(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
+            }
+        }));
+        
+        // Crear y añadir los botones con sus funcionalidades
+        menu.botones.put("AgregarMoto", new Boton("Agregar Moto", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                simulacion.agregarMoto(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
+            }
+        }));
+        menu.botones.put("AgregarBase", new Boton("Agregar Base", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Crear una nueva ventana de diálogo para pedir las cantidades de bicicletas y patinetes
+                Menu menu = new Menu();
+                menu.nombre = "Seleccionar Clase Vehículo";
+                JDialog dialogo = menu.crearNuevoDialogo();
+                
+                // Crear los campos de texto para ingresar el número de bicicletas y patinetes
+                JTextField bicicletasField = new JTextField();
+                JTextField patinetesField = new JTextField();
+                
+                // Etiquetas para los campos
+                dialogo.add(new JLabel("Número de Bicicletas:"));
+                dialogo.add(bicicletasField);
+                dialogo.add(new JLabel("Número de Patinetes:"));
+                dialogo.add(patinetesField);
+                
+                // Botón para confirmar y cerrar el diálogo
+                JButton aceptarButton = new JButton("Aceptar");
+                aceptarButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            // Obtener los valores de las bicicletas y patinetes
+                            int numBicicletas = Integer.parseInt(bicicletasField.getText());
+                            int numPatinetes = Integer.parseInt(patinetesField.getText());
+                            
+                            // Llamar a simulacion.agregarBase con los valores
+                            ciudad.agregarBase(simulacion, numBicicletas, numPatinetes);
+                            
+                            // Cerrar el diálogo
+                            dialogo.dispose();
+                        } catch (NumberFormatException ex) {
+                            // Manejar el error si los campos no tienen valores numéricos válidos
+                            JOptionPane.showMessageDialog(dialogo, "Por favor ingrese números válidos.");
+                        }
+                    }
+                });
+                // Botón de cancelar para cerrar el diálogo sin hacer nada
+                JButton cancelarButton = new JButton("Cancelar");
+                cancelarButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dialogo.dispose();  // Cerrar el diálogo sin hacer nada
+                    }
+                });
+                
+                // Añadir los botones al diálogo
+                dialogo.add(aceptarButton);
+                dialogo.add(cancelarButton);
+                
+                dialogo.setVisible(true);
+            }
+        }));
+        
+        menu.botones.put("AgregarGrupoEntidades", new Boton("Agregar Grupo Entidades", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                simulacion.agregarGrupoEntidades(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
+            }
+        }));
 
-        String nombreBoton;
-        
-        nombreBoton = "Seleccionar Moto";
-        menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                claseVehiculoSeleccionado[0] = Moto.class;
-                dialogo.dispose(); // Cerrar el diálogo tras la selección
-            }
-        }));
-        
-        nombreBoton = "Seleccionar Bicicleta";
-        menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                claseVehiculoSeleccionado[0] = Bicicleta.class;
-                dialogo.dispose(); // Cerrar el diálogo tras la selección
-            }
-        }));
-        
-        nombreBoton = "Seleccionar Patinete";
-        menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                claseVehiculoSeleccionado[0] = Patinete.class;
-                dialogo.dispose(); // Cerrar el diálogo tras la selección
-            }
-        }));
-    
         // Agregar los botones al panel
         agregarBotones(menu.botones, panel);
         
         // Añadir el panel al JFrame
-        dialogo.add(agregarScroll(panel));
+        frame.add(agregarScroll(panel));
         
+        frame.setVisible(true);
+    }
+    
+    public Class<?> seleccionarClase(String tipo) {
+        final Class<?>[] claseSeleccionada = {null};
+
+        Menu menu = new Menu();
+        menu.nombre = "Seleccionar Clase";
+        JDialog dialogo = menu.crearNuevoDialogo();
+
+        // Crear el panel para el submenú
+        JPanel panel = menu.crearPanel();
+
+        String nombreBoton;
+
+        if (tipo.equalsIgnoreCase("vehiculo")) {
+            // Vehículos
+            nombreBoton = "Seleccionar Moto";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Moto.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Bicicleta";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Bicicleta.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Patinete";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Patinete.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+        } else if (tipo.equalsIgnoreCase("entidad")) {
+            // Entidades
+            nombreBoton = "Seleccionar Base";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Base.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Moto";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Moto.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Bicicleta";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Bicicleta.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+
+            nombreBoton = "Seleccionar Patinete";
+            menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    claseSeleccionada[0] = Patinete.class;
+                    dialogo.dispose(); // Cerrar el diálogo tras la selección
+                }
+            }));
+        }
+
+        // Agregar los botones al panel
+        agregarBotones(menu.botones, panel);
+
+        // Añadir el panel al JFrame
+        dialogo.add(agregarScroll(panel));
+
         dialogo.setVisible(true);
 
-        return claseVehiculoSeleccionado[0];  // Devolver el vehículo seleccionado
+        return claseSeleccionada[0];  // Devolver la clase seleccionada
+    }
+    
+    public static int seleccionarIndice() {
+        final int[] indiceSeleccionado = {-1}; // -1 por defecto si no se selecciona un índice
+
+        // Crear el diálogo
+        Menu menu = new Menu();
+        menu.nombre = "Seleccionar Índice";
+        JDialog dialogo = menu.crearNuevoDialogo();
+
+        // Crear el panel para el submenú
+        JPanel panel = menu.crearPanel();
+
+        // Etiqueta para el campo de texto
+        JLabel etiqueta = new JLabel("Introduce un índice válido (0 o mayor):");
+        panel.add(etiqueta, BorderLayout.NORTH);
+
+        // Campo de texto para el índice
+        JTextField campoIndice = new JTextField(10);
+        panel.add(campoIndice, BorderLayout.CENTER);
+
+        // Botón para aceptar el índice
+        JButton botonAceptar = new JButton("Aceptar");
+        botonAceptar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int indice = Integer.parseInt(campoIndice.getText());
+                    if (indice >= 0) {
+                        indiceSeleccionado[0] = indice;
+                    } else {
+                        JOptionPane.showMessageDialog(dialogo, "El índice debe ser mayor o igual a 0.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(dialogo, "Por favor, introduce un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                dialogo.dispose(); // Cerrar el diálogo tras la selección
+            }
+        });
+
+        // Botón para cancelar
+        JButton botonCancelar = new JButton("Cancelar");
+        botonCancelar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dialogo.dispose(); // Cerrar el diálogo sin selección
+            }
+        });
+
+        // Agregar los botones al panel
+        JPanel botonesPanel = new JPanel();
+        botonesPanel.add(botonAceptar);
+        botonesPanel.add(botonCancelar);
+        panel.add(botonesPanel, BorderLayout.SOUTH);
+
+        // Añadir el panel al JFrame
+        dialogo.add(panel);
+
+        // Mostrar el diálogo
+        dialogo.pack();
+        dialogo.setVisible(true);
+
+        return indiceSeleccionado[0]; // Devolver el índice seleccionado
     }
         
     private void agregarOpcionesUsuarioNormal() {
+        // CONSULTAR VEHÍCULOS DISPONIBLES
         botones.put("Consultar Vehículos Disponibles", new Boton("CONSULTAR VEHÍCULOS DISPONIBLES", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Menu menu = new Menu();
+                menu.nombre = "Vehículos Disponibles";
                 JFrame frame = menu.crearNuevaVentana();
-                frame.setTitle("Vehículos Disponibles");
-                frame.setSize(600, 400);  // Ajusta el tamaño a tus necesidades
                 
                 // Crear el panel para el submenú
-                JPanel panel = menu.crearPanel("VehiculosDisponibles");
+                JPanel panel = menu.crearPanel();
                 panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Dispone los componentes de forma vertical
                 
                 // Añadir el panel al frame
@@ -241,9 +449,10 @@ public class MenuSistema extends Menu {
             }
         }));
 
+        // ALQUILAR VEHÍCULOS
         botones.put("Alquilar Vehículo", new Boton("ALQUILAR VEHÍCULO", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Class<?> claseVehiculo = seleccionarClaseVehiculo();
+                Class<?> claseVehiculo = seleccionarClase("vehiculo");
                 
                 if (claseVehiculo != null) {
                 
@@ -262,7 +471,21 @@ public class MenuSistema extends Menu {
         
         botones.put("Alertar Fallo Mecánico", new Boton("ALERTAR FALLO MECÁNICO", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Alertando de fallo mecánico");
+                Class<?> claseEntidad = seleccionarClase("entidad");
+                
+                if (claseEntidad != null) {
+                    int indice = seleccionarIndice();
+                    
+                    Entidad entidad = ciudad.encontrarEntidad(claseEntidad, indice);
+                    
+                    if (entidad == null) {
+                        JOptionPane.showMessageDialog(frame, "No se ha encontrado la entidad indicada.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    
+                    ((Usuario)personaAccedida).alertarFalloMecanico(entidad);
+                }
+                
             }
         }));
         botones.put("Visualización Historial de Viajes", new Boton("VISUALIZACIÓN HISTORIAL DE VIAJES", new ActionListener() {
@@ -309,112 +532,5 @@ public class MenuSistema extends Menu {
                 JOptionPane.showMessageDialog(frame, "Definiendo periodo de inactividad del vehículo");
             }
         }));
-    }
-    
-    // APARTADO DE FUNCIONES DE SUBMENUS
-    
-    public void iniciarGestorEntidades() {
-        Menu menu = new Menu();
-        JFrame frame = menu.crearNuevaVentana();
-        frame.setTitle("Gestor Entidades");
-        frame.setSize(600, 400);  // Ajusta el tamaño a tus necesidades
-        
-        // Crear el panel para el submenú
-        JPanel panel = menu.crearPanel("MenuGestorEntidades");
-        
-        // Crear y añadir los botones con sus funcionalidades
-        menu.botones.put("AgregarUsuarioNormal", new Boton("Agregar Usuario Normal", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                simulacion.agregarUsuarioNormal(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
-            }
-        }));
-        menu.botones.put("AgregarUsuarioPremium", new Boton("Agregar Usuario Premium", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                simulacion.agregarUsuarioPremium(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
-            }
-        }));
-        menu.botones.put("AgregarTecnicoMantenimiento", new Boton("Agregar Técnico Mantenimiento", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                simulacion.agregarTecnicoMantenimiento(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
-            }
-        }));
-        menu.botones.put("AgregarMecanico", new Boton("Agregar Mecánico", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                simulacion.agregarMecanico(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
-            }
-        }));
-        
-        // Crear y añadir los botones con sus funcionalidades
-        menu.botones.put("AgregarMoto", new Boton("Agregar Moto", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                simulacion.agregarMoto(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
-            }
-        }));
-        menu.botones.put("AgregarBase", new Boton("Agregar Base", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Crear una nueva ventana de diálogo para pedir las cantidades de bicicletas y patinetes
-                Menu menu = new Menu();
-                JDialog dialogo = menu.crearNuevoDialogo();
-                dialogo.setTitle("Seleccionar Clase Vehículo");
-                
-                // Crear los campos de texto para ingresar el número de bicicletas y patinetes
-                JTextField bicicletasField = new JTextField();
-                JTextField patinetesField = new JTextField();
-                
-                // Etiquetas para los campos
-                dialogo.add(new JLabel("Número de Bicicletas:"));
-                dialogo.add(bicicletasField);
-                dialogo.add(new JLabel("Número de Patinetes:"));
-                dialogo.add(patinetesField);
-                
-                // Botón para confirmar y cerrar el diálogo
-                JButton aceptarButton = new JButton("Aceptar");
-                aceptarButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        try {
-                            // Obtener los valores de las bicicletas y patinetes
-                            int numBicicletas = Integer.parseInt(bicicletasField.getText());
-                            int numPatinetes = Integer.parseInt(patinetesField.getText());
-                            
-                            // Llamar a simulacion.agregarBase con los valores
-                            simulacion.agregarBase(numBicicletas, numPatinetes);
-                            
-                            // Cerrar el diálogo
-                            dialogo.dispose();
-                        } catch (NumberFormatException ex) {
-                            // Manejar el error si los campos no tienen valores numéricos válidos
-                            JOptionPane.showMessageDialog(dialogo, "Por favor ingrese números válidos.");
-                        }
-                    }
-                });
-                // Botón de cancelar para cerrar el diálogo sin hacer nada
-                JButton cancelarButton = new JButton("Cancelar");
-                cancelarButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        dialogo.dispose();  // Cerrar el diálogo sin hacer nada
-                    }
-                });
-                
-                // Añadir los botones al diálogo
-                dialogo.add(aceptarButton);
-                dialogo.add(cancelarButton);
-                
-                dialogo.setVisible(true);
-            }
-        }));
-        
-        menu.botones.put("AgregarGrupoEntidades", new Boton("Agregar Grupo Entidades", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                simulacion.agregarGrupoEntidades(); // Asegúrate de que este método está bien definido en la clase 'simulacion'
-            }
-        }));
-
-        // Agregar los botones al panel
-        agregarBotones(menu.botones, panel);
-        
-        // Añadir el panel al JFrame
-        frame.add(agregarScroll(panel));
-        
-        frame.setVisible(true);
     }
 }

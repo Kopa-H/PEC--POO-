@@ -1,11 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.LinkedHashMap;
 
 public class MenuIniciarSesion extends Menu {
     
     private GestorMenus gestorMenus;
     private JFrame frame;
+    protected JPanel panel;
+    
+    protected String nombreMenuPrincipal;
     
     protected int WINDOW_WIDTH = 400;
     protected int WINDOW_HEIGHT = 500;
@@ -19,14 +23,19 @@ public class MenuIniciarSesion extends Menu {
         this.gestorMenus = gestorMenus;
         this.frame = gestorMenus.frame;
         
+        Menu menu = new Menu();
+        menu.nombre = "Iniciar Sesión";
+        this.nombreMenuPrincipal = menu.nombre;
+        
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        frame.setTitle("Iniciar Sesión");  // Establece el título de la ventana
-        this.panel = crearPanel("IniciarSesion");
+        frame.setTitle(menu.nombre);  // Establece el título de la ventana
+        
+        this.panel = menu.crearPanel();
         panel.setBackground(Color.GRAY);
 
-        agregarBotonesMenu();
+        agregarBotonesMenu(menu.botones);
         
-        agregarBotones(botones, panel);
+        agregarBotones(menu.botones, panel);
     }
     
     // Se le pasa como parámetro el tipo de usuario que ingresa al sistema, dandole unas opciones u otras
@@ -37,21 +46,17 @@ public class MenuIniciarSesion extends Menu {
         // Al navegar a un nuevo panel, lo agregamos a la pila
         gestorMenus.panelHistory.push(panel);
         gestorMenus.agregarBotonAtras(menuSistema.panel);
-        gestorMenus.cardsPanel.add(menuSistema.panel, "Menu" + tipoUsuario.name());
+        gestorMenus.cardsPanel.add(menuSistema.panel, menuSistema.nombreMenuPrincipal);
         gestorMenus.navegarA(menuSistema.panel);
     }
     
     private Persona identificarse(Class<?> clasePersona) {
         Menu menu = new Menu();
-        JDialog dialog = new JDialog((Frame) null, "Identificación de Usuario", true); // Ventana modal
-        dialog.setSize(400, 300);
-        dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
-        
-        // Centrar el diálogo en la pantalla
-        dialog.setLocationRelativeTo(null);
+        menu.nombre = "Identificación de Usuario";
+        JDialog dialogo = menu.crearNuevoDialogo();
     
         // Crear el panel para el submenú
-        JPanel panel = menu.crearPanel("MenuIdentificacionUsuario");
+        JPanel panel = menu.crearPanel();
     
         // Usar un array para hacer mutable la variable de la ID seleccionada
         final String[] idPersona = {null};
@@ -71,7 +76,7 @@ public class MenuIniciarSesion extends Menu {
                     try {
                         idIngresada = Integer.parseInt(idPersona[0]);
                     } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(dialog, "La ID debe ser un número válido.", "Error de Identificación", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dialogo, "La ID debe ser un número válido.", "Error de Identificación", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
     
@@ -82,16 +87,16 @@ public class MenuIniciarSesion extends Menu {
                             // Si la ID coincide y es del tipo correcto
                             personaValida = true;
                             personaSeleccionada[0] = (Persona) entidad; // Guardar la entidad seleccionada
-                            dialog.dispose(); // Cerrar la ventana modal
+                            dialogo.dispose(); // Cerrar la ventana modal
                             break;
                         }
                     }
     
                     if (!personaValida) {
-                        JOptionPane.showMessageDialog(dialog, "ID no válida o no corresponde a un " + (clasePersona == null ? "Administrador" : clasePersona.getSimpleName()), "Error de Identificación", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dialogo, "ID no válida o no corresponde a un " + (clasePersona == null ? "Administrador" : clasePersona.getSimpleName()), "Error de Identificación", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(dialog, "Por favor, ingrese una ID válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dialogo, "Por favor, ingrese una ID válida.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }));
@@ -104,17 +109,17 @@ public class MenuIniciarSesion extends Menu {
         agregarBotones(menu.botones, panel);
     
         // Añadir el panel al JDialog
-        dialog.add(agregarScroll(panel));
+        dialogo.add(agregarScroll(panel));
     
         // Mostrar el JDialog como ventana modal
-        dialog.setVisible(true);
+        dialogo.setVisible(true);
     
         // Retorna la entidad seleccionada después de que el diálogo se cierre
         return personaSeleccionada[0];
     }
 
 
-    private void agregarBotonesMenu() {
+    private void agregarBotonesMenu(LinkedHashMap<String, Boton> botones) {
         // Definir roles directamente en el HashMap
         botones.put("Administrador", new Boton("Administrador", new ActionListener() {
             public void actionPerformed(ActionEvent e) {

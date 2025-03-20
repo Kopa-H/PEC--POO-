@@ -72,6 +72,7 @@ public abstract class Entidad implements Serializable
     
     public void activarAlertaFalloMecanico() {
         tieneAlertaFalloMecanico = true;
+        System.out.println("Se ha activado una alerta de fallo mecánico sobre " + this.toString());
     }
     
     public void desactivarAlertaFalloMecanico() {
@@ -162,7 +163,7 @@ public abstract class Entidad implements Serializable
         
         // Solo añadir estado mecánico y fallo mecánico si es una instancia de Vehiculo o Base
         if (this instanceof Vehiculo || this instanceof Base) {
-            str += "  |  Estado Mecánico: " + (int) getPorcentajeEstadoMecanico() + "%" + "  |  Fallo Mecánico: " + tieneFalloMecanico();
+            str += "  |  Estado Mecánico: " + (int) getPorcentajeEstadoMecanico() + "%" + "  | Alerta Fallo Mecánico: " + tieneAlertaFalloMecanico() + "  |  Fallo Mecánico: " + tieneFalloMecanico();
         }
         
         return str;
