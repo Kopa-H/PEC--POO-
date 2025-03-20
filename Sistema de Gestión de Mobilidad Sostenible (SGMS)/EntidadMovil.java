@@ -297,7 +297,13 @@ public abstract class EntidadMovil extends Entidad {
         
         System.out.println(this.toSimpleString() + " ha comenzado a seguir a " + entidadSeguida.toSimpleString());
     }
-
+    
+    public void abandonarSeguimiento() {
+        System.out.println(this.toSimpleString() + " ha dejado de seguir a " + entidadSeguida.toSimpleString());
+        
+        entidadSeguida = null;
+        siguiendoEntidad = false;
+    }
     
     public boolean isEnTrayecto() {
         return enTrayecto;
@@ -311,8 +317,7 @@ public abstract class EntidadMovil extends Entidad {
         } else {
             // La entidad actualiza su estado de seguimiento si ha dejado de seguir a la entidad
             if (entidadSeguida != null && !entidadSeguida.enTrayecto) {
-                entidadSeguida = null;
-                siguiendoEntidad = false;
+                abandonarSeguimiento();
             }
             
             if (siguiendoEntidad && entidadSeguida != null) {
