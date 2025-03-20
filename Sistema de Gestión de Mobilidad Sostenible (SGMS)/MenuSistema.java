@@ -496,16 +496,19 @@ public class MenuSistema extends Menu {
     }
     
     private void agregarOpcionesUsuarioNormal() {
+        String nombreBoton;
         
         // CONSULTAR VEHÍCULOS DISPONIBLES
-        botones.put("Consultar Vehículos Disponibles", new Boton("CONSULTAR VEHÍCULOS DISPONIBLES", new ActionListener() {
+        nombreBoton = "Consultar Vehículos Disponibles";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mostrarInfo(TipoInfoMostrada.VEHICULOS);
             }
         }));
 
         // ALQUILAR VEHÍCULOS
-        botones.put("Alquilar Vehículo", new Boton("ALQUILAR VEHÍCULO", new ActionListener() {
+        nombreBoton = "Alquilar Vehículo";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Class<?> claseVehiculo = seleccionarClase("vehiculo");
                 
@@ -524,7 +527,8 @@ public class MenuSistema extends Menu {
             }
         }));
         
-        botones.put("Alertar Fallo Mecánico", new Boton("ALERTAR FALLO MECÁNICO", new ActionListener() {
+        nombreBoton = "Alertar Fallo Mecánico";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Class<?> claseEntidad = seleccionarClase("entidad");
                 
@@ -543,13 +547,15 @@ public class MenuSistema extends Menu {
                 
             }
         }));
-        botones.put("Visualización Historial de Viajes", new Boton("VISUALIZACIÓN HISTORIAL DE VIAJES", new ActionListener() {
+        
+        nombreBoton = "Visualización Historial de Viajes";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Visualizando historial de viajes");
             }
         }));
         
-        String nombreBoton = "Consultar / Recargar Saldo";
+        nombreBoton = "Consultar / Recargar Saldo";
         botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Menu menu = new Menu();
@@ -639,9 +645,45 @@ public class MenuSistema extends Menu {
             }
         }));
         
-        botones.put("Consultar Moto Cercana", new Boton("CONSULTAR MOTO CERCANA", new ActionListener() {
+        nombreBoton = "Consultar Moto Cercana";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Consultando moto cercana");
+                Menu menu = new Menu();
+                menu.nombre = "Consultar Moto Cercana";
+                JFrame frame = menu.crearNuevaVentana();
+        
+                // Crear el panel para el submenú
+                JPanel panel = menu.crearPanel();
+        
+                // Buscar la moto más cercana disponible
+                Moto moto = (Moto) ciudad.encontrarEntidadUsableMasCercana(personaAccedida, Moto.class);
+                if (moto == null) {
+                    // Mostrar mensaje de error si no se encuentra ninguna moto disponible
+                    JLabel errorLabel = new JLabel("No se ha encontrado ninguna moto disponible.");
+                    panel.add(errorLabel);
+                } else {
+                    // Mostrar la información de la moto
+                    JLabel motoLabel = new JLabel("Moto cercana disponible: " + moto.toString());
+                    panel.add(motoLabel);
+        
+                    // Botón para alquilar la moto
+                    JButton alquilarButton = new JButton("Alquilar moto");
+                    alquilarButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            personaAccedida.planearTrayecto(moto.getUbicacion(), moto);
+                            frame.dispose();
+                        }
+                    });
+        
+                    panel.add(alquilarButton);
+                }
+        
+                // Agregar los botones al panel
+                agregarBotones(menu.botones, panel);
+        
+                // Añadir el panel al JFrame
+                frame.add(agregarScroll(panel));
+                frame.setVisible(true);
             }
         }));
     }
