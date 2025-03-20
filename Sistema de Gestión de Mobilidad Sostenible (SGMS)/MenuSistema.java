@@ -89,7 +89,7 @@ public class MenuSistema extends Menu {
     }
     
     public enum TipoInfoMostrada {
-        VEHICULOS, BATERIAS, ESTADO_MECANICO
+        VEHICULOS, BATERIAS, ESTADO_MECANICO, BASES
     }
     
     public void mostrarInfo(TipoInfoMostrada tipo) {
@@ -127,44 +127,57 @@ public class MenuSistema extends Menu {
             JLabel noEntidadesLabel = new JLabel("No existen entidades todavía.");
             panel.add(noEntidadesLabel);
         } else {
+            boolean entidadEncontrada = false; // Variable para verificar si se encuentra alguna entidad del tipo necesario
             
             switch(tipo) {
-                
                 case VEHICULOS:
-                    // Iterar sobre el ArrayList de entidades y añadir un JLabel para cada entidad
                     for (Entidad entidad : ciudad.getEntidades()) {
                         if (entidad instanceof Vehiculo) {
-                        
-                            JLabel label = new JLabel(entidad.toString());  // Usar entidad.toString() para mostrar información
-                            panel.add(label);  // Añadir el JLabel al panel
+                            JLabel label = new JLabel(entidad.toString());
+                            panel.add(label);
+                            entidadEncontrada = true; // Se encontró al menos un vehículo
                         }
                     }
                     break;
                     
                 case BATERIAS:
-                    // Iterar sobre el ArrayList de entidades y añadir un JLabel para cada entidad
                     for (Entidad entidad : ciudad.getEntidades()) {
                         if (entidad instanceof Vehiculo vehiculo) {
-                        
-                            JLabel label = new JLabel(entidad.toSimpleString() + " con nivel de batería " + vehiculo.getPorcentajeBateria() + "%");  // Usar entidad.toString() para mostrar información
-                            panel.add(label);  // Añadir el JLabel al panel
+                            JLabel label = new JLabel(entidad.toSimpleString() + " con nivel de batería " + vehiculo.getPorcentajeBateria() + "%");
+                            panel.add(label);
+                            entidadEncontrada = true; // Se encontró al menos un vehículo con batería
                         }
                     }
                     break;
                     
                 case ESTADO_MECANICO:
-                    // Iterar sobre el ArrayList de entidades y añadir un JLabel para cada entidad
                     for (Entidad entidad : ciudad.getEntidades()) {
                         if (entidad instanceof Vehiculo) {
-                        
-                            JLabel label = new JLabel(entidad.toSimpleString() + " con nivel de batería " + entidad.getPorcentajeEstadoMecanico() + "%");  // Usar entidad.toString() para mostrar información
-                            panel.add(label);  // Añadir el JLabel al panel
+                            JLabel label = new JLabel(entidad.toSimpleString() + " con nivel de batería " + entidad.getPorcentajeEstadoMecanico() + "%");
+                            panel.add(label);
+                            entidadEncontrada = true; // Se encontró al menos un vehículo con estado mecánico
                         }
                     }
                     break;
-            } 
+                    
+                case BASES:
+                    for (Entidad entidad : ciudad.getEntidades()) {
+                        if (entidad instanceof Base) {
+                            JLabel label = new JLabel(entidad.toString());
+                            panel.add(label);
+                            entidadEncontrada = true; // Se encontró al menos una base
+                        }
+                    }
+                    break;
+            }
+            
+            // Si no se encontraron entidades del tipo seleccionado
+            if (!entidadEncontrada) {
+                JLabel noEntidadesLabel = new JLabel("No existen " + tipo.toString().toLowerCase() + " todavía.");
+                panel.add(noEntidadesLabel);
+            }
         }
-    
+        
         // Refrescar el panel después de actualizar
         panel.revalidate();
         panel.repaint();
@@ -192,7 +205,7 @@ public class MenuSistema extends Menu {
         }));
         botones.put("Visualizar Estado de Bases", new Boton("VISUALIZAR ESTADO DE BASES", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Visualizando estado de bases");
+                mostrarInfo(TipoInfoMostrada.BASES);
             }
         }));
         botones.put("Visualizar Estado Promociones", new Boton("VISUALIZAR ESTADO PROMOCIONES", new ActionListener() {
