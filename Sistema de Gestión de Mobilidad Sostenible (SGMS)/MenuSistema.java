@@ -282,18 +282,21 @@ public class MenuSistema extends Menu {
             public void actionPerformed(ActionEvent e) {
                 // Crear una nueva ventana de diálogo para pedir las cantidades de bicicletas y patinetes
                 Menu menu = new Menu();
-                menu.nombre = "Seleccionar Clase Vehículo";
+                menu.nombre = "Agregar Base con Bicicletas y Patinetes";
                 JDialog dialogo = menu.crearNuevoDialogo();
+                
+                // Crear el panel para el submenú
+                JPanel panel = menu.crearPanel();
                 
                 // Crear los campos de texto para ingresar el número de bicicletas y patinetes
                 JTextField bicicletasField = new JTextField();
                 JTextField patinetesField = new JTextField();
                 
                 // Etiquetas para los campos
-                dialogo.add(new JLabel("Número de Bicicletas:"));
-                dialogo.add(bicicletasField);
-                dialogo.add(new JLabel("Número de Patinetes:"));
-                dialogo.add(patinetesField);
+                panel.add(new JLabel("Número de Bicicletas:"));
+                panel.add(bicicletasField);
+                panel.add(new JLabel("Número de Patinetes:"));
+                panel.add(patinetesField);
                 
                 // Botón para confirmar y cerrar el diálogo
                 JButton aceptarButton = new JButton("Aceptar");
@@ -324,8 +327,10 @@ public class MenuSistema extends Menu {
                 });
                 
                 // Añadir los botones al diálogo
-                dialogo.add(aceptarButton);
-                dialogo.add(cancelarButton);
+                panel.add(aceptarButton);
+                panel.add(cancelarButton);
+                
+                dialogo.add(agregarScroll(panel));
                 
                 dialogo.setVisible(true);
             }
