@@ -87,6 +87,77 @@ public class MenuSistema extends Menu {
                 break;
         }
     }
+    
+    public enum TipoInfoMostrada {
+        TODO, VEHICULOS, BATERIAS
+    }
+    
+    public void mostrarInfo(TipoInfoMostrada tipo) {
+        Menu menu = new Menu();
+        menu.nombre = "Vehículos Disponibles";
+        JFrame frame = menu.crearNuevaVentana();
+        
+        // Crear el panel para el submenú
+        JPanel panel = menu.crearPanel();
+        
+        // Añadir el scroll
+        frame.add(agregarScroll(panel));
+        
+        frame.setVisible(true);
+        
+        actualizarInfoMostrada(panel, tipo);
+        
+        // Configurar el Timer para actualizar el panel cada 1 segundo (1000 milisegundos)
+        Timer timer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                actualizarInfoMostrada(panel, tipo);
+            }
+        });
+        
+        // Iniciar el Timer
+        timer.start();
+    }
+            
+    public void actualizarInfoMostrada(JPanel panel, TipoInfoMostrada tipo) {
+        // Limpiar el panel para actualizarlo con las nuevas entidades
+        panel.removeAll();
+        
+        // Verificar si hay entidades en la lista
+        if (ciudad.getEntidades().isEmpty()) {
+            JLabel noEntidadesLabel = new JLabel("No existen entidades todavía.");
+            panel.add(noEntidadesLabel);
+        } else {
+            
+            switch(tipo) {
+                
+                case VEHICULOS:
+                    // Iterar sobre el ArrayList de entidades y añadir un JLabel para cada entidad
+                    for (Entidad entidad : ciudad.getEntidades()) {
+                        if (entidad instanceof Vehiculo) {
+                        
+                            JLabel label = new JLabel(entidad.toString());  // Usar entidad.toString() para mostrar información
+                            panel.add(label);  // Añadir el JLabel al panel
+                        }
+                    }
+                    break;
+                    
+                case BATERIAS:
+                    // Iterar sobre el ArrayList de entidades y añadir un JLabel para cada entidad
+                    for (Entidad entidad : ciudad.getEntidades()) {
+                        if (entidad instanceof Vehiculo vehiculo) {
+                        
+                            JLabel label = new JLabel(entidad.toSimpleString() + " con nivel de batería " + vehiculo.getPorcentajeBateria() + "%");  // Usar entidad.toString() para mostrar información
+                            panel.add(label);  // Añadir el JLabel al panel
+                        }
+                    }
+                    break;
+            } 
+        }
+    
+        // Refrescar el panel después de actualizar
+        panel.revalidate();
+        panel.repaint();
+    }
 
     private void agregarOpcionesAdministrador() {
         // Botones existentes
@@ -99,7 +170,7 @@ public class MenuSistema extends Menu {
         // Nuevos botones con sus respectivas acciones
         botones.put("Visualizar Estados Baterías", new Boton("VISUALIZAR ESTADOS BATERÍAS", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Visualizando estados de baterías");
+                mostrarInfo(TipoInfoMostrada.BATERIAS);
             }
         }));
         botones.put("Visualizar Estados Mecánicos", new Boton("VISUALIZAR ESTADOS MECÁNICOS", new ActionListener() {
@@ -393,59 +464,13 @@ public class MenuSistema extends Menu {
 
         return indiceSeleccionado[0]; // Devolver el índice seleccionado
     }
-        
+    
     private void agregarOpcionesUsuarioNormal() {
+        
         // CONSULTAR VEHÍCULOS DISPONIBLES
         botones.put("Consultar Vehículos Disponibles", new Boton("CONSULTAR VEHÍCULOS DISPONIBLES", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Menu menu = new Menu();
-                menu.nombre = "Vehículos Disponibles";
-                JFrame frame = menu.crearNuevaVentana();
-                
-                // Crear el panel para el submenú
-                JPanel panel = menu.crearPanel();
-                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Dispone los componentes de forma vertical
-                
-                // Añadir el panel al frame
-                frame.add(panel);
-                
-                // Añadir el scroll
-                frame.add(agregarScroll(panel));
-                
-                frame.setVisible(true);
-                
-                actualizarEntidadesMostradas(panel);
-                
-                // Configurar el Timer para actualizar el panel cada 1 segundo (1000 milisegundos)
-                Timer timer = new Timer(1000, new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        actualizarEntidadesMostradas(panel);
-                    }
-                });
-                
-                // Iniciar el Timer
-                timer.start();
-            }
-            
-            public void actualizarEntidadesMostradas(JPanel panel) {
-                // Limpiar el panel para actualizarlo con las nuevas entidades
-                panel.removeAll();
-                
-                // Verificar si hay entidades en la lista
-                if (ciudad.getEntidades().isEmpty()) {
-                    JLabel noEntidadesLabel = new JLabel("No existen entidades todavía.");
-                    panel.add(noEntidadesLabel);
-                } else {
-                    // Iterar sobre el ArrayList de entidades y añadir un JLabel para cada entidad
-                    for (Entidad entidad : ciudad.getEntidades()) {
-                        JLabel label = new JLabel(entidad.toString());  // Usar entidad.toString() para mostrar información
-                        panel.add(label);  // Añadir el JLabel al panel
-                    }
-                }
-            
-                // Refrescar el panel después de actualizar
-                panel.revalidate();
-                panel.repaint();
+                mostrarInfo(TipoInfoMostrada.VEHICULOS);
             }
         }));
 
