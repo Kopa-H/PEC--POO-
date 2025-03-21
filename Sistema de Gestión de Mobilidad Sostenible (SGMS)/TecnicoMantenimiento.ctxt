@@ -9,5 +9,5 @@ comment2.target=void\ actuar(Ciudad)
 comment3.params=
 comment3.target=void\ trabajar()
 comment4.params=ciudad\ entidad
-comment4.target=boolean\ intentarAsignarVehiculo(Ciudad,\ Entidad)
+comment4.target=boolean\ intentarAsignarEntidad(Ciudad,\ Entidad)
 numComments=5

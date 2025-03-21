@@ -34,23 +34,33 @@ public class TecnicoMantenimiento extends Trabajador
             if (vehiculoAsignado.getPorcentajeBateria() >= 100) {
                 terminarTrabajo();
             }
+        // Los técnicos de mantenimiento pueden reparar bases, pero NO vehículos
+        } else if (entidadAsignada instanceof Base base) {
+            base.restaurarEstadoMecanico();
+        
+            if (!(base.tieneFalloMecanico())) {
+                terminarTrabajo();
+            }
         }
     }
     
     @Override
-    public boolean intentarAsignarVehiculo(Ciudad ciudad, Entidad entidad) {
+    public boolean intentarAsignarEntidad(Ciudad ciudad, Entidad entidad) {
         // Si otro trabajdor tiene la entidad asignada
         if (ciudad.existeTrabajadorConEntidadAsignada(entidad)) {
             return false;
         }
         
-        if (!(entidad instanceof Vehiculo vehiculo)) {
-            return false;
+        if (entidad instanceof Vehiculo vehiculo) {
+            if (vehiculo.getPorcentajeBateria() < 20) {
+                return true;         
+            }
+        } else if (entidad instanceof Base base) {
+            if (base.tieneAlertaFalloMecanico()) {
+                return true;
+            }
         }
         
-        if (vehiculo.getPorcentajeBateria() < 20) {
-            return true;         
-        }
         return false;
     }
 }

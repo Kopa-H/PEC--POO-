@@ -8,11 +8,9 @@ import javax.swing.text.*;
 
 public class InterfazSimulacion extends JFrame {
     private JLabel statusLabel = new JLabel("Estado inicial");
-    private JPanel statusPanel = new JPanel(new BorderLayout());
     JTextPane descripcionPane = new JTextPane();  // Cambiado a JTextPane
     private static final Color DESCRIPTION_PANE_COLOR = Color.CYAN;
     
-    private JScrollPane scrollPane = new JScrollPane(descripcionPane);
     private JLabel stepLabel;
 
     JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -Simulacion.MAX_SIMULATION_SPEED, Simulacion.MAX_SIMULATION_SPEED, 0);
@@ -33,6 +31,15 @@ public class InterfazSimulacion extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel gridPanel = new JPanel(new GridLayout(Simulacion.ROWS, Simulacion.COLUMNS));
+        
+        // Se crea la ventana independiente para el estatus panel
+        Menu menu = new Menu();
+        menu.nombre = "Gestor Entidades";
+        JFrame frame = menu.crearNuevaVentana();
+        
+        // Crear el panel para el submenú
+        JPanel infoUbiSeleccionada = menu.crearPanel();
+        
         statusPanel.add(scrollPane, BorderLayout.CENTER);
 
          // Configuración de JTextPane

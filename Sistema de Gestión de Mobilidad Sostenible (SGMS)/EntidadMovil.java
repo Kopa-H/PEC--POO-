@@ -124,7 +124,7 @@ public abstract class EntidadMovil extends Entidad {
                 break;
             default:
                 // En caso de que no haya dirección (aunque no debería suceder)
-                System.out.println("Dirección no válida.");
+                System.out.println("\n" + "Dirección no válida.");
                 break;
         }
     }
@@ -178,9 +178,9 @@ public abstract class EntidadMovil extends Entidad {
         this.entidadDestino = entidadDestino;
         
         if (entidadDestino != null) {
-            System.out.println(toSimpleString() + " ha comenzado un viaje hacia " + entidadDestino.toSimpleString());
+            System.out.println("\n" + toSimpleString() + " ha comenzado un viaje hacia " + entidadDestino.toSimpleString());
         } else {
-            System.out.println(toSimpleString() + " ha comenzado un viaje hacia " + ubiDestino.toString());
+            System.out.println("\n" + toSimpleString() + " ha comenzado un viaje hacia " + ubiDestino.toString());
         }
     }
     
@@ -201,7 +201,7 @@ public abstract class EntidadMovil extends Entidad {
             }
             
             // Si la entidad que se está moviendo es un vehículo y se queda sin batería, se termina su trayecto y por ende el de su pasajero
-            if (entidadDestino instanceof Vehiculo  vehiculo) {
+            if (entidadDestino instanceof Vehiculo vehiculo) {
                 // Si el vehículo al que se está siguiendo sufre un fallo mecánico
                 if (vehiculo.tieneAlertaFalloMecanico()) {
                     terminarTrayecto();
@@ -271,15 +271,15 @@ public abstract class EntidadMovil extends Entidad {
                         
                         baseDestino.vehiculosDisponibles.remove(vehiculoEscogido);
                     } else {
-                        System.out.println("No hay bases destino disponibles en la ciudad.");
+                        System.out.println("\n" + "No hay bases destino disponibles en la ciudad.");
                     }
                 } else {
-                    System.out.println("No hay vehículos disponibles en la base.");
+                    System.out.println("\n" + "No hay vehículos disponibles en la base.");
                 }
             }
     
             // Si se ha llegado a una moto, se sube y planea un trayecto hacia una dirección aleatoria
-            if (entidadDestino instanceof Moto moto) {
+            if (this instanceof Usuario && entidadDestino instanceof Moto moto) {
                 // La moto comienza un rumbo hacia una posición aleatoria de la ciudad
                 Ubicacion ubicacion = randomGenerator.getUbicacionLibreRandom(ciudad);
                 moto.planearTrayecto(ubicacion, null);
@@ -295,11 +295,11 @@ public abstract class EntidadMovil extends Entidad {
         entidadSeguida = entidadPorSeguir;
         siguiendoEntidad = true;
         
-        System.out.println(this.toSimpleString() + " ha comenzado a seguir a " + entidadSeguida.toSimpleString());
+        System.out.println("\n" + this.toSimpleString() + " ha comenzado a seguir a " + entidadSeguida.toSimpleString());
     }
     
     public void abandonarSeguimiento() {
-        System.out.println(this.toSimpleString() + " ha dejado de seguir a " + entidadSeguida.toSimpleString());
+        System.out.println("\n" + this.toSimpleString() + " ha dejado de seguir a " + entidadSeguida.toSimpleString());
         
         entidadSeguida = null;
         siguiendoEntidad = false;
@@ -321,14 +321,14 @@ public abstract class EntidadMovil extends Entidad {
             }
             
             if (siguiendoEntidad && entidadSeguida != null) {
-                seguirEntidadMovil(entidadSeguida);
+                seguirEntidadMovil();
             }
         }
     }
     
-    public void seguirEntidadMovil(Entidad entidad) {
-        if (this instanceof Usuario usuario && entidad.tieneFalloMecanico()) {
-            usuario.alertarFalloMecanico(entidad);
+    public void seguirEntidadMovil() {
+        if (this instanceof Usuario usuario && entidadSeguida.tieneFalloMecanico()) {
+            usuario.alertarFalloMecanico(entidadSeguida);
         }
         
         ubicacion.setUbicacion(entidadSeguida.getUbicacion());

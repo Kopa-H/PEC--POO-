@@ -112,6 +112,11 @@ public abstract class Entidad implements Serializable
             }
         } else {
             activarFalloMecanico(); // Si el estado mecánico llega a 0, forzar el fallo
+            
+            // Solo las bases alertan del fallo, los otros vehículos requieren de que un usuario los vaya a utilizar, lo vea y lo notifique
+            if (this instanceof Base) {
+                activarAlertaFalloMecanico();
+            }
         }
     }
     
@@ -163,7 +168,7 @@ public abstract class Entidad implements Serializable
         
         // Solo añadir estado mecánico y fallo mecánico si es una instancia de Vehiculo o Base
         if (this instanceof Vehiculo || this instanceof Base) {
-            str += "  |  Estado Mecánico: " + (int) getPorcentajeEstadoMecanico() + "%" + "  | Alerta Fallo Mecánico: " + tieneAlertaFalloMecanico() + "  |  Fallo Mecánico: " + tieneFalloMecanico();
+            str += "  |  Estado Mecánico: " + (int) getPorcentajeEstadoMecanico() + "%" + "  |  Alerta Fallo Mecánico: " + tieneAlertaFalloMecanico() + "  |  Fallo Mecánico: " + tieneFalloMecanico();
         }
         
         return str;

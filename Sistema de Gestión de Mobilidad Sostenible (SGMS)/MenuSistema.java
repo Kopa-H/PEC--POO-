@@ -89,10 +89,6 @@ public class MenuSistema extends Menu {
                 break;
         }
     }
-    
-    
-    
-    
 
     private void agregarOpcionesAdministrador() {
         // Botones existentes
@@ -532,7 +528,7 @@ public class MenuSistema extends Menu {
                                                   "Fallo Mecánico No Encontrado", JOptionPane.WARNING_MESSAGE);
                 } else {
                     // Intentar asignar el vehículo al trabajador
-                    trabajador.intentarAsignarVehiculo(ciudad, entidadPorAsignar);
+                    trabajador.intentarAsignarEntidad(ciudad, entidadPorAsignar);
                     JOptionPane.showMessageDialog(null, "Vehículo asignado correctamente.",
                                                   "Asignación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 }

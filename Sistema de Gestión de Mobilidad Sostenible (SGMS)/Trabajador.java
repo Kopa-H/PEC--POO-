@@ -38,7 +38,7 @@ abstract public class Trabajador extends Persona
         if (entidadAsignada == null) {
             // Se itera sobre todos las entidades y se intenta asignar a su trabajador correspondiente
             for (Entidad entidad : ciudad.getEntidades()) {
-                if (intentarAsignarVehiculo(ciudad, entidad)) {
+                if (intentarAsignarEntidad(ciudad, entidad)) {
                     entidadAsignada = entidad;
                     System.out.println("[" + toSimpleString() + "] se ha asignado [" + entidadAsignada.toSimpleString() + "] para trabajar en ella");
                 }                   
@@ -57,19 +57,27 @@ abstract public class Trabajador extends Persona
                 // Si el tanto el trabajador como la entidad están en una base, y están en la misma ubicación, A TRABAJAR!
                 if (ciudad.posicionOcupadaPor(this.getUbicacion(), Base.class)) {
                     this.trabajar();
-                    
-                // Si se ha llegado al vehículo, pero NO está en una base, se lleva a la base más cercana
+                
                 } else if (ciudad.posicionOcupadaPor(entidadAsignada.getUbicacion(), Vehiculo.class)) {
+                    // Si se ha llegado al vehículo, pero NO está en una base, se lleva a la base más cercana
                     
                     // Dado que la entidad es un vehículo, se hace el cast
                     Vehiculo vehiculoAsignado = (Vehiculo) entidadAsignada;
                     
                     // La persona planea un trayecto hacia la base más cercana
                     Base baseCercana = (Base) ciudad.encontrarEntidadUsableMasCercana(this, Base.class);
-                    planearTrayecto(baseCercana.getUbicacion(), baseCercana);
                     
-                    // El vehículo sigue a la persona
-                    vehiculoAsignado.empezarSeguimiento(this);
+                    // Si no hay ningun base disponible, modifica su trabajo para reparar bases
+                    if (baseCercana == null) {
+                        terminarTrabajo();
+                        intentarAsignarEntidad(ciudad, ciudad.encontrarEntidadConFalloMecanico(Base.class));
+                        
+                    } else {
+                        planearTrayecto(baseCercana.getUbicacion(), baseCercana);
+                        
+                        // El vehículo sigue a la persona
+                        vehiculoAsignado.empezarSeguimiento(this);
+                    }
                     
                 }
             }
@@ -79,11 +87,11 @@ abstract public class Trabajador extends Persona
     abstract public void trabajar();
     
     public void terminarTrabajo() {
-        System.out.println("El trabajador " + this.toSimpleString() + " ha terminado su trabajo con " + entidadAsignada.toSimpleString());
+        System.out.println("\n" + "El trabajador " + this.toSimpleString() + " ha terminado su trabajo con " + entidadAsignada.toSimpleString());
         entidadAsignada = null;
     }
     
-    abstract public boolean intentarAsignarVehiculo(Ciudad ciudad, Entidad entidad);
+    abstract public boolean intentarAsignarEntidad(Ciudad ciudad, Entidad entidad);
     
     @Override
     public String toString() {
