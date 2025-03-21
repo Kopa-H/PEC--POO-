@@ -5,12 +5,12 @@ import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.text.*;
+import java.awt.Dimension;
 
-public class InterfazSimulacion extends JFrame {
-    private JLabel statusLabel = new JLabel("Estado inicial");
-    JTextPane descripcionPane = new JTextPane();  // Cambiado a JTextPane
+public class InterfazSimulacion extends JFrame {   
     private static final Color DESCRIPTION_PANE_COLOR = Color.CYAN;
     
+    private JTextPane panelTextoInfo;
     private JLabel stepLabel;
 
     JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -Simulacion.MAX_SIMULATION_SPEED, Simulacion.MAX_SIMULATION_SPEED, 0);
@@ -34,37 +34,10 @@ public class InterfazSimulacion extends JFrame {
         
         // Se crea la ventana independiente para el estatus panel
         Menu menu = new Menu();
-        menu.nombre = "Gestor Entidades";
+        menu.nombre = "InfoUbiSeleccionada";
         JFrame frame = menu.crearNuevaVentana();
-        
-        // Crear el panel para el submenú
-        JPanel infoUbiSeleccionada = menu.crearPanel();
-        
-        statusPanel.add(scrollPane, BorderLayout.CENTER);
-
-         // Configuración de JTextPane
-        descripcionPane.setEditable(false);
-        descripcionPane.setBackground(DESCRIPTION_PANE_COLOR);  // Color de fondo cian
-        
-        // Centrar el texto en JTextPane
-        StyledDocument doc = descripcionPane.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        
-        // Establecer el tamaño preferido del JTextPane
-        descripcionPane.setPreferredSize(new java.awt.Dimension(200, 100));  // Tamaño fijo para el JTextPane
-        
-        // Evitar que el JTextPane cambie su tamaño, y permitir el scroll cuando sea necesario
-        descripcionPane.setSize(new java.awt.Dimension(200, 100));  // Fijar el tamaño
-        descripcionPane.setMinimumSize(new java.awt.Dimension(200, 100));  // Establecer el tamaño mínimo
-        descripcionPane.setMaximumSize(new java.awt.Dimension(200, 100));  // Establecer el tamaño máximo
-        
-        // Configurar JScrollPane para permitir scroll interior
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); 
-        
-        // Se evita la aparición del Caret (si no, se genera incialmente "|")
-        descripcionPane.setCaretColor(DESCRIPTION_PANE_COLOR); 
+        frame.setAlwaysOnTop(true);
+        panelTextoInfo = new JTextPane();  // Cambiado a JTextPane
 
         for (int i = 0; i < Ciudad.ROWS; i++) {
             for (int j = 0; j < Ciudad.COLUMNS; j++) {
@@ -87,9 +60,8 @@ public class InterfazSimulacion extends JFrame {
                     @Override
                     public void mouseExited(MouseEvent e) {
                         if (!isLocked) {
-                            statusLabel.setText("");
-                            statusPanel.revalidate();
-                            statusPanel.repaint();
+                            panelTextoInfo.revalidate();
+                            panelTextoInfo.repaint();
                         }
                     }
 
@@ -98,10 +70,10 @@ public class InterfazSimulacion extends JFrame {
                         isLocked = !isLocked;
                         
                         if (!isLocked) {
-                            descripcionPane.setText("");
+                            panelTextoInfo.setText("");
                         }
                         
-                        statusPanel.repaint();
+                        panelTextoInfo.repaint();
                     }
                 });
 
@@ -109,6 +81,11 @@ public class InterfazSimulacion extends JFrame {
             }
         }
 
+        agregarEsteticaPanelInfo();
+        // Añadir el panel al JFrame
+        frame.add(panelTextoInfo);
+        frame.setVisible(true);
+        
         add(gridPanel, BorderLayout.CENTER);
 
         JPanel stepPanel = new JPanel();
@@ -137,29 +114,43 @@ public class InterfazSimulacion extends JFrame {
         southPanel.add(sliderPanel);
         southPanel.add(Box.createVerticalStrut(10));
 
-        add(statusPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
     }
 
+    public void agregarEsteticaPanelInfo() {
+         // Configuración de JTextPane
+        panelTextoInfo.setEditable(false);
+        panelTextoInfo.setBackground(DESCRIPTION_PANE_COLOR);  // Color de fondo cian
+        StyledDocument doc = panelTextoInfo.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        panelTextoInfo.setPreferredSize(new java.awt.Dimension(200, 100));  // Tamaño fijo para el JTextPane
+        panelTextoInfo.setSize(new java.awt.Dimension(200, 100));  // Fijar el tamaño
+        panelTextoInfo.setMinimumSize(new java.awt.Dimension(200, 100));  // Establecer el tamaño mínimo
+        panelTextoInfo.setMaximumSize(new java.awt.Dimension(200, 100));  // Establecer el tamaño máximo
+        panelTextoInfo.setCaretColor(DESCRIPTION_PANE_COLOR); 
+    }
+    
     public void actualizarEstadoPanel(Ciudad ciudad, int row, int col) {       
-        descripcionPane.setText("");
+        panelTextoInfo.setText("");
         for (Entidad entidad : ciudad.getEntidades()) {
             if (entidad.getUbicacion().getPosX() == row && entidad.getUbicacion().getPosY() == col) {
-                descripcionPane.setText(descripcionPane.getText() + entidad.toString() + "\n");
+                panelTextoInfo.setText(panelTextoInfo.getText() + entidad.toString() + "\n");
             }
         }
         
         // Asegúrate de mover el caret al inicio para que se vea el contenido superior
-        descripcionPane.setCaretPosition(0); // Mover el caret al principio
+        panelTextoInfo.setCaretPosition(0); // Mover el caret al principio
 
-        if (descripcionPane.getText().length() > 0) {
-            statusPanel.revalidate();
-            statusPanel.repaint();
+        if (panelTextoInfo.getText().length() > 0) {
+            panelTextoInfo.revalidate();
+            panelTextoInfo.repaint();
         } else {
-            descripcionPane.setText("Vacío en (" + row + "," + col + ")");
+            panelTextoInfo.setText("Vacío en (" + row + "," + col + ")");
         }
     }
 
