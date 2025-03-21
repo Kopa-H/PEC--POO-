@@ -161,6 +161,21 @@ public class Ciudad {
         return entidadMasCercana;
     }
     
+    public Entidad encontrarEntidadConFalloMecanico(Class<?> claseEntidad) {
+        Entidad entidadEncontrada = null;
+        
+        // Iteramos sobre las entidades
+        for (Entidad entidad : entidades) {
+            // Comprobamos si la entidad es una instancia del tipo proporcionado
+            if (claseEntidad.isInstance(entidad) && entidad.tieneFalloMecanico()) {
+                entidadEncontrada = entidad;
+                break;
+            }
+        }
+        
+        return entidadEncontrada;
+    }
+    
     // Método que verifica si una posición está ocupada
     public boolean posicionOcupada(Ubicacion ubicacion) {
         // Recorrer las entidades existentes y verificar si alguna está en la misma posición

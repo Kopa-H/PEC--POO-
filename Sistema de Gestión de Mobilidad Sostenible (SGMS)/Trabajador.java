@@ -79,7 +79,8 @@ abstract public class Trabajador extends Persona
     abstract public void trabajar();
     
     public void terminarTrabajo() {
-        entidadAsignada = null;   
+        System.out.println("El trabajador " + this.toSimpleString() + " ha terminado su trabajo con " + entidadAsignada.toSimpleString());
+        entidadAsignada = null;
     }
     
     abstract public boolean intentarAsignarVehiculo(Entidad entidad);

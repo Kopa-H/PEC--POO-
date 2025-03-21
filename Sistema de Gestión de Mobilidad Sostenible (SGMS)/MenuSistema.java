@@ -457,57 +457,88 @@ public class MenuSistema extends Menu {
 
 
     private void agregarOpcionesComunesTrabajadores() {
-    String nombreBoton;
-
-    nombreBoton = "Consultar Entidad Asignada";
-    botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            Menu menu = new Menu();
-            JLabel entidadAsignadaLabel;
-            menu.nombre = "Consultar Entidad Asignada";
-            JFrame frame = menu.crearNuevaVentana();
-
-            // Crear el panel para el submenú
-            JPanel panel = menu.crearPanel();
-
-            // Crear un JLabel para mostrar la entidad asignada
-            Entidad entidadAsignada = ((Trabajador) personaAccedida).getEntidadAsignada();
-            
-            if (entidadAsignada == null) {
-                entidadAsignadaLabel = new JLabel("El trabajador no tiene ninguna entidad asignada");
-            } else {
-                entidadAsignadaLabel = new JLabel("Entidad asignada: " + entidadAsignada.toString());
-            }
-            panel.add(entidadAsignadaLabel);
-
-            // Añadir el panel al JFrame
-            frame.add(agregarScroll(panel));
-            frame.setVisible(true);
-
-            // Configurar el Timer para actualizar el texto del JLabel cada 1 segundo (1000 milisegundos)
-            Timer timer = new Timer(1000, new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    // Obtener la entidad asignada actualizada
-                    Entidad entidadActualizada = ((Trabajador) personaAccedida).getEntidadAsignada();
-                    
-                    if (entidadActualizada == null) {
-                        entidadAsignadaLabel.setText("El trabajador no tiene ninguna entidad asignada");
-                    } else {
-                        entidadAsignadaLabel.setText("Entidad asignada: " + entidadActualizada.toString());
-                    }
-                }
-            });
-
-            // Iniciar el Timer
-            timer.start();
-        }
-    }));
-        
-        botones.put("Asignar Vehículo", new Boton("ASIGNAR VEHÍCULO", new ActionListener() {
+        String nombreBoton;
+    
+        nombreBoton = "Consultar Entidad Asignada";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Asignando vehículo");
+                Menu menu = new Menu();
+                JLabel entidadAsignadaLabel;
+                menu.nombre = "Consultar Entidad Asignada";
+                JFrame frame = menu.crearNuevaVentana();
+    
+                // Crear el panel para el submenú
+                JPanel panel = menu.crearPanel();
+    
+                // Crear un JLabel para mostrar la entidad asignada
+                Entidad entidadAsignada = ((Trabajador) personaAccedida).getEntidadAsignada();
+                
+                if (entidadAsignada == null) {
+                    entidadAsignadaLabel = new JLabel("El trabajador no tiene ninguna entidad asignada");
+                } else {
+                    entidadAsignadaLabel = new JLabel("Entidad asignada: " + entidadAsignada.toString());
+                }
+                panel.add(entidadAsignadaLabel);
+    
+                // Añadir el panel al JFrame
+                frame.add(agregarScroll(panel));
+                frame.setVisible(true);
+    
+                // Configurar el Timer para actualizar el texto del JLabel cada 1 segundo (1000 milisegundos)
+                Timer timer = new Timer(1000, new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        // Obtener la entidad asignada actualizada
+                        Entidad entidadActualizada = ((Trabajador) personaAccedida).getEntidadAsignada();
+                        
+                        if (entidadActualizada == null) {
+                            entidadAsignadaLabel.setText("El trabajador no tiene ninguna entidad asignada");
+                        } else {
+                            entidadAsignadaLabel.setText("Entidad asignada: " + entidadActualizada.toString());
+                        }
+                    }
+                });
+    
+                // Iniciar el Timer
+                timer.start();
             }
         }));
+        
+        nombreBoton = "Asignar Vehículo";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Trabajador trabajador = (Trabajador) personaAccedida;
+
+                // Comprobar si el trabajador ya tiene una entidad asignada
+                if (trabajador.getEntidadAsignada() != null) {
+                    trabajador.terminarTrabajo();
+                }
+
+                // Seleccionamos la clase de vehículo
+                Class<?> claseVehiculo = utilidadesMenu.seleccionarClase("vehiculo");
+
+                if (claseVehiculo == null) {
+                    // Mostrar mensaje de error si no se seleccionó ninguna clase de vehículo
+                    JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna clase de vehículo.",
+                                                  "Error de selección", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Intentar encontrar una entidad con fallo mecánico de la clase seleccionada
+                Entidad entidadPorAsignar = ciudad.encontrarEntidadConFalloMecanico(claseVehiculo);
+
+                if (entidadPorAsignar == null) {
+                    // Mostrar mensaje si no se encontró ninguna entidad con fallo mecánico
+                    JOptionPane.showMessageDialog(null, "No se encontró ninguna entidad con fallo mecánico del tipo seleccionado.",
+                                                  "Fallo Mecánico No Encontrado", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    // Intentar asignar el vehículo al trabajador
+                    trabajador.intentarAsignarVehiculo(entidadPorAsignar);
+                    JOptionPane.showMessageDialog(null, "Vehículo asignado correctamente.",
+                                                  "Asignación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }));
+        
         botones.put("Trabajar", new Boton("TRABAJAR", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Iniciando trabajo");
