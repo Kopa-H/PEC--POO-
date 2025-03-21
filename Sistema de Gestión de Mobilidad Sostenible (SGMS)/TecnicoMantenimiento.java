@@ -38,7 +38,11 @@ public class TecnicoMantenimiento extends Trabajador
     }
     
     @Override
-    public boolean intentarAsignarVehiculo(Entidad entidad) {
+    public boolean intentarAsignarVehiculo(Ciudad ciudad, Entidad entidad) {
+        // Si otro trabajdor tiene la entidad asignada
+        if (ciudad.existeTrabajadorConEntidadAsignada(entidad)) {
+            return false;
+        }
         
         if (!(entidad instanceof Vehiculo vehiculo)) {
             return false;

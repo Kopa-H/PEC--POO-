@@ -532,7 +532,7 @@ public class MenuSistema extends Menu {
                                                   "Fallo Mecánico No Encontrado", JOptionPane.WARNING_MESSAGE);
                 } else {
                     // Intentar asignar el vehículo al trabajador
-                    trabajador.intentarAsignarVehiculo(entidadPorAsignar);
+                    trabajador.intentarAsignarVehiculo(ciudad, entidadPorAsignar);
                     JOptionPane.showMessageDialog(null, "Vehículo asignado correctamente.",
                                                   "Asignación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 }

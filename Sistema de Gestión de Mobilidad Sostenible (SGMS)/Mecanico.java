@@ -18,9 +18,12 @@ public class Mecanico extends Trabajador
     }
     
     @Override
-    public boolean intentarAsignarVehiculo(Entidad entidad) {
+    public boolean intentarAsignarVehiculo(Ciudad ciudad, Entidad entidad) {
         if ((entidad instanceof Vehiculo || entidad instanceof Base) && entidad.tieneAlertaFalloMecanico()) {
-            return true;
+            
+            if (!ciudad.existeTrabajadorConEntidadAsignada(entidad)) {
+                return true;
+            }
         }
         
         return false;

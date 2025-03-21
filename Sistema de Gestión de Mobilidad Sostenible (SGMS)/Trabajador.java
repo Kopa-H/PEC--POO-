@@ -38,7 +38,7 @@ abstract public class Trabajador extends Persona
         if (entidadAsignada == null) {
             // Se itera sobre todos las entidades y se intenta asignar a su trabajador correspondiente
             for (Entidad entidad : ciudad.getEntidades()) {
-                if (intentarAsignarVehiculo(entidad)) {
+                if (intentarAsignarVehiculo(ciudad, entidad)) {
                     entidadAsignada = entidad;
                     System.out.println("[" + toSimpleString() + "] se ha asignado [" + entidadAsignada.toSimpleString() + "] para trabajar en ella");
                 }                   
@@ -83,7 +83,7 @@ abstract public class Trabajador extends Persona
         entidadAsignada = null;
     }
     
-    abstract public boolean intentarAsignarVehiculo(Entidad entidad);
+    abstract public boolean intentarAsignarVehiculo(Ciudad ciudad, Entidad entidad);
     
     @Override
     public String toString() {

@@ -176,6 +176,18 @@ public class Ciudad {
         return entidadEncontrada;
     }
     
+    public boolean existeTrabajadorConEntidadAsignada(Entidad entidadAsignada) {
+             // Iteramos sobre las entidades
+        for (Entidad entidad : entidades) {
+            // Comprobamos si la entidad es una instancia del tipo proporcionado
+            if (entidad instanceof Trabajador trabajador && trabajador.getEntidadAsignada() == entidadAsignada) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     // Método que verifica si una posición está ocupada
     public boolean posicionOcupada(Ubicacion ubicacion) {
         // Recorrer las entidades existentes y verificar si alguna está en la misma posición

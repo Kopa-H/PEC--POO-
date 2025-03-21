@@ -331,7 +331,7 @@ public abstract class EntidadMovil extends Entidad {
             usuario.alertarFalloMecanico(entidad);
         }
         
-        ubicacion.setUbicacion(entidad.getUbicacion());
+        ubicacion.setUbicacion(entidadSeguida.getUbicacion());
     }
     
     public void intentarPlanearTrayecto(Ciudad ciudad, Class<?> tipoEntidad) {
