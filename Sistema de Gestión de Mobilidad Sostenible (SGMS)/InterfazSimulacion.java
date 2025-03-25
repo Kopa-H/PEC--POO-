@@ -139,7 +139,7 @@ public class InterfazSimulacion extends JFrame {
         panelTextoInfo.setText("");
         for (Entidad entidad : ciudad.getEntidades()) {
             if (entidad.getUbicacion().getPosX() == row && entidad.getUbicacion().getPosY() == col) {
-                panelTextoInfo.setText(panelTextoInfo.getText() + entidad.toString() + "\n");
+                panelTextoInfo.setText(panelTextoInfo.getText() + entidad.toString() + "\n\n");
             }
         }
         

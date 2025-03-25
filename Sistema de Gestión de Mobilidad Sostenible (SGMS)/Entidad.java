@@ -72,11 +72,12 @@ public abstract class Entidad implements Serializable
     
     public void activarAlertaFalloMecanico() {
         tieneAlertaFalloMecanico = true;
-        System.out.println("Se ha activado una alerta de fallo mecánico sobre " + this.toString());
+        System.out.println("Se ha ACTIVADO una alerta de fallo mecánico sobre " + this.toSimpleString());
     }
     
     public void desactivarAlertaFalloMecanico() {
         tieneAlertaFalloMecanico = false;
+        System.out.println("Se ha DESACTIVADO una alerta de fallo mecánico sobre " + this.toSimpleString());
     }
     
     public boolean tieneAlertaFalloMecanico() {
@@ -107,6 +108,11 @@ public abstract class Entidad implements Serializable
                 // Genera un número aleatorio y verifica si ocurre un fallo mecánico
                 if (new Random().nextDouble() * 100 < getProbabilidadFalloMecanico()) {
                     activarFalloMecanico();
+                    
+                    // Solo las bases alertan del fallo, los otros vehículos requieren de que un usuario los vaya a utilizar, lo vea y lo notifique
+                    if (this instanceof Base) {
+                        activarAlertaFalloMecanico();
+                    }
                 }
                 contadorComprobacionFallo = 0; // Reinicia el contador después de la comprobación
             }
@@ -132,11 +138,12 @@ public abstract class Entidad implements Serializable
     // Función que se llama si ocurre un fallo mecánico
     public void activarFalloMecanico() {
         tieneFalloMecanico = true;
-        System.out.println("¡Fallo mecánico activado!");
+        System.out.println("Se ha ACTIVADO un fallo mecánico en " + this.toSimpleString());
     }
     
     public void desactivarFalloMecanico() {
         tieneFalloMecanico = false;
+        System.out.println("Se ha DESACTIVADO un fallo mecánico en " + this.toSimpleString());
     }
     
     // Acción que ejecuta el deterioro y posibilidad de fallo

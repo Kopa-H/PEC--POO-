@@ -25,9 +25,24 @@ public class Ciudad {
         entidades = newEntidades;
     }
     
+    // Método auxiliar para contar cuántos Vehiculos hay en la lista
+    private int contarVehiculos() {
+        int count = 0;
+        for (Entidad e : entidades) {
+            if (e instanceof Vehiculo) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
     // Método para añadir una entidad a la ciudad
     public void addElement(Entidad entidad) {
-        entidades.add(entidad);
+        if (entidad instanceof Vehiculo) {
+            entidades.add(entidad); // Añadir al final de la lista
+        } else {
+            entidades.add(entidades.size() - contarVehiculos(), entidad); // Añadir antes de los Vehiculos
+        }
     }
     
         /**
@@ -57,10 +72,11 @@ public class Ciudad {
                 
                 System.out.println("Se ha añadido una " + claseEntidad.getSimpleName() + " en: " + ubi.toString());
                 
-                // Si no existe ninguna base y se está añadiendo un vehículo, se agrega una base
+                // Si no existe ninguna base y se está añadiendo un vehículo, se agregan dos bases (las mínimas para que las bicis viajen de una a la otra)
                 if (encontrarEntidad(Base.class, 0) == null) {
                     agregarBase(simulacion, 2, 2);
-                    System.out.println("Se ha añadido una Base dado que no existía ninguna en: " + ubi.toString());
+                    agregarBase(simulacion, 2, 2);
+                    System.out.println("Se han añadido dos Bases dado que no existía ninguna");
                 }
             
             } catch (Exception e) {
