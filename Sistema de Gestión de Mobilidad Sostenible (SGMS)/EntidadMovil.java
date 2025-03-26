@@ -211,7 +211,7 @@ public abstract class EntidadMovil extends Entidad {
         // Verificamos si aún hay movimientos por hacer
         if (!trayecto.isEmpty()) {
             // Se verifica que la entidad seguida NO está en movimiento. En este caso se termina el trayecto
-            if (entidadDestino instanceof EntidadMovil && ((EntidadMovil) entidadDestino).enTrayecto) {
+            if (this instanceof Usuario && entidadDestino instanceof EntidadMovil && ((EntidadMovil) entidadDestino).enTrayecto) {
                 terminarTrayecto();
             }
             

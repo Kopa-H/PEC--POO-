@@ -99,8 +99,11 @@ public abstract class Entidad implements Serializable
     
     public void deteriorarEstadoMecanico() {
         if (estadoMecanico > 0) {
-            estadoMecanico--;
-    
+            // Hacer que la disminución de estadoMecanico sea aleatoria
+            if (new Random().nextDouble() < 0.5) { // Probabilidad de restar
+                estadoMecanico--; // Disminuye el estado mecánico en 1
+            }
+            
             contadorComprobacionFallo++; // Incrementa el contador en cada llamada
     
             // Solo comprueba la probabilidad de fallo cuando el contador llega al límite
