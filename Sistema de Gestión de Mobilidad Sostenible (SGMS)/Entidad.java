@@ -14,8 +14,8 @@ public abstract class Entidad implements Serializable
     public Ubicacion ubicacion;
     private Color color; // color mostrado en la visualización
     
-    private static final int ESTADO_MECANICO_PERFECTO = 5000;
-    private static final int ESTADO_MECANICO_SUMADO_POR_REPARACION = 100;
+    private static final int ESTADO_MECANICO_PERFECTO = 750;
+    private static final int ESTADO_MECANICO_SUMADO_POR_REPARACION = 5;
     
     // Variable de instancia para almacenar el ID único de cada usuario
     private int id;
@@ -24,7 +24,7 @@ public abstract class Entidad implements Serializable
     private int estadoMecanico = ESTADO_MECANICO_PERFECTO; 
     
     private int contadorComprobacionFallo = 0; // Contador de llamadas a la función
-    private final int limiteComprobacionFallo = 50; // Número de llamadas antes de hacer la comprobación
+    private final int limiteComprobacionFallo = 250; // Número de llamadas antes de hacer la comprobación
 
     private int edad; // El número de steps que ha vivido la entidads
     
@@ -143,12 +143,12 @@ public abstract class Entidad implements Serializable
     // Función que se llama si ocurre un fallo mecánico
     public void activarFalloMecanico() {
         tieneFalloMecanico = true;
-        System.out.println("\nSe ha ACTIVADO un fallo mecánico en " + this.toSimpleString());
+        Impresora.printNaranja("\nSe ha ACTIVADO un fallo mecánico en " + this.toSimpleString());
     }
     
     public void desactivarFalloMecanico() {
         tieneFalloMecanico = false;
-        System.out.println("Se ha DESACTIVADO un fallo mecánico en " + this.toSimpleString());
+        Impresora.printVerde("Se ha DESACTIVADO un fallo mecánico en " + this.toSimpleString());
     }
     
     // Acción que ejecuta el deterioro y posibilidad de fallo
