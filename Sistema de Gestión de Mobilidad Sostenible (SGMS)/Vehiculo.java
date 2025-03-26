@@ -54,7 +54,7 @@ abstract public class Vehiculo extends EntidadMovil
         if (autonomiaBateria > 0) {
             autonomiaBateria--;
         } else {
-            System.out.println("La batería del vehículo " + toString() + " se ha agotado!");  
+            System.out.println("La batería del vehículo " + toSimpleString() + " se ha agotado!");  
         }
     }
     
@@ -62,7 +62,7 @@ abstract public class Vehiculo extends EntidadMovil
         if (autonomiaBateria < DISTANCIA_MAX_BATERIA) {
             autonomiaBateria++;
         } else {
-            System.out.println("La batería del vehículo " + toString() + " está llena!");  
+            System.out.println("La batería del vehículo " + toSimpleString() + " está llena!");  
         }
     }
 

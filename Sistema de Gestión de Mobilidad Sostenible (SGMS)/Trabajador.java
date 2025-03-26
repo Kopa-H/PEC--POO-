@@ -49,9 +49,9 @@ abstract public class Trabajador extends Persona
             if (!enTrayecto) {
             
                 // Si el trabajador aún no se encuentra donde la entidad asignada
-                if (!(entidadAsignada.getUbicacion().equals(this.getUbicacion()))) {
-                   planearTrayecto(entidadAsignada.getUbicacion(), entidadAsignada);
-                   return;
+                if (!(entidadAsignada.getUbicacion().equals(this.getUbicacion()))) {                   
+                    planearTrayecto(entidadAsignada.getUbicacion(), entidadAsignada);
+                    return;
                 }
                 
                 // Si el tanto el trabajador como la entidad están en una base, y están en la misma ubicación, A TRABAJAR!

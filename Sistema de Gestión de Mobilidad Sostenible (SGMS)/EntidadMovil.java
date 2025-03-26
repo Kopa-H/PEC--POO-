@@ -200,8 +200,8 @@ public abstract class EntidadMovil extends Entidad {
                 terminarTrayecto();
             }
             
-            // Si la entidad que se está moviendo es un vehículo y se queda sin batería, se termina su trayecto y por ende el de su pasajero
-            if (entidadDestino instanceof Vehiculo vehiculo) {
+            // Si la entidad que se está moviendo es un vehículo y se dirige un usuario se queda sin batería, se termina su trayecto y por ende el de su pasajero
+            if (this instanceof Usuario && entidadDestino instanceof Vehiculo vehiculo) {
                 // Si el vehículo al que se está siguiendo sufre un fallo mecánico
                 if (vehiculo.tieneAlertaFalloMecanico()) {
                     terminarTrayecto();
