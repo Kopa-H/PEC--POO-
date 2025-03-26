@@ -141,7 +141,7 @@ public abstract class Entidad implements Serializable
     // Función que se llama si ocurre un fallo mecánico
     public void activarFalloMecanico() {
         tieneFalloMecanico = true;
-        System.out.println("Se ha ACTIVADO un fallo mecánico en " + this.toSimpleString());
+        System.out.println("\nSe ha ACTIVADO un fallo mecánico en " + this.toSimpleString());
     }
     
     public void desactivarFalloMecanico() {

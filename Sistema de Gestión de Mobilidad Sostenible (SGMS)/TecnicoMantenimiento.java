@@ -32,6 +32,7 @@ public class TecnicoMantenimiento extends Trabajador
         
             // Si se ha cargado la batería por completo, el trabajador abandona su labor
             if (vehiculoAsignado.getPorcentajeBateria() >= 100) {
+                System.out.println(this.toSimpleString() + " ha cargado por completo a " + vehiculoAsignado.toSimpleString());
                 terminarTrabajo();
             }
         // Los técnicos de mantenimiento pueden reparar bases, pero NO vehículos

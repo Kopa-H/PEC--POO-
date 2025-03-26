@@ -249,7 +249,9 @@ public abstract class EntidadMovil extends Entidad {
         } else {
             // Si se ha terminado el trayecto
             RandomGenerator randomGenerator = new RandomGenerator();
-    
+
+            System.out.println("La entidad " + this.toSimpleString() + " ha llegado a su destino en " + ubicacionDestino.toString());
+            
             enTrayecto = false;
             siguiendoEntidad = false;
             ubicacionDestino = null;
@@ -265,12 +267,7 @@ public abstract class EntidadMovil extends Entidad {
                 if (vehiculoEscogido != null) {
                     Base baseEscogida = (Base) randomGenerator.getEntidadRandom(ciudad, baseDestino, Base.class);
                     
-                    if (baseEscogida != null) {
-                        // El usuario alerta de fallo mecánico si la base lo tiene
-                        if (baseEscogida.tieneFalloMecanico()) {
-                            usuario.alertarFalloMecanico(baseEscogida);
-                        }
-                        
+                    if (baseEscogida != null) {                        
                         vehiculoEscogido.planearTrayecto(baseEscogida.getUbicacion(), baseEscogida);
 
                         empezarSeguimiento(vehiculoEscogido);
@@ -333,7 +330,7 @@ public abstract class EntidadMovil extends Entidad {
     }
     
     public void seguirEntidadMovil() {
-        if (this instanceof Usuario usuario && entidadSeguida.tieneFalloMecanico()) {
+        if (this instanceof Usuario usuario && entidadSeguida.tieneFalloMecanico() && !entidadSeguida.tieneAlertaFalloMecanico()) {
             usuario.alertarFalloMecanico(entidadSeguida);
         }
         

@@ -199,16 +199,16 @@ public class Simulacion {
     
     public void agregarGrupoEntidades() {
         // Añadimos n usuarios
-        ciudad.agregarEntidad(this, 6, Usuario.class);
+        ciudad.agregarEntidad(this, 2, Usuario.class);
         
         // Añadimos n trabajadores de mantenimiento
-        ciudad.agregarEntidad(this, 2, TecnicoMantenimiento.class);
+        ciudad.agregarEntidad(this, 1, TecnicoMantenimiento.class);
         
         // Añadimos n trabajadores de mecánica
-        ciudad.agregarEntidad(this, 2, Mecanico.class);
+        ciudad.agregarEntidad(this, 1, Mecanico.class);
         
         // Añadimos n motos en ubicaciones aleatorias
-        ciudad.agregarEntidad(this, 6, Moto.class);
+        ciudad.agregarEntidad(this, 3, Moto.class);
 
         // Añadimos n bases con vehículos (en este caso, ya se añadieron en el método anterior)
         ciudad.agregarBase(this, 2, 2);
