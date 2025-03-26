@@ -224,16 +224,30 @@ public class Ciudad {
         
     public void reconectarRelacionesEntidades() {
         for (Entidad entidad : entidades) {
-            // Se actualizan las relaciones de seguimiento
-            if (entidad instanceof EntidadMovil entidadMovil && entidadMovil.isSiguiendoEntidad() && entidadMovil.getEntidadSeguida() != null) {
-                // Obtener la entidad seguida usando algún identificador único
-                int idEntidadSeguida = entidadMovil.getEntidadSeguida().getId(); // Suponiendo que las entidades tienen un ID
-                Entidad entidadSeguida = encontrarEntidad(entidadMovil.getEntidadSeguida().getClass(), idEntidadSeguida);
+            
+            if (entidad instanceof EntidadMovil entidadMovil) {
                 
-                if (entidadSeguida instanceof EntidadMovil) {
-                    entidadMovil.setEntidadSeguida((EntidadMovil) entidadSeguida); // Reconectar la entidad seguida
-                } else {
-                    entidadMovil.setEntidadSeguida(null); // Si no se encuentra la entidad, se desconecta
+                // Se actualizan las relaciones de destino
+                if (entidadMovil.getEntidadDestino() != null) {
+                    int idEntidadDestino = entidadMovil.getEntidadDestino().getId();
+                    Entidad entidadDestino = encontrarEntidad(entidadMovil.getEntidadDestino().getClass(), idEntidadDestino);
+                    
+                    if (entidadDestino != null) {
+                        entidadMovil.setEntidadDestino(entidadDestino);
+                    }
+                }
+                
+                // Se actualizan las relaciones de seguimiento
+                if (entidadMovil.isSiguiendoEntidad() && entidadMovil.getEntidadSeguida() != null) {
+                    // Obtener la entidad seguida usando algún identificador único
+                    int idEntidadSeguida = entidadMovil.getEntidadSeguida().getId(); // Suponiendo que las entidades tienen un ID
+                    Entidad entidadSeguida = encontrarEntidad(entidadMovil.getEntidadSeguida().getClass(), idEntidadSeguida);
+                    
+                    if (entidadSeguida instanceof EntidadMovil) {
+                        entidadMovil.setEntidadSeguida((EntidadMovil) entidadSeguida); // Reconectar la entidad seguida
+                    } else {
+                        entidadMovil.setEntidadSeguida(null); // Si no se encuentra la entidad, se desconecta
+                    }
                 }
             }
     

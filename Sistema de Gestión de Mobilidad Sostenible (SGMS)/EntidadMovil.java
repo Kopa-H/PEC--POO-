@@ -47,6 +47,10 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
     public Entidad getEntidadDestino() {
         return entidadDestino;
     }
+    
+    public void setEntidadDestino(Entidad entidadDestino) {
+        this.entidadDestino = entidadDestino;
+    }
 
     public boolean isSiguiendoEntidad() {
         return siguiendoEntidad;
@@ -183,7 +187,13 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
     }
     
     public void terminarTrayecto() {  
-        System.out.println(this.toSimpleString() + " ha terminado su trayecto en " + entidadDestino.toSimpleString());
+        
+        if (entidadDestino != null) {
+            System.out.println(this.toSimpleString() + " ha terminado su trayecto hacia " + entidadDestino.toSimpleString());
+        } else {
+            System.out.println("\n" + toSimpleString() + " ha terminado su trayecto hacia " + ubicacionDestino.toString());
+        }
+
     
         // Se abandona el trayecto
         enTrayecto = false;
@@ -266,6 +276,7 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
             siguiendoEntidad = false;
             ubicacionDestino = null;
     
+            // Si una bici o patinete ha llegado a su base de destino, se agrega a ella
             if ((this instanceof Bicicleta || this instanceof Patinete) && entidadDestino instanceof Base) {               
                 ((Base) entidadDestino).agregarVehiculoDisponible((Vehiculo) this);
             }

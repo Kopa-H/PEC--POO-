@@ -72,12 +72,12 @@ public abstract class Entidad implements Serializable
     
     public void activarAlertaFalloMecanico() {
         tieneAlertaFalloMecanico = true;
-        System.out.println("Se ha ACTIVADO una alerta de fallo mecánico sobre " + this.toSimpleString());
+        System.out.println("\nSe ha ACTIVADO una alerta de fallo mecánico sobre " + this.toSimpleString());
     }
     
     public void desactivarAlertaFalloMecanico() {
         tieneAlertaFalloMecanico = false;
-        System.out.println("Se ha DESACTIVADO una alerta de fallo mecánico sobre " + this.toSimpleString());
+        System.out.println("\nSe ha DESACTIVADO una alerta de fallo mecánico sobre " + this.toSimpleString());
     }
     
     public boolean tieneAlertaFalloMecanico() {

@@ -75,7 +75,7 @@ public class Usuario extends Persona implements Serializable {
      */
     public void alertarFalloMecanico(Entidad entidad) {
         if (!getEntidadSeguida().tieneAlertaFalloMecanico() && (entidad instanceof Vehiculo || entidad instanceof Base)) {
-            System.out.println("El usuario " + this.toSimpleString() + " ha activado la alerta de fallo mecánico de " + getEntidadSeguida().toSimpleString());
+            System.out.println("\n" + this.toSimpleString() + " ha activado la alerta de fallo mecánico de " + getEntidadSeguida().toSimpleString());
             entidad.activarAlertaFalloMecanico();
         }
     }

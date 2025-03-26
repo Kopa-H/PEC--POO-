@@ -44,7 +44,7 @@ abstract public class Trabajador extends Persona
             for (Entidad entidad : ciudad.getEntidades()) {
                 if (intentarAsignarEntidad(ciudad, entidad)) {
                     entidadAsignada = entidad;
-                    System.out.println("\n[" + toSimpleString() + "] se ha asignado [" + entidadAsignada.toSimpleString() + "] para trabajar en ella");
+                    System.out.println("\n" + toSimpleString() + " se ha asignado " + entidadAsignada.toSimpleString() + " para trabajar");
                 }                   
             }
         } else {
