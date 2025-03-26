@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.io.Serializable;
 
 /**
  * Write a description of class Usuario here.
@@ -7,7 +6,7 @@ import java.io.Serializable;
  * @author Kopa
  * @version (a version number or a date)
  */
-public class Usuario extends Persona implements Serializable {
+public class Usuario extends Persona {
     private static int contadorInstancias = 0;
     
     // instance variables - replace the example below with your own

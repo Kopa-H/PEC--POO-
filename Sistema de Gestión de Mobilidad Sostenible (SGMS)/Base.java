@@ -67,6 +67,43 @@ public class Base extends EntidadFija
         
         return num; // Recuerda devolver el resultado
     }
+    
+    public void reconectarVehiculosBase(Ciudad ciudad) {
+        // Reconectar los vehículos disponibles
+        for (int i = 0; i < vehiculosDisponibles.size(); i++) {
+            Vehiculo vehiculo = vehiculosDisponibles.get(i);
+            
+            // Asegurarse de que el vehículo esté correctamente reconectado
+            if (vehiculo != null) {
+                int idVehiculo = vehiculo.getId(); // Obtener el ID del vehículo
+                Vehiculo vehiculoReconectado = (Vehiculo) ciudad.encontrarEntidad(vehiculo.getClass(), idVehiculo);
+                
+                if (vehiculoReconectado != null) {
+                    vehiculosDisponibles.set(i, vehiculoReconectado); // Reemplazar el vehículo reconectado
+                } else {
+                    vehiculosDisponibles.set(i, null); // Si no se encuentra el vehículo, lo ponemos a null
+                }
+            }
+        }
+        
+        // Reconectar los vehículos inhabilitados
+        for (int i = 0; i < vehiculosInhabilitados.size(); i++) {
+            Vehiculo vehiculo = vehiculosInhabilitados.get(i);
+            
+            // Asegurarse de que el vehículo esté correctamente reconectado
+            if (vehiculo != null) {
+                int idVehiculo = vehiculo.getId(); // Obtener el ID del vehículo
+                Vehiculo vehiculoReconectado = (Vehiculo) ciudad.encontrarEntidad(vehiculo.getClass(), idVehiculo);
+                
+                if (vehiculoReconectado != null) {
+                    vehiculosInhabilitados.set(i, vehiculoReconectado); // Reemplazar el vehículo reconectado
+                } else {
+                    vehiculosInhabilitados.set(i, null); // Si no se encuentra el vehículo, lo ponemos a null
+                }
+            }
+        }
+    }
+    
         
     @Override
     public String toString() {

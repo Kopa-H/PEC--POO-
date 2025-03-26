@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.awt.Color;
-import java.io.Serializable;
 
 /**
  * Write a description of class Vehiculo here.
@@ -8,8 +7,7 @@ import java.io.Serializable;
  * @author (your name)
  * @version (a version number or a date)
  */
-abstract public class Vehiculo extends EntidadMovil implements Serializable
-{
+abstract public class Vehiculo extends EntidadMovil {
     // Número de casillas que pueden recorrerse con la batería al tope. Se usa junto al porcentaje para calcular la distancia máxima que puede recorrer un vehículo.
     // Las subclases pueden modificar este valor para ajustar la capacidad de sus baterías.
     protected final int DISTANCIA_MAX_BATERIA;

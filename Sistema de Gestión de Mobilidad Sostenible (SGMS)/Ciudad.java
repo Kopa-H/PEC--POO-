@@ -234,6 +234,7 @@ public class Ciudad {
                     
                     if (entidadDestino != null) {
                         entidadMovil.setEntidadDestino(entidadDestino);
+                        entidadMovil.setUbicacionDestino(entidadDestino.getUbicacion());
                     }
                 }
                 
@@ -262,6 +263,11 @@ public class Ciudad {
                 } else {
                     trabajador.setEntidadAsignada(null); // Si no se encuentra la entidad, se desconecta
                 }
+            }
+            
+            // Si la entidad es de tipo Base, reconectar los vehículos
+            if (entidad instanceof Base base) {
+                base.reconectarVehiculosBase(this); // Reconecta los vehículos disponibles e inhabilitados
             }
         }
     }

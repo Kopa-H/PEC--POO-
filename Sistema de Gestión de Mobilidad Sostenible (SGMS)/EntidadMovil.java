@@ -1,17 +1,16 @@
 import java.util.Random;
 import java.util.ArrayList;
-import java.io.Serializable;
 
 /**
  * Clase EntidadMovil que representa un objeto que puede moverse por el tablero.
  */
-public abstract class EntidadMovil extends Entidad implements Serializable {
+public abstract class EntidadMovil extends Entidad {
     public enum Direcciones {
         UP, DOWN, RIGHT, LEFT
     }
     
     public boolean enTrayecto;
-    Ubicacion ubicacionDestino;
+    private Ubicacion ubicacionDestino;
     
     private ArrayList<Direcciones> trayecto;
     
@@ -42,6 +41,14 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
     
     public void setEntidadSeguida(EntidadMovil entidadSeguida) {
         this.entidadSeguida = entidadSeguida;
+    }
+    
+    public Ubicacion getUbicacionDestino() {
+        return ubicacionDestino;
+    }
+    
+    public void setUbicacionDestino(Ubicacion ubi) {
+        this.ubicacionDestino = ubi;
     }
     
     public Entidad getEntidadDestino() {
@@ -174,13 +181,17 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
                 trayecto.add(Direcciones.DOWN);
             }
         }
+        
+        if (trayecto.size() < 1) {
+            System.out.println("Error. " + toSimpleString() + " ha comenzado un trayecto nulo");
+        }
 
         // Activar estado de trayecto
         this.enTrayecto = true;
         this.entidadDestino = entidadDestino;
         
         if (entidadDestino != null) {
-            System.out.println("\n" + toSimpleString() + " ha comenzado un trayecto hacia " + entidadDestino.toSimpleString());
+            System.out.println("\n" + toSimpleString() + " ha comenzado un trayecto hacia " + entidadDestino.toSimpleString() + " en " + ubiDestino.toString());
         } else {
             System.out.println("\n" + toSimpleString() + " ha comenzado un trayecto hacia " + ubiDestino.toString());
         }
@@ -193,7 +204,6 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
         } else {
             System.out.println("\n" + toSimpleString() + " ha terminado su trayecto hacia " + ubicacionDestino.toString());
         }
-
     
         // Se abandona el trayecto
         enTrayecto = false;
@@ -226,7 +236,9 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
         return false;
     }
     
-    public void seguirTrayecto(Ciudad ciudad) {       
+    public void seguirTrayecto(Ciudad ciudad) {  
+        System.out.println("La entidad " + toString() + " continúa su trayecto");
+        
         // Verificamos si aún hay movimientos por hacer
         if (!trayecto.isEmpty()) {
             // Se verifica que la entidad seguida NO está en movimiento. En este caso se termina el trayecto

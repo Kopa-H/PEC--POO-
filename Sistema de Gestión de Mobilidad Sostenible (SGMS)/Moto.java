@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.io.Serializable;
 
 /**
  * Write a description of class Moto here.
@@ -7,7 +6,7 @@ import java.io.Serializable;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Moto extends Vehiculo implements Serializable
+public class Moto extends Vehiculo
 {
     private static int contadorInstancias = 0;
     private static final int MAX_DISTANCIA_BATERIA = 100;
