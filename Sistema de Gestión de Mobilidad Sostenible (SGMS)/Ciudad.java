@@ -25,24 +25,17 @@ public class Ciudad {
         entidades = newEntidades;
     }
     
-    // Método auxiliar para contar cuántos Vehiculos hay en la lista
-    private int contarVehiculos() {
-        int count = 0;
-        for (Entidad e : entidades) {
-            if (e instanceof Vehiculo) {
-                count++;
-            }
+    // Método para mover una entidad al principio de la lista
+    public void moverEntidadAlPrincipio(Entidad entidad) {
+        if (entidades.contains(entidad)) {
+            entidades.remove(entidad);      // Elimina la entidad de su posición actual
+            entidades.add(0, entidad);      // Añade la entidad al principio de la lista (índice 0)
         }
-        return count;
     }
     
     // Método para añadir una entidad a la ciudad
     public void addElement(Entidad entidad) {
-        if (entidad instanceof Vehiculo) {
-            entidades.add(entidad); // Añadir al final de la lista
-        } else {
-            entidades.add(entidades.size() - contarVehiculos(), entidad); // Añadir antes de los Vehiculos
-        }
+        entidades.add(entidad); // Añadir al final de la lista
     }
     
         /**

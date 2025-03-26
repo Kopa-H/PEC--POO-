@@ -250,7 +250,7 @@ public abstract class EntidadMovil extends Entidad {
             // Si se ha terminado el trayecto
             RandomGenerator randomGenerator = new RandomGenerator();
 
-            System.out.println("La entidad " + this.toSimpleString() + " ha llegado a su destino en " + ubicacionDestino.toString());
+            System.out.println("\nLa entidad " + this.toSimpleString() + " ha llegado a su destino en " + ubicacionDestino.toString());
             
             enTrayecto = false;
             siguiendoEntidad = false;
@@ -270,7 +270,7 @@ public abstract class EntidadMovil extends Entidad {
                     if (baseEscogida != null) {                        
                         vehiculoEscogido.planearTrayecto(baseEscogida.getUbicacion(), baseEscogida);
 
-                        empezarSeguimiento(vehiculoEscogido);
+                        empezarSeguimiento(ciudad, vehiculoEscogido);
                         
                         baseDestino.vehiculosDisponibles.remove(vehiculoEscogido);
                     } else {
@@ -287,16 +287,19 @@ public abstract class EntidadMovil extends Entidad {
                 Ubicacion ubicacion = randomGenerator.getUbicacionLibreRandom(ciudad);
                 moto.planearTrayecto(ubicacion, null);
             
-                empezarSeguimiento(moto);
+                empezarSeguimiento(ciudad, moto);
             }
     
             entidadDestino = null;
         }
     }
     
-    public void empezarSeguimiento(EntidadMovil entidadPorSeguir) {
+    public void empezarSeguimiento(Ciudad ciudad, EntidadMovil entidadPorSeguir) {
         entidadSeguida = entidadPorSeguir;
         siguiendoEntidad = true;
+        
+        // El objeto se mueve al final de la lista de entidades para que se muestre siempre una posición detrás de la entidad seguida
+        ciudad.moverEntidadAlPrincipio(this);
         
         System.out.println("\n" + this.toSimpleString() + " ha comenzado a seguir a " + entidadSeguida.toSimpleString());
     }

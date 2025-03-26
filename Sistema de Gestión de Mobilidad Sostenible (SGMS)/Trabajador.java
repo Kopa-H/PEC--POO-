@@ -76,7 +76,7 @@ abstract public class Trabajador extends Persona
                         planearTrayecto(baseCercana.getUbicacion(), baseCercana);
                         
                         // El vehículo sigue a la persona
-                        vehiculoAsignado.empezarSeguimiento(this);
+                        vehiculoAsignado.empezarSeguimiento(ciudad, this);
                     }
                     
                 }
@@ -97,7 +97,7 @@ abstract public class Trabajador extends Persona
     public String toString() {
         String str = super.toString();  // Llamamos al toString de Trabajador
         if (entidadAsignada != null) {
-            str += "  |  Entidad asignada: (" + entidadAsignada + " )";  // Añadimos el vehículo si está asignado
+            str += "  |  Entidad asignada: [" + entidadAsignada.toSimpleString() + " ]";  // Añadimos el vehículo si está asignado
         }
         return str;
     }

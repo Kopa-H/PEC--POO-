@@ -6,8 +6,9 @@ import java.awt.Color;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class TecnicoMantenimiento extends Trabajador
-{
+public class TecnicoMantenimiento extends Trabajador {
+    
+    private static int contadorInstancias = 0;
     
     /**
      * Constructor for objects of class TrabajadorMantenimiento
@@ -16,6 +17,9 @@ public class TecnicoMantenimiento extends Trabajador
     {
         super(posX, posY);
         setColor(Color.MAGENTA);
+        
+        setId(contadorInstancias);
+        contadorInstancias++;
     }
 
     @Override

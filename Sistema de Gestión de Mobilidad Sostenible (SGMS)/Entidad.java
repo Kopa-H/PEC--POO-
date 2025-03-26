@@ -132,7 +132,8 @@ public abstract class Entidad implements Serializable
     public void restaurarEstadoMecanico() {
         estadoMecanico++;
         
-        if (getPorcentajeEstadoMecanico() >= 70) {
+        // Se tiene que cargar al tope para repararse
+        if (getPorcentajeEstadoMecanico() >= 100) {
             desactivarFalloMecanico();
             desactivarAlertaFalloMecanico();
         }
