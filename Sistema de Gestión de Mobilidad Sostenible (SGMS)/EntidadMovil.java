@@ -133,7 +133,7 @@ public abstract class EntidadMovil extends Entidad {
                 break;
             default:
                 // En caso de que no haya dirección (aunque no debería suceder)
-                System.out.println("\n" + "Dirección no válida.");
+                Impresora.printRojo("\nError." + "La entidad " + this.toString() + " se ha intentado mover a una dirección no válida.");
                 break;
         }
     }
@@ -191,18 +191,18 @@ public abstract class EntidadMovil extends Entidad {
         this.entidadDestino = entidadDestino;
         
         if (entidadDestino != null) {
-            System.out.println("\n" + toSimpleString() + " ha comenzado un trayecto hacia " + entidadDestino.toSimpleString() + " en " + ubiDestino.toString());
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha comenzado un trayecto hacia " + entidadDestino.toSimpleString() + " en " + ubiDestino.toString());
         } else {
-            System.out.println("\n" + toSimpleString() + " ha comenzado un trayecto hacia " + ubiDestino.toString());
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha comenzado un trayecto hacia " + ubiDestino.toString());
         }
     }
     
     public void terminarTrayecto() {  
         
         if (entidadDestino != null) {
-            System.out.println("\n" + this.toSimpleString() + " ha terminado su trayecto hacia " + entidadDestino.toSimpleString());
+            Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha terminado su trayecto hacia " + entidadDestino.toSimpleString());
         } else {
-            System.out.println("\n" + toSimpleString() + " ha terminado su trayecto hacia " + ubicacionDestino.toString());
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha terminado su trayecto hacia " + ubicacionDestino.toString());
         }
     
         // Se abandona el trayecto
@@ -281,7 +281,7 @@ public abstract class EntidadMovil extends Entidad {
             
             RandomGenerator randomGenerator = new RandomGenerator();
 
-            System.out.println("\n" + this.toSimpleString() + " ha llegado a su destino en " + ubicacionDestino.toString());
+            Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha llegado a su destino en " + ubicacionDestino.toString());
             
             enTrayecto = false;
             siguiendoEntidad = false;
@@ -306,10 +306,10 @@ public abstract class EntidadMovil extends Entidad {
                         
                         baseDestino.vehiculosDisponibles.remove(vehiculoEscogido);
                     } else {
-                        System.out.println("\n" + "No hay bases destino disponibles en la ciudad.");
+                        Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " no puede iniciar ningún viaje porque no existe otra base disponible a la que viajar en estos momentos.");
                     }
                 } else {
-                    System.out.println("\n" + "No hay vehículos disponibles en la base.");
+                    Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " no puede iniciar ningún viaje porque no hay ningún vehículo disponible en " + baseDestino.toSimpleString());
                 }
             }
     
@@ -333,11 +333,11 @@ public abstract class EntidadMovil extends Entidad {
         // El objeto se mueve al final de la lista de entidades para que se muestre siempre una posición detrás de la entidad seguida
         ciudad.moverEntidadAlPrincipio(this);
         
-        System.out.println("\n" + this.toSimpleString() + " ha comenzado a seguir a " + entidadSeguida.toSimpleString());
+        Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha comenzado a seguir a " + entidadSeguida.toSimpleString());
     }
     
     public void abandonarSeguimiento() {
-        System.out.println("\n" + this.toSimpleString() + " ha dejado de seguir a " + entidadSeguida.toSimpleString());
+        Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha dejado de seguir a " + entidadSeguida.toSimpleString());
         
         entidadSeguida = null;
         siguiendoEntidad = false;

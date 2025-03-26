@@ -10,6 +10,7 @@ public class Bicicleta extends Vehiculo
 {
     private static int contadorInstancias = 0;
     private static final int MAX_DISTANCIA_BATERIA = 300;
+    public static Color colorClase = Color.PINK;
     
     /**
      * Constructor for objects of class Bicicleta
@@ -18,7 +19,7 @@ public class Bicicleta extends Vehiculo
     {
         // initialise instance variables
         super(posX, posY, MAX_DISTANCIA_BATERIA);
-        setColor(Color.PINK);
+        setColor(colorClase);
         
         setId(contadorInstancias);
         contadorInstancias++;

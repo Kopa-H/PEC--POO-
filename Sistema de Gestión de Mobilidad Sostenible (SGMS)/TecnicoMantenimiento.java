@@ -9,6 +9,7 @@ import java.awt.Color;
 public class TecnicoMantenimiento extends Trabajador {
     
     private static int contadorInstancias = 0;
+    public static Color colorClase = Color.MAGENTA;
     
     /**
      * Constructor for objects of class TrabajadorMantenimiento
@@ -16,7 +17,7 @@ public class TecnicoMantenimiento extends Trabajador {
     public TecnicoMantenimiento(int posX, int posY)
     {
         super(posX, posY);
-        setColor(Color.MAGENTA);
+        setColor(colorClase);
         
         setId(contadorInstancias);
         contadorInstancias++;

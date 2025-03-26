@@ -8,6 +8,7 @@ import java.awt.Color;
  */
 public class Usuario extends Persona {
     private static int contadorInstancias = 0;
+    public static Color colorClase = Color.ORANGE;
     
     // instance variables - replace the example below with your own
     private double saldo;
@@ -23,7 +24,7 @@ public class Usuario extends Persona {
     public Usuario(int posX, int posY) {
         // initialise instance variables
         super(posX, posY);
-        setColor(Color.ORANGE);
+        setColor(colorClase);
         saldo = 0;
         tipoMembresia = TipoMembresia.ESTANDAR;
         
@@ -74,7 +75,7 @@ public class Usuario extends Persona {
      */
     public void alertarFalloMecanico(Entidad entidad) {
         if (!getEntidadSeguida().tieneAlertaFalloMecanico() && (entidad instanceof Vehiculo || entidad instanceof Base)) {
-            System.out.println("\n" + this.toSimpleString() + " ha activado la alerta de fallo mecánico de " + getEntidadSeguida().toSimpleString());
+            Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha activado la alerta de fallo mecánico de " + getEntidadSeguida().toSimpleString());
             entidad.activarAlertaFalloMecanico();
         }
     }

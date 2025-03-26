@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 public final class Impresora {
     // Definir códigos de color
     public static final String RESET = "\u001B[0m";
@@ -23,7 +25,35 @@ public final class Impresora {
     public static void print(String mensaje) {
         System.out.println(mensaje);
     }
+    
+    // Método estático para imprimir en el color de la clase recibida
+    public static void printColorClase(Class<?> clase, String mensaje) {
+        try {
+            // Obtener el campo estático colorClase directamente desde la clase
+            Color color = (Color) clase.getField("colorClase").get(null);
 
+            // Convertir el color de java.awt.Color a un código ANSI
+            String colorAnsi = convertirColorAAnsi(color);
+
+            // Imprimir el mensaje en el color de la clase
+            System.out.println(colorAnsi + mensaje + RESET);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            System.out.println("No se encontró el campo colorClase o no es accesible.");
+        }
+    }
+
+    // Método para convertir un color java.awt.Color a un código ANSI
+    private static String convertirColorAAnsi(Color color) {
+        int rojo = color.getRed();
+        int verde = color.getGreen();
+        int azul = color.getBlue();
+
+        // Convertir RGB a un color ANSI 256 usando el formato \u001B[38;5;Xm
+        int colorAnsi = 16 + (36 * (rojo / 51)) + (6 * (verde / 51)) + (azul / 51);
+        return "\u001B[38;5;" + colorAnsi + "m";
+    }
+        
+    
     // Método estático para imprimir en color rojo
     public static void printRojo(String mensaje) {
         System.out.println(ROJO + mensaje + RESET);

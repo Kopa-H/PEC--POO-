@@ -44,7 +44,7 @@ abstract public class Trabajador extends Persona
             for (Entidad entidad : ciudad.getEntidades()) {
                 if (intentarAsignarEntidad(ciudad, entidad)) {
                     entidadAsignada = entidad;
-                    System.out.println("\n" + toSimpleString() + " se ha asignado " + entidadAsignada.toSimpleString() + " para trabajar");
+                    Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se ha asignado " + entidadAsignada.toSimpleString() + " para trabajar");
                 }                   
             }
         } else {
@@ -74,11 +74,11 @@ abstract public class Trabajador extends Persona
                     // Si no hay ningun base disponible, modifica su trabajo para reparar bases
                     if (baseCercana == null) {
                         terminarTrabajo();
-                        System.out.println("\n" + toSimpleString() + " ha abandonado su trabajo con la intención de reparar bases con urgencia");
+                        Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha abandonado su trabajo con la intención de reparar bases con urgencia");
                         intentarAsignarEntidad(ciudad, ciudad.encontrarEntidadConFalloMecanico(Base.class));
                         
                     } else {
-                        System.out.println("\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoAsignado.toSimpleString() + " a la base más cercana para trabajar");
+                        Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoAsignado.toSimpleString() + " a la base más cercana para trabajar");
                         planearTrayecto(baseCercana.getUbicacion(), baseCercana);
                         
                         // El vehículo sigue a la persona
@@ -93,7 +93,7 @@ abstract public class Trabajador extends Persona
     abstract public void trabajar();
     
     public void terminarTrabajo() {
-        System.out.println("\n" + "El trabajador " + this.toSimpleString() + " ha terminado su trabajo con " + entidadAsignada.toSimpleString());
+        Impresora.printColorClase(this.getClass(), "\n" + "El trabajador " + this.toSimpleString() + " ha terminado su trabajo con " + entidadAsignada.toSimpleString());
         entidadAsignada = null;
     }
     
