@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.text.*;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 public class InterfazSimulacion extends JFrame {   
     private static final Color DESCRIPTION_PANE_COLOR = Color.CYAN;
@@ -137,7 +138,28 @@ public class InterfazSimulacion extends JFrame {
     
     public void actualizarEstadoPanel(Ciudad ciudad, int row, int col) {       
         panelTextoInfo.setText("");
+        
+        // Separar las entidades de tipo Base de las demás
+        ArrayList<Entidad> entidadesBase = new ArrayList<>();
+        ArrayList<Entidad> otrasEntidades = new ArrayList<>();
+        
         for (Entidad entidad : ciudad.getEntidades()) {
+            if (entidad instanceof Base) {
+                entidadesBase.add(entidad);  // Añadir las entidades Base a una lista separada
+            } else {
+                otrasEntidades.add(entidad);  // Añadir el resto a otra lista
+            }
+        }
+    
+        // Mostrar las entidades Base primero
+        for (Entidad entidad : entidadesBase) {
+            if (entidad.getUbicacion().getPosX() == row && entidad.getUbicacion().getPosY() == col) {
+                panelTextoInfo.setText(panelTextoInfo.getText() + entidad.toString() + "\n\n");
+            }
+        }
+    
+        // Luego mostrar las otras entidades
+        for (Entidad entidad : otrasEntidades) {
             if (entidad.getUbicacion().getPosX() == row && entidad.getUbicacion().getPosY() == col) {
                 panelTextoInfo.setText(panelTextoInfo.getText() + entidad.toString() + "\n\n");
             }
@@ -145,7 +167,7 @@ public class InterfazSimulacion extends JFrame {
         
         // Asegúrate de mover el caret al inicio para que se vea el contenido superior
         panelTextoInfo.setCaretPosition(0); // Mover el caret al principio
-
+    
         if (panelTextoInfo.getText().length() > 0) {
             panelTextoInfo.revalidate();
             panelTextoInfo.repaint();

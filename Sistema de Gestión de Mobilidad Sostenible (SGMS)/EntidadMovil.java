@@ -183,7 +183,7 @@ public abstract class EntidadMovil extends Entidad {
         }
         
         if (trayecto.size() < 1) {
-            System.out.println("Error. " + toSimpleString() + " ha comenzado un trayecto nulo");
+            Impresora.printRojo("\nError. " + toSimpleString() + " ha comenzado un trayecto nulo");
         }
 
         // Activar estado de trayecto
@@ -200,7 +200,7 @@ public abstract class EntidadMovil extends Entidad {
     public void terminarTrayecto() {  
         
         if (entidadDestino != null) {
-            System.out.println(this.toSimpleString() + " ha terminado su trayecto hacia " + entidadDestino.toSimpleString());
+            System.out.println("\n" + this.toSimpleString() + " ha terminado su trayecto hacia " + entidadDestino.toSimpleString());
         } else {
             System.out.println("\n" + toSimpleString() + " ha terminado su trayecto hacia " + ubicacionDestino.toString());
         }
@@ -236,9 +236,7 @@ public abstract class EntidadMovil extends Entidad {
         return false;
     }
     
-    public void seguirTrayecto(Ciudad ciudad) {  
-        System.out.println("La entidad " + toString() + " continúa su trayecto");
-        
+    public void seguirTrayecto(Ciudad ciudad) {         
         // Verificamos si aún hay movimientos por hacer
         if (!trayecto.isEmpty()) {
             // Se verifica que la entidad seguida NO está en movimiento. En este caso se termina el trayecto
@@ -280,6 +278,7 @@ public abstract class EntidadMovil extends Entidad {
     
         } else {
             // Si se ha terminado el trayecto
+            
             RandomGenerator randomGenerator = new RandomGenerator();
 
             System.out.println("\n" + this.toSimpleString() + " ha llegado a su destino en " + ubicacionDestino.toString());

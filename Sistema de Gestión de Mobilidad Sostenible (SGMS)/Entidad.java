@@ -15,6 +15,7 @@ public abstract class Entidad implements Serializable
     private Color color; // color mostrado en la visualización
     
     private static final int ESTADO_MECANICO_PERFECTO = 5000;
+    private static final int ESTADO_MECANICO_SUMADO_POR_REPARACION = 100;
     
     // Variable de instancia para almacenar el ID único de cada usuario
     private int id;
@@ -130,7 +131,7 @@ public abstract class Entidad implements Serializable
     }
     
     public void restaurarEstadoMecanico() {
-        estadoMecanico++;
+        estadoMecanico += ESTADO_MECANICO_SUMADO_POR_REPARACION;
         
         // Se tiene que cargar al tope para repararse
         if (getPorcentajeEstadoMecanico() >= 100) {

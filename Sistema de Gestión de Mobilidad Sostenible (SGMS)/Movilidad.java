@@ -14,12 +14,23 @@ public class Movilidad {
     private static Simulacion simulacion;
     private static GestorMenus gestorMenus;
     
+    private static void mostrarMensajeBienvenida() {
+        Impresora.print("\n\n\n");
+        Impresora.print("------------------------------------------------------------------------------------------------");
+        Impresora.printAzul("Sea bienvenido al programa SGMS.");
+        Impresora.printAzul("Siéntase libre de experimentar como desee con la simulación.");
+        Impresora.print("------------------------------------------------------------------------------------------------");
+        Impresora.print("\n");
+    }
+    
     /**
      * Función principal que ejecuta el sistema.
      * 
      * @param args  Los argumentos de la línea de comandos proporcionados al ejecutar el programa.
      */
     public static void main(String[] args) {
+        
+        mostrarMensajeBienvenida();
         
         ciudad = new Ciudad();
         

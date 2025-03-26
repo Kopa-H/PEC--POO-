@@ -74,9 +74,11 @@ abstract public class Trabajador extends Persona
                     // Si no hay ningun base disponible, modifica su trabajo para reparar bases
                     if (baseCercana == null) {
                         terminarTrabajo();
+                        System.out.println("\n" + toSimpleString() + " ha abandonado su trabajo con la intención de reparar bases con urgencia");
                         intentarAsignarEntidad(ciudad, ciudad.encontrarEntidadConFalloMecanico(Base.class));
                         
                     } else {
+                        System.out.println("\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoAsignado.toSimpleString() + " a la base más cercana para trabajar");
                         planearTrayecto(baseCercana.getUbicacion(), baseCercana);
                         
                         // El vehículo sigue a la persona

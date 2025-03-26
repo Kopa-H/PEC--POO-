@@ -211,9 +211,9 @@ public class Simulacion {
         ciudad.agregarEntidad(this, 1, Mecanico.class);
         
         // Añadimos n motos en ubicaciones aleatorias
-        ciudad.agregarEntidad(this, 3, Moto.class);
+        ciudad.agregarEntidad(this, 2, Moto.class);
 
         // Añadimos n bases con vehículos (en este caso, ya se añadieron en el método anterior)
-        ciudad.agregarBase(this, 2, 2);
+        // ciudad.agregarBase(this, 2, 2);
     }
 }

@@ -63,13 +63,13 @@ public class Ciudad {
                 Color color = entidad.getColor();
                 simulacion.mostrarEntidad(entidad.getUbicacion(), color);
                 
-                System.out.println("Se ha añadido una " + claseEntidad.getSimpleName() + " en: " + ubi.toString());
+                Impresora.printAzul("Se ha añadido una entidad " + claseEntidad.getSimpleName() + " en: " + ubi.toString());
                 
                 // Si no existe ninguna base y se está añadiendo un vehículo, se agregan dos bases (las mínimas para que las bicis viajen de una a la otra)
                 if (encontrarEntidad(Base.class, 0) == null) {
                     agregarBase(simulacion, 2, 2);
                     agregarBase(simulacion, 2, 2);
-                    System.out.println("Se han añadido dos Bases dado que no existía ninguna");
+                    Impresora.printAzul("Se han añadido dos Bases dado que no existía ninguna");
                 }
             
             } catch (Exception e) {
