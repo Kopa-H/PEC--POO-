@@ -184,12 +184,27 @@ public abstract class EntidadMovil extends Entidad {
         }
     }
     
-    public void terminarTrayecto() {
-            // Se abandona el trayecto
-            enTrayecto = false;
-            siguiendoEntidad = false;
-            ubicacionDestino = null;
-            entidadDestino = null;
+    public void terminarTrayecto() {  
+        System.out.println(this.toSimpleString() + " ha dejado de seguir a " + entidadDestino.toSimpleString());
+    
+        // Se abandona el trayecto
+        enTrayecto = false;
+        siguiendoEntidad = false;
+        ubicacionDestino = null;
+        entidadDestino = null;
+    }
+    
+    public boolean isVehiculoMalEstado() {
+        // Si la entidad que se está moviendo es un vehículo y se dirige un usuario se queda sin batería, se termina su trayecto y por ende el de su pasajero
+        if (this instanceof Usuario && entidadDestino instanceof Vehiculo vehiculo) {
+            // Si el vehículo NO está en condiciones para ser alquilado:
+            if (vehiculo.tieneAlertaFalloMecanico() || vehiculo.getPorcentajeBateria() < 0) {
+                terminarTrayecto();
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     public void seguirTrayecto(Ciudad ciudad) {       
@@ -200,18 +215,9 @@ public abstract class EntidadMovil extends Entidad {
                 terminarTrayecto();
             }
             
-            // Si la entidad que se está moviendo es un vehículo y se dirige un usuario se queda sin batería, se termina su trayecto y por ende el de su pasajero
-            if (this instanceof Usuario && entidadDestino instanceof Vehiculo vehiculo) {
-                // Si el vehículo al que se está siguiendo sufre un fallo mecánico
-                if (vehiculo.tieneAlertaFalloMecanico()) {
-                    terminarTrayecto();
-                    return;
-                }
-                
-                if (vehiculo.getPorcentajeBateria() < 0) {
-                    terminarTrayecto();
-                    return;
-                }
+            // Si la entidad que se está moviendo es un vehículo y se dirige un usuario se queda sin batería o tiene un fallo, se termina su trayecto y por ende el de su pasajero
+            if (isVehiculoMalEstado()) {
+                return;
             }
     
             // Tomamos el primer movimiento en la lista
@@ -329,6 +335,11 @@ public abstract class EntidadMovil extends Entidad {
     public void seguirEntidadMovil() {
         if (this instanceof Usuario usuario && entidadSeguida.tieneFalloMecanico()) {
             usuario.alertarFalloMecanico(entidadSeguida);
+        }
+        
+        // Si la entidad seguida es un vehículo y está en mal estado, se deja de seguir
+        if (isVehiculoMalEstado()) {
+            return;
         }
         
         ubicacion.setUbicacion(entidadSeguida.getUbicacion());
