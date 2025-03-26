@@ -65,7 +65,7 @@ public class Ubicacion implements Serializable
     
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null) return false;
         Ubicacion that = (Ubicacion) o;
         return posX == that.posX && posY == that.posY;
     }

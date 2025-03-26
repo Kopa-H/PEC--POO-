@@ -1,10 +1,11 @@
 import java.util.Random;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Clase EntidadMovil que representa un objeto que puede moverse por el tablero.
  */
-public abstract class EntidadMovil extends Entidad {
+public abstract class EntidadMovil extends Entidad implements Serializable {
     public enum Direcciones {
         UP, DOWN, RIGHT, LEFT
     }
@@ -178,28 +179,39 @@ public abstract class EntidadMovil extends Entidad {
         this.entidadDestino = entidadDestino;
         
         if (entidadDestino != null) {
-            System.out.println("\n" + toSimpleString() + " ha comenzado un viaje hacia " + entidadDestino.toSimpleString());
+            System.out.println("\n" + toSimpleString() + " ha comenzado un trayecto hacia " + entidadDestino.toSimpleString());
         } else {
-            System.out.println("\n" + toSimpleString() + " ha comenzado un viaje hacia " + ubiDestino.toString());
+            System.out.println("\n" + toSimpleString() + " ha comenzado un trayecto hacia " + ubiDestino.toString());
         }
     }
     
     public void terminarTrayecto() {  
-        System.out.println(this.toSimpleString() + " ha dejado de seguir a " + entidadDestino.toSimpleString());
+        System.out.println(this.toSimpleString() + " ha terminado su trayecto en " + entidadDestino.toSimpleString());
     
         // Se abandona el trayecto
         enTrayecto = false;
-        siguiendoEntidad = false;
         ubicacionDestino = null;
         entidadDestino = null;
     }
     
     public boolean isVehiculoMalEstado() {
-        // Si la entidad que se está moviendo es un vehículo y se dirige un usuario se queda sin batería, se termina su trayecto y por ende el de su pasajero
+        // Si un usuario va hacia un vehículo y este se queda sin batería o tiene un fallo, se abandona el trayecto hacia este
         if (this instanceof Usuario && entidadDestino instanceof Vehiculo vehiculo) {
             // Si el vehículo NO está en condiciones para ser alquilado:
-            if (vehiculo.tieneAlertaFalloMecanico() || vehiculo.getPorcentajeBateria() < 0) {
-                terminarTrayecto();
+            if (vehiculo.tieneAlertaFalloMecanico() || vehiculo.getPorcentajeBateria() <= 0) {
+                return true;
+            }
+        }
+        
+        // Si la entidad que está en trayecto es el propio vehículo, entonces también abandona su trayecto
+        if (this instanceof Vehiculo vehiculo) {
+            
+            // Se trata la excepción donde el vehículo está siguiendo a un trabajador (el trabajador arrastra el vehículo)
+            if (entidadSeguida != null && entidadSeguida instanceof Trabajador) {
+                return false;
+            }
+            // Si el vehículo NO está en condiciones para ser alquilado:
+            if (vehiculo.tieneAlertaFalloMecanico() || vehiculo.getPorcentajeBateria() <= 0) {
                 return true;
             }
         }
@@ -217,6 +229,7 @@ public abstract class EntidadMovil extends Entidad {
             
             // Si la entidad que se está moviendo es un vehículo y se dirige un usuario se queda sin batería o tiene un fallo, se termina su trayecto y por ende el de su pasajero
             if (isVehiculoMalEstado()) {
+                terminarTrayecto();
                 return;
             }
     
@@ -250,7 +263,7 @@ public abstract class EntidadMovil extends Entidad {
             // Si se ha terminado el trayecto
             RandomGenerator randomGenerator = new RandomGenerator();
 
-            System.out.println("\nLa entidad " + this.toSimpleString() + " ha llegado a su destino en " + ubicacionDestino.toString());
+            System.out.println("\n" + this.toSimpleString() + " ha llegado a su destino en " + ubicacionDestino.toString());
             
             enTrayecto = false;
             siguiendoEntidad = false;
@@ -321,11 +334,12 @@ public abstract class EntidadMovil extends Entidad {
         if (enTrayecto) {
             seguirTrayecto(ciudad);
         } else {
-            // La entidad actualiza su estado de seguimiento si ha dejado de seguir a la entidad
+            // Si la entidad está siguiendo a otra, y la entidad seguida ha terminado su trayecto, se deja de seguir
             if (entidadSeguida != null && !entidadSeguida.enTrayecto) {
                 abandonarSeguimiento();
             }
             
+            // Si la entidad está siguiendo a otra, se sigue
             if (siguiendoEntidad && entidadSeguida != null) {
                 seguirEntidadMovil();
             }
@@ -339,6 +353,7 @@ public abstract class EntidadMovil extends Entidad {
         
         // Si la entidad seguida es un vehículo y está en mal estado, se deja de seguir
         if (isVehiculoMalEstado()) {
+            this.abandonarSeguimiento();
             return;
         }
         
