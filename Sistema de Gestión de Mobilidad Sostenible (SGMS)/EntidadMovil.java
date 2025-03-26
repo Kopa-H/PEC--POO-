@@ -40,6 +40,10 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
         return entidadSeguida;
     }
     
+    public void setEntidadSeguida(EntidadMovil entidadSeguida) {
+        this.entidadSeguida = entidadSeguida;
+    }
+    
     public Entidad getEntidadDestino() {
         return entidadDestino;
     }
@@ -84,20 +88,13 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
     private void mover(int deltaX, int deltaY, Ciudad ciudad) {
         int distancia = 1; // Distancia predeterminada de 1 unidad
     
-        if (this instanceof Moto) {
-            // distancia = 3; // Moto puede moverse 3 unidades
-        } else if (this instanceof Bicicleta || this instanceof Patinete) {
-            // distancia = 2; // Bicicleta o patinete se mueve 2 unidades
-        }
-    
         // Calcular el máximo movimiento permitido en cada dirección
-        int nuevaPosX = ubicacion.getPosX() + Math.min(deltaX * Math.min(distancia, (deltaX > 0 ? Ciudad.COLUMNS - 1 - ubicacion.getPosX() : ubicacion.getPosX())), distancia);
-        int nuevaPosY = ubicacion.getPosY() + Math.min(deltaY * Math.min(distancia, (deltaY > 0 ? Ciudad.ROWS - 1 - ubicacion.getPosY() : ubicacion.getPosY())), distancia);
+        int nuevaPosX = getUbicacion().getPosX() + Math.min(deltaX * Math.min(distancia, (deltaX > 0 ? Ciudad.COLUMNS - 1 - getUbicacion().getPosX() : getUbicacion().getPosX())), distancia);
+        int nuevaPosY = getUbicacion().getPosY() + Math.min(deltaY * Math.min(distancia, (deltaY > 0 ? Ciudad.ROWS - 1 - getUbicacion().getPosY() : getUbicacion().getPosY())), distancia);
         Ubicacion nuevaUbi = new Ubicacion(nuevaPosX, nuevaPosY);
     
         // Aquí se podría añadir alguna verificación para evitar avanzar a la entidad si tiene algo en frente. De momento no se considera necesario.
-        ubicacion.setPosX(nuevaPosX);
-        ubicacion.setPosY(nuevaPosY);
+        this.getUbicacion().setUbicacion(nuevaUbi);
         
         // Si la entidad móvil por moverse es un vehículo se resta su batería
         if (this instanceof Vehiculo vehiculo) {
@@ -237,7 +234,7 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
             Direcciones siguienteMovimiento = trayecto.remove(0);
     
             // Llamamos al método 'mover' con el cambio de dirección correspondiente
-            Ubicacion ubi = getUbicacion();
+            Ubicacion ubi = this.getUbicacion();
             int deltaX = 0, deltaY = 0;
     
             // Definir los valores de deltaX y deltaY según la dirección
@@ -334,7 +331,7 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
         if (enTrayecto) {
             seguirTrayecto(ciudad);
         } else {
-            // Si la entidad está siguiendo a otra, y la entidad seguida ha terminado su trayecto, se deja de seguir
+            // Si la entidad está siguiendo a una entidad que ha terminado su trayecto, se deja de seguir
             if (entidadSeguida != null && !entidadSeguida.enTrayecto) {
                 abandonarSeguimiento();
             }
@@ -346,7 +343,7 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
         }
     }
     
-    public void seguirEntidadMovil() {
+    public void seguirEntidadMovil() {       
         if (this instanceof Usuario usuario && entidadSeguida.tieneFalloMecanico() && !entidadSeguida.tieneAlertaFalloMecanico()) {
             usuario.alertarFalloMecanico(entidadSeguida);
         }
@@ -356,8 +353,9 @@ public abstract class EntidadMovil extends Entidad implements Serializable {
             this.abandonarSeguimiento();
             return;
         }
-        
-        ubicacion.setUbicacion(entidadSeguida.getUbicacion());
+
+        // Asignación de la nueva ubicación
+        this.getUbicacion().setUbicacion(entidadSeguida.getUbicacion());
     }
     
     public void intentarPlanearTrayecto(Ciudad ciudad, Class<?> tipoEntidad) {

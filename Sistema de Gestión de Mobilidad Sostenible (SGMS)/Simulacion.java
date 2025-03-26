@@ -105,6 +105,12 @@ public class Simulacion {
             setGridButtons(estadoAnterior.obtenerEstadoCuadricula()); // Restaura la cuadrícula
             
             ciudad.setEntidades(estadoAnterior.obtenerEstadoEntidades()); // Restaura las entidades
+            
+            // Aquí debes asegurarte de que las relaciones entre entidades se restauren
+            for (Entidad entidad : ciudad.getEntidades()) {
+                // Reconectas o restauras la entidad seguida de cada entidad móvil
+                ciudad.reconectarRelacionesEntidades();
+            }
         }
     }
     

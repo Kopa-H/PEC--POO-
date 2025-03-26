@@ -7,8 +7,7 @@ import java.io.Serializable;
  * @author Kopa
  * @version (a version number or a date)
  */
-public class Ubicacion implements Serializable
-{
+public class Ubicacion implements Serializable {
     // instance variables - replace the example below with your own
     private Integer posX = null;
     private Integer posY = null;

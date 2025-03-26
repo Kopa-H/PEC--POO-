@@ -221,4 +221,34 @@ public class Ciudad {
         }
         return false; // La posición no está ocupada por una entidad del tipo especificado
     }
+        
+    public void reconectarRelacionesEntidades() {
+        for (Entidad entidad : entidades) {
+            // Se actualizan las relaciones de seguimiento
+            if (entidad instanceof EntidadMovil entidadMovil && entidadMovil.isSiguiendoEntidad() && entidadMovil.getEntidadSeguida() != null) {
+                // Obtener la entidad seguida usando algún identificador único
+                int idEntidadSeguida = entidadMovil.getEntidadSeguida().getId(); // Suponiendo que las entidades tienen un ID
+                Entidad entidadSeguida = encontrarEntidad(entidadMovil.getEntidadSeguida().getClass(), idEntidadSeguida);
+                
+                if (entidadSeguida instanceof EntidadMovil) {
+                    entidadMovil.setEntidadSeguida((EntidadMovil) entidadSeguida); // Reconectar la entidad seguida
+                } else {
+                    entidadMovil.setEntidadSeguida(null); // Si no se encuentra la entidad, se desconecta
+                }
+            }
+    
+            // Se actualizan las relaciones de asignación de trabajo
+            if (entidad instanceof Trabajador trabajador && trabajador.getEntidadAsignada() != null) {
+                // Obtener la entidad asignada usando algún identificador único
+                int idEntidadAsignada = trabajador.getEntidadAsignada().getId(); // Suponiendo que las entidades tienen un ID
+                Entidad entidadAsignada = encontrarEntidad(trabajador.getEntidadAsignada().getClass(), idEntidadAsignada);
+                
+                if (entidadAsignada != null) {
+                    trabajador.setEntidadAsignada(entidadAsignada); // Reconectar la entidad asignada
+                } else {
+                    trabajador.setEntidadAsignada(null); // Si no se encuentra la entidad, se desconecta
+                }
+            }
+        }
+    }
 }

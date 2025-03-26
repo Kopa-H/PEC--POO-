@@ -22,6 +22,10 @@ abstract public class Trabajador extends Persona
         return entidadAsignada;
     }
     
+    public void setEntidadAsignada(Entidad entidadAsignada) {
+        this.entidadAsignada = entidadAsignada;
+    }
+    
     public boolean isTrabajando() {
         if (entidadAsignada != null) {
             return true;

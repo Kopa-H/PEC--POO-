@@ -1,10 +1,12 @@
+import java.io.Serializable;
+
 /**
  * Write a description of class Persona here.
  *
  * @author Kopa
  * @version (a version number or a date)
  */
-public class Persona extends EntidadMovil
+public class Persona extends EntidadMovil implements Serializable
 {
     // instance variables - replace the example below with your own
     private String nombre;
