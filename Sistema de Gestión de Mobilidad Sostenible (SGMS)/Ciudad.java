@@ -29,7 +29,7 @@ public class Ciudad {
         entidades = newEntidades;
     }
     
-    public boolean getAutonomiaEntidades() {
+    public boolean isEntidadesAutonomas() {
         return autonomiaEntidades;
     }
     

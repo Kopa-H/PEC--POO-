@@ -151,87 +151,130 @@ public class MenuSistema extends Menu {
             }
         }));
     }
-    
+
     public void visualizarEstadoPromociones() {
         Menu menu = new Menu();
         menu.nombre = "Estado Promociones";
         JFrame frame = menu.crearNuevaVentana();
-        
+    
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel();
-        
-        // Se itera sobre todos los usuarios
-        List<Entidad> entidades = ciudad.obtenerEntidadesPorClase(Usuario.class);
-        
-        for (Entidad entidad : entidades) {
-            Usuario usuario = (Usuario) entidad;
-            
-            // Crear un JPanel para el usuario con su nombre e ID
-            JPanel panelUsuario = new JPanel();
-            panelUsuario.setLayout(new BoxLayout(panelUsuario, BoxLayout.Y_AXIS));
-            panelUsuario.add(new JLabel("Usuario: " + usuario.getNombre() + " (ID: " + usuario.getId() + ")"));
-            
-            // Variables para las condiciones de promoción
-            int vehiculosUltimoMes = 0;
-            int vehiculosTresMesesSeguidos = 0;
-            HashSet<Class<? extends Vehiculo>> tiposVehiculosUsados = new HashSet<>();
-            
-            // Se itera sobre su registro de alquileres
-            for (InfoAlquiler infoAlquiler : usuario.registroInfoAlquileres) {
-                // Verificar si el alquiler es del último mes
-                if (simulacion.tiempo.esUltimoMes(infoAlquiler.getMes())) {
-                    vehiculosUltimoMes++;
+    
+        // Método que actualiza el contenido del panel
+        Runnable actualizarEstado = () -> {
+            // Limpiar el panel antes de agregar la nueva información
+            panel.removeAll();
+    
+            // Se itera sobre todos los usuarios
+            List<Entidad> entidades = ciudad.obtenerEntidadesPorClase(Usuario.class);
+    
+            // Si no hay usuarios, mostrar un mensaje
+            if (entidades.isEmpty()) {
+                panel.add(new JLabel("De momento no hay ningún usuario."));
+            } else {
+                for (Entidad entidad : entidades) {
+                    Usuario usuario = (Usuario) entidad;
+    
+                    // Crear un JPanel para el usuario con su nombre e ID
+                    JPanel panelUsuario = new JPanel();
+                    panelUsuario.setLayout(new BoxLayout(panelUsuario, BoxLayout.Y_AXIS));
+                    panelUsuario.add(new JLabel("Usuario: " + usuario.getNombre() + " (ID: " + usuario.getId() + ")"));
+    
+                    // Variables para las condiciones de promoción
+                    int vehiculosUltimoMes = 0;
+                    int vehiculosTresMesesSeguidos = 0;
+                    HashSet<Class<? extends Vehiculo>> tiposVehiculosUsados = new HashSet<>();
+    
+                    // Se itera sobre su registro de alquileres
+                    for (InfoAlquiler infoAlquiler : usuario.registroInfoAlquileres) {
+                        // Verificar si el alquiler es del último mes
+                        if (simulacion.tiempo.esUltimoMes(infoAlquiler.getMes())) {
+                            vehiculosUltimoMes++;
+                        }
+    
+                        // Verificar si alquiló 10 vehículos en 3 meses consecutivos
+                        if (simulacion.tiempo.esMesReciente(infoAlquiler.getMes(), 3)) {
+                            vehiculosTresMesesSeguidos++;
+                        }
+    
+                        // Guardar el tipo de vehículo usado en los últimos 6 meses
+                        if (simulacion.tiempo.esUltimosSeisMeses(infoAlquiler.getMes())) {
+                            tiposVehiculosUsados.add(infoAlquiler.getClaseVehiculo());
+                        }
+                    }
+    
+                    // Condiciones para la promoción
+                    boolean puedePromocionar = false;
+    
+                    // Crear los JLabels
+                    JLabel lblVehiculosUltimoMes = new JLabel();
+                    JLabel lblVehiculosTresMesesSeguidos = new JLabel();
+                    JLabel lblTiposVehiculosUsados = new JLabel();
+    
+                    // Si ha usado 15 vehículos en el último mes
+                    if (vehiculosUltimoMes >= 15) {
+                        lblVehiculosUltimoMes.setText("    Cumple con la promoción: " + vehiculosUltimoMes + "/15 vehículos alquilados en el último mes");
+                        puedePromocionar = true;
+                    } else {
+                        lblVehiculosUltimoMes.setText("    Vehículos alquilados en el último mes: " + vehiculosUltimoMes + "/15");
+                    }
+    
+                    // Si ha usado 10 vehículos por mes durante 3 meses seguidos
+                    if (vehiculosTresMesesSeguidos >= 30) { // 10 vehículos por mes * 3 meses
+                        lblVehiculosTresMesesSeguidos.setText("    Cumple con la promoción: " + vehiculosTresMesesSeguidos + "/30 vehículos en 3 meses (10 por mes)");
+                        puedePromocionar = true;
+                    } else {
+                        int vehiculosPromedioPorMes = vehiculosTresMesesSeguidos / 3;
+                        lblVehiculosTresMesesSeguidos.setText("    Vehículos por mes en los últimos 3 meses: " + vehiculosPromedioPorMes + "/10 (Promedio por mes)");
+                    }
+    
+                    // Si ha usado todos los tipos de vehículos en los últimos 6 meses
+                    int totalTiposVehiculo = Vehiculo.obtenerTotalTiposVehiculo();
+                    if (tiposVehiculosUsados.size() == totalTiposVehiculo) {
+                        lblTiposVehiculosUsados.setText("    Cumple con la promoción: " + tiposVehiculosUsados.size() + "/" + totalTiposVehiculo + " tipos de vehículos usados en los últimos 6 meses");
+                        puedePromocionar = true;
+                    } else {
+                        lblTiposVehiculosUsados.setText("    Tipos de vehículos usados en los últimos 6 meses: " + tiposVehiculosUsados.size() + "/" + totalTiposVehiculo);
+                    }
+    
+                    // Añadir los JLabels al panel del usuario
+                    panelUsuario.add(lblVehiculosUltimoMes);
+                    panelUsuario.add(lblVehiculosTresMesesSeguidos);
+                    panelUsuario.add(lblTiposVehiculosUsados);
+    
+                    // Si el usuario cumple con alguna promoción, añadir botón para promocionar
+                    if (puedePromocionar) {
+                        JButton botonPromocionar = new JButton("Promocionar Usuario");
+                        botonPromocionar.addActionListener(e -> {
+                            usuario.promocionarUsuario();
+                            JOptionPane.showMessageDialog(null, "Usuario promocionado con éxito!");
+                        });
+                        panelUsuario.add(botonPromocionar);
+                    } else {
+                        panelUsuario.add(new JLabel("  Este usuario no es promocionable."));
+                        panelUsuario.add(new JLabel(" "));
+                    }
+    
+                    // Añadir el panel del usuario al panel general
+                    panel.add(panelUsuario);
                 }
-                
-                // Verificar si alquiló 10 vehículos en 3 meses consecutivos
-                if (simulacion.tiempo.esMesReciente(infoAlquiler.getMes(), 3)) {
-                    vehiculosTresMesesSeguidos++;
-                }
-                
-                // Guardar el tipo de vehículo usado en los últimos 6 meses
-                if (simulacion.tiempo.esUltimosSeisMeses(infoAlquiler.getMes())) {
-                    tiposVehiculosUsados.add(infoAlquiler.getClaseVehiculo());
-                }
             }
-            
-            // Condiciones para la promoción
-            boolean puedePromocionar = false;
-            
-            // Si ha usado 15 vehículos en el último mes
-            if (vehiculosUltimoMes >= 15) {
-                panelUsuario.add(new JLabel("Cumple con la promoción: 15 vehículos alquilados en el último mes"));
-                puedePromocionar = true;
-            }
-            
-            // Si ha usado 10 vehículos por mes durante 3 meses seguidos
-            if (vehiculosTresMesesSeguidos >= 30) { // 10 vehículos por mes * 3 meses
-                panelUsuario.add(new JLabel("Cumple con la promoción: 10 vehículos por mes durante 3 meses seguidos"));
-                puedePromocionar = true;
-            }
-            
-            // Si ha usado todos los tipos de vehículos en los últimos 6 meses
-            if (tiposVehiculosUsados.size() == Vehiculo.obtenerTotalTiposVehiculo()) {
-                panelUsuario.add(new JLabel("Cumple con la promoción: Usó todos los tipos de vehículos en los últimos 6 meses"));
-                puedePromocionar = true;
-            }
-            
-            // Si el usuario cumple con alguna promoción, añadir botón para promocionar
-            if (puedePromocionar) {
-                JButton botonPromocionar = new JButton("Promocionar Usuario");
-                botonPromocionar.addActionListener(e -> {
-                    usuario.promocionarUsuario();
-                    JOptionPane.showMessageDialog(null, "Usuario promocionado con éxito!");
-                });
-                panelUsuario.add(botonPromocionar);
-            }
-            
-            // Añadir el panel del usuario al panel general
-            panel.add(panelUsuario);
-        }
-        
+    
+            // Actualizar la interfaz
+            panel.revalidate();
+            panel.repaint();
+        };
+    
+        // Ejecutar la actualización inicial
+        actualizarEstado.run();
+    
         // Añadir el panel al JFrame
         frame.add(agregarScroll(panel));
         frame.setVisible(true);
+    
+        // Actualización cada segundo
+        Timer timer = new Timer(1000, e -> actualizarEstado.run());
+        timer.start();
     }
 
     public void iniciarGestorEntidades() {

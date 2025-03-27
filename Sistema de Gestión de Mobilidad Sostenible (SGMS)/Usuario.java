@@ -42,7 +42,7 @@ public class Usuario extends Persona {
     public void actuar(Ciudad ciudad) {
         super.actuar(ciudad);
         
-        if (ciudad.getAutonomiaEntidades() && !enTrayecto && !isSiguiendoEntidad()) {
+        if (ciudad.isEntidadesAutonomas() && !enTrayecto && !isSiguiendoEntidad()) {
             intentarPlanearTrayecto(ciudad, Base.class);
             intentarPlanearTrayecto(ciudad, Moto.class);
         }
