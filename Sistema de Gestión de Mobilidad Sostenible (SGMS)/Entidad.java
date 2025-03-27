@@ -88,7 +88,8 @@ public abstract class Entidad implements Serializable
     public boolean tieneFalloMecanico() {
         return tieneFalloMecanico;
     }
-    
+   
+    // La edad se almacena en ciclos vividos (para más info revisar la clase Tiempo)
     public void sumarEdad() {
         edad++;
     }
@@ -164,7 +165,6 @@ public abstract class Entidad implements Serializable
     
     // Acción que ejecuta el deterioro y posibilidad de fallo
     public void actuar(Ciudad ciudad) {      
-        
         if (this instanceof Vehiculo || this instanceof Base) {
             this.deteriorarEstadoMecanico();
         }

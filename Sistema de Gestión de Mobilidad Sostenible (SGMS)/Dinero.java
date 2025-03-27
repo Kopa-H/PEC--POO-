@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Dinero {
     // Esto quizás debería moverse a otra clase más general
-    private double PRECIO_EUROS_TASAS = 85.57;    
+    private double precioTasasEnEuros = 85.57;    
 
     /**
      * Constructor for objects of class Dinero
@@ -25,7 +25,9 @@ public class Dinero {
             if (entidad instanceof Usuario) {  // Verificar si la entidad es de tipo Usuario
                 Usuario usuario = (Usuario) entidad;  // Hacer el casting explícito
                 
-                if (usuario.edad % tiempo.diasEntrePagos == 0) {
+                int edadUsuarioEnDias = tiempo.pasarCiclosToDias(usuario.edad);
+                
+                if (edadUsuarioEnDias % tiempo.diasEntrePagos == 0) {
                     cobrarTasasUsuarios(usuario);
                 }
             }
@@ -34,11 +36,11 @@ public class Dinero {
     
     // El metodo mediante el cual los usuarios pagan sus tasas
     private void cobrarTasasUsuarios(Usuario usuario) {
-        if (usuario.getSaldo() - PRECIO_EUROS_TASAS < 0) {
+        if (usuario.getSaldo() - precioTasasEnEuros < 0) {
             Impresora.printRojo("\nEl usuario " + usuario.toSimpleString() + " no ha podido pagar el importe de tasas periódico");
     
             // Calcular la cantidad necesaria para recargar el saldo
-            double cantidadNecesaria = PRECIO_EUROS_TASAS - usuario.getSaldo();
+            double cantidadNecesaria = precioTasasEnEuros - usuario.getSaldo();
             
             // Generar una cantidad aleatoria entre [cantidadNecesaria, 2 * cantidadNecesaria]
             double cantidadRecargar = cantidadNecesaria + (Math.random() * cantidadNecesaria); // Se añade algo más para la próxima con algo de aleatoriedads
@@ -53,8 +55,8 @@ public class Dinero {
         
         } else {
             // Si tiene suficiente saldo, paga las tasas
-            usuario.setSaldo(usuario.getSaldo() - PRECIO_EUROS_TASAS);
-            Impresora.printVerde("\nEl usuario " + usuario.toSimpleString() + " ha pagado las tasas de " + PRECIO_EUROS_TASAS + "€.");
+            usuario.setSaldo(usuario.getSaldo() - precioTasasEnEuros);
+            Impresora.printVerde("\nEl usuario " + usuario.toSimpleString() + " ha pagado las tasas de " + precioTasasEnEuros + "€.");
         }
     }
 }

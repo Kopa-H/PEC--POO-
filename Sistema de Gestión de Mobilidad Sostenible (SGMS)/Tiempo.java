@@ -27,7 +27,7 @@ public class Tiempo {
     public int año = 0;
     
     // instance variables - replace the example below with your own
-    public int diasEntrePagos = 60;
+    public int diasEntrePagos = 7;
     
     public void setVelocidad(int velocidad) {
         this.velocidad = velocidad;
@@ -36,6 +36,10 @@ public class Tiempo {
     // La velocidad del tiempo se mide en cuántos segundos dura un ciclo
     public int getVelocidad() {
         return velocidad;
+    }
+    
+    public int pasarCiclosToDias(int ciclos) {
+        return (ciclos / segundosInternosPorCiclo) / (segundosEnDia);
     }
     
     public Color getColorHora() {
@@ -102,6 +106,9 @@ public class Tiempo {
                     hora = 0;  // Reiniciar las horas a cero
                     dia++;
                     
+                    // Verificamos cobros de tasas con el cambio de día. 
+                    dinero.verificarCobroDeTasas(ciudad, this);
+                    
                     if (dia == 30) {  // Verificar si hemos llegado a 30 días
                         dia = 0;  // Reiniciar los días a cero
                         mes++;
@@ -114,8 +121,6 @@ public class Tiempo {
                 }
             }
         }
-        
-        dinero.verificarCobroDeTasas(ciudad, this);
     }
     
     public void revertirSegundo() {
