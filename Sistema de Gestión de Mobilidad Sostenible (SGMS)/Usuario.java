@@ -25,7 +25,8 @@ public class Usuario extends Persona {
         // initialise instance variables
         super(posX, posY);
         setColor(colorClase);
-        saldo = 0;
+        // Se añade entre 50 y 200 €
+        saldo = 50 + Math.random() * (150);
         tipoMembresia = TipoMembresia.ESTANDAR;
         
         setId(contadorInstancias);  // Asignamos el ID único a esta instancia
@@ -36,7 +37,7 @@ public class Usuario extends Persona {
     public void actuar(Ciudad ciudad) {
         super.actuar(ciudad);
         
-        if (!enTrayecto && !isSiguiendoEntidad()) {
+        if (ciudad.getAutonomiaEntidades() && !enTrayecto && !isSiguiendoEntidad()) {
             intentarPlanearTrayecto(ciudad, Base.class);
             intentarPlanearTrayecto(ciudad, Moto.class);
         }
@@ -78,5 +79,12 @@ public class Usuario extends Persona {
             Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha activado la alerta de fallo mecánico de " + getEntidadSeguida().toSimpleString());
             entidad.activarAlertaFalloMecanico();
         }
+    }
+    
+    @Override
+    public String toString() {
+        String str = super.toString();  // Llamamos al toString de Trabajador
+        str += "  |  Saldo: [" + String.format("%.2f", saldo) + " \u20AC]";
+        return str;
     }
 }

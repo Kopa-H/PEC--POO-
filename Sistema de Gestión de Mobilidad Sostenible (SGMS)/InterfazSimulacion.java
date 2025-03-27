@@ -125,6 +125,25 @@ public class InterfazSimulacion extends JFrame {
 
         add(southPanel, BorderLayout.SOUTH);
 
+        // Añadir el checkbox
+        JCheckBox checkBoxAutonomia = new JCheckBox("Activar Autonomía");
+        checkBoxAutonomia.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (checkBoxAutonomia.isSelected()) {
+                    ciudad.activarAutonomiaEntidades();
+                } else {
+                    ciudad.desactivarAutonomiaEntidades();
+                }
+            }
+        });
+
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.add(checkBoxAutonomia);
+        
+        // Posicionar el checkbox en la parte derecha inferior
+        southPanel.add(checkBoxPanel);
+        
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
     }
@@ -142,6 +161,42 @@ public class InterfazSimulacion extends JFrame {
         panelTextoInfo.setMinimumSize(new java.awt.Dimension(200, 100));  // Establecer el tamaño mínimo
         panelTextoInfo.setMaximumSize(new java.awt.Dimension(200, 100));  // Establecer el tamaño máximo
         panelTextoInfo.setCaretColor(DESCRIPTION_PANE_COLOR); 
+    }
+    
+    public void actualizarEstadoGrid(Simulacion simulacion, Ciudad ciudad, Tiempo tiempo) {
+        Color colorDia = tiempo.getColorHora();
+         
+        // Limpiar la cuadrícula visual (poner todos los botones su color según la hora)
+        for (int i = 0; i < ciudad.ROWS; i++) {
+            for (int j = 0; j < ciudad.COLUMNS; j++) {
+                simulacion.gridButtons[i][j].setBackground(colorDia);
+            }
+        }
+        
+        // Mover todas las personas en la ciudad y actualizar su posición
+        Ubicacion ubi = new Ubicacion();
+        Color color;
+        int x, y;
+        boolean entidadVisible;
+        for (Entidad entidad : ciudad.getEntidades()) {
+            x = entidad.getUbicacion().getPosX();
+            y = entidad.getUbicacion().getPosY();
+            
+            // Si su posición coincide con una base, entonces no se muestra
+            if (!(entidad instanceof Base) && ciudad.posicionOcupadaPor(entidad.getUbicacion(), Base.class)) {
+                continue;
+            }
+        
+            ubi.setUbicacion(x, y);
+            color = entidad.getColor();
+        
+            simulacion.mostrarEntidad(ubi, color); // Actualiza la posición en la interfaz gráfica
+        }
+        
+        actualizarTiempoLabel(tiempo);
+        
+        // Sirve para que se actualice la información mostrada de la casilla señalada de la interfaz
+        actualizarInfoCasillaSeleccionada(ciudad);
     }
     
     public void actualizarEstadoPanel(Ciudad ciudad, int row, int col) {       

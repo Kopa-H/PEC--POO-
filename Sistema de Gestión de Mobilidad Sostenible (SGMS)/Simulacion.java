@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Simulacion {
         
-    private JButton[][] gridButtons; // Matriz para almacenar los botones de la cuadrícula
+    public JButton[][] gridButtons; // Matriz para almacenar los botones de la cuadrícula
     
     public static final int ROWS = Ciudad.ROWS;
     public static final int COLUMNS = Ciudad.COLUMNS;
@@ -112,7 +112,7 @@ public class Simulacion {
     
     public void runSimulacion() {      
         long inicioBucle, duracionBucle;
-        actualizarEstadoVisual();
+        interfaz.actualizarEstadoGrid(this, ciudad, tiempo);
         
         while (simulationRunning) {
             
@@ -150,47 +150,11 @@ public class Simulacion {
                 tiempo.revertirCiclo();
             }
             
-            actualizarEstadoVisual();
+            interfaz.actualizarEstadoGrid(this, ciudad, tiempo);
             
             duracionBucle = System.currentTimeMillis() - inicioBucle;
             tiempo.gestionarTranscursoTiempo(duracionBucle);
         }
-    }
-    
-     public void actualizarEstadoVisual() {
-        Color colorDia = tiempo.getColorHora();
-         
-        // Limpiar la cuadrícula visual (poner todos los botones su color según la hora)
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMNS; j++) {
-                gridButtons[i][j].setBackground(colorDia);
-            }
-        }
-        
-        // Mover todas las personas en la ciudad y actualizar su posición
-        Ubicacion ubi = new Ubicacion();
-        Color color;
-        int x, y;
-        boolean entidadVisible;
-        for (Entidad entidad : ciudad.getEntidades()) {
-            x = entidad.getUbicacion().getPosX();
-            y = entidad.getUbicacion().getPosY();
-            
-            // Si su posición coincide con una base, entonces no se muestra
-            if (!(entidad instanceof Base) && ciudad.posicionOcupadaPor(entidad.getUbicacion(), Base.class)) {
-                continue;
-            }
-        
-            ubi.setUbicacion(x, y);
-            color = entidad.getColor();
-        
-            mostrarEntidad(ubi, color); // Actualiza la posición en la interfaz gráfica
-        }
-        
-        interfaz.actualizarTiempoLabel(tiempo);
-        
-        // Sirve para que se actualice la información mostrada de la casilla señalada de la interfaz
-        interfaz.actualizarInfoCasillaSeleccionada(ciudad);
     }
     
     // Método que actualiza visualmente la posición de una entidad en la cuadrícula

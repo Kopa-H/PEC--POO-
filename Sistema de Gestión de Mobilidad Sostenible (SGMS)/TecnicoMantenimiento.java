@@ -42,7 +42,6 @@ public class TecnicoMantenimiento extends Trabajador {
             }
         // Los técnicos de mantenimiento pueden reparar bases, pero NO vehículos
         } else if (entidadAsignada instanceof Base base) {
-            Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " está trabajando en " + entidadAsignada.toSimpleString());
             base.restaurarEstadoMecanico();
         
             if (!(base.tieneFalloMecanico())) {

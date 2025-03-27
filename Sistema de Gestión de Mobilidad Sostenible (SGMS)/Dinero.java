@@ -48,7 +48,7 @@ public class Dinero {
             // Recargar el saldo con la cantidad generada
             usuario.recargarSaldo(cantidadRecargar);
             
-            Impresora.printVerde("\n" + usuario.toSimpleString() + " ha recargado " + cantidadRecargar + "€");
+            Impresora.printVerde("\n" + usuario.toSimpleString() + " ha recargado " + String.format("%.2f", cantidadRecargar) + " \u20AC");
             
             // Se llama a la propia función para proceder con el pago de las tasas
             cobrarTasasUsuarios(usuario);

@@ -7,6 +7,7 @@ public class Ciudad {
     // Variables de instancia
     
     private CopyOnWriteArrayList<Entidad> entidades;
+    private boolean autonomiaEntidades = false;
     
     private static final int DISTANCIA_MINIMA_ENTRE_BASES = 20;
     
@@ -26,6 +27,20 @@ public class Ciudad {
     
     public void setEntidades(CopyOnWriteArrayList<Entidad> newEntidades) {
         entidades = newEntidades;
+    }
+    
+    public boolean getAutonomiaEntidades() {
+        return autonomiaEntidades;
+    }
+    
+    public void activarAutonomiaEntidades() {
+        autonomiaEntidades = true;
+        Impresora.printVerde("\nSe ha activado la autonomía de las entidades");
+    }
+    
+    public void desactivarAutonomiaEntidades() {
+        autonomiaEntidades = false;
+        Impresora.printRojo("\nSe ha desactivado la autonomía de las entidades");
     }
     
     public List<Entidad> obtenerEntidadesPorClase(Class<? extends Entidad> tipoClase) {

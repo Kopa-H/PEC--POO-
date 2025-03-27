@@ -40,6 +40,11 @@ abstract public class Trabajador extends Persona
         
         // Si no tiene ninguna entidad asignada, busca uno que necesite atención
         if (entidadAsignada == null) {
+            
+            if (!ciudad.getAutonomiaEntidades()) {
+                return;
+            }
+            
             // Se itera sobre todos las entidades y se intenta asignar a su trabajador correspondiente
             for (Entidad entidad : ciudad.getEntidades()) {
                 if (intentarAsignarEntidad(ciudad, entidad)) {
