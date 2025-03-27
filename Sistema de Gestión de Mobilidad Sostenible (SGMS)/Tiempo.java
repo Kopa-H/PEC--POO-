@@ -9,9 +9,8 @@ public class Tiempo
 {
     // instance variables - replace the example below with your own
     public int diasEntrePagos = 60;
-    public int instantes;
-    private int segundosPorInstante = 30;
     
+    public int vida = 0;
     public int segundo = 0;
     public int minuto = 0;
     public int hora = 0;
@@ -25,22 +24,9 @@ public class Tiempo
     public Tiempo() {
     }
     
-    public int getInstantes() {
-        return instantes;
-    }
-    
-    public void transcurrirInstante(Ciudad ciudad, Dinero dinero) {
-        instantes++;
-        
-        for (int i=0; i < segundosPorInstante; i++) {
-            transcurrirSegundo(); 
-        }
-        
-        dinero.verificarCobroDeTasas(ciudad, this);
-    }
-    
-    private void transcurrirSegundo() {
+    public void transcurrirSegundo(Ciudad ciudad, Dinero dinero) {
         segundo++;
+        vida++;
         
         if (segundo == 60) {  // Verificar si hemos llegado a 60 segundos
             segundo = 0;  // Reiniciar los segundos a cero
@@ -66,18 +52,13 @@ public class Tiempo
                 }
             }
         }
+        
+        dinero.verificarCobroDeTasas(ciudad, this);
     }
     
-    public void revertirInstante() {
-        instantes--;  // Restamos un instante
-    
-        for (int i = 0; i < segundosPorInstante; i++) {
-            revertirSegundo();  // Revertimos el segundo para cada uno de los segundos en un instante
-        }
-    }
-    
-    private void revertirSegundo() {
+    public void revertirSegundo() {
         segundo--;  // Restamos un segundo
+        vida--;
         
         if (segundo < 0) {
             segundo = 59;  // Si el segundo es negativo, retrocedemos a 59

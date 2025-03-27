@@ -97,7 +97,7 @@ public class Simulacion {
     
     // Método para retroceder al estado anterior
     private void retrocederEstado() {
-        if (historialEstados.size() != tiempo.instantes) {
+        if (historialEstados.size() != tiempo.vida) {
             throw new IllegalStateException("El sistema de retroceso de estados se ha desincronizado!");
         }
         
@@ -127,14 +127,14 @@ public class Simulacion {
                 guardarEstado();
                 
                 // Incrementar el contador de pasos
-                tiempo.transcurrirInstante(ciudad, dinero);
+                tiempo.transcurrirSegundo(ciudad, dinero);
 
-            } else if (runningBackward && tiempo.instantes > 0) {
+            } else if (runningBackward && tiempo.vida > 0) {
                 
                 // Se tira para atrás
                 retrocederEstado();
                 
-                tiempo.revertirInstante();
+                tiempo.revertirSegundo();
             }
             
             actualizarEstadoVisual();

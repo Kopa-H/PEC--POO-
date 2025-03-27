@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=InterfazSimulacion
-comment1.params=simulacion\ ciudad\ gridButtons\ step
-comment1.target=InterfazSimulacion(Simulacion,\ Ciudad,\ javax.swing.JButton[][],\ int)
+comment1.params=simulacion\ ciudad\ gridButtons\ tiempo
+comment1.target=InterfazSimulacion(Simulacion,\ Ciudad,\ javax.swing.JButton[][],\ Tiempo)
 comment10.params=ciudad
 comment10.target=void\ actualizarInfoCasillaSeleccionada(Ciudad)
 comment2.params=e
@@ -18,6 +18,6 @@ comment7.params=ciudad\ row\ col
 comment7.target=void\ actualizarEstadoPanel(Ciudad,\ int,\ int)
 comment8.params=simulacion
 comment8.target=void\ actualizarEstadoSlider(Simulacion)
-comment9.params=step
-comment9.target=void\ actualizarStepLabel(int)
+comment9.params=tiempo
+comment9.target=void\ actualizarTiempoLabel(Tiempo)
 numComments=11

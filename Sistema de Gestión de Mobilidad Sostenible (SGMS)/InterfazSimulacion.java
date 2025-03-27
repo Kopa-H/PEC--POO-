@@ -90,7 +90,7 @@ public class InterfazSimulacion extends JFrame {
         add(gridPanel, BorderLayout.CENTER);
 
         JPanel tiempoPanel = new JPanel();
-        tiempoLabel = new JLabel("Paso: " + step);
+        tiempoLabel = new JLabel();
         tiempoPanel.add(tiempoLabel);
 
         speedSlider.setMajorTickSpacing(500);
