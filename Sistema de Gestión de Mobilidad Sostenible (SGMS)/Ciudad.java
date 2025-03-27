@@ -8,6 +8,8 @@ public class Ciudad {
     
     private CopyOnWriteArrayList<Entidad> entidades;
     
+    private static final int DISTANCIA_MINIMA_ENTRE_BASES = 20;
+    
     public static final int ROWS = 50;
     public static final int COLUMNS = 50;
 
@@ -80,7 +82,7 @@ public class Ciudad {
                         int distancia = Math.abs(entidad.getUbicacion().getPosX() - ubicacionCandidata.getPosX()) +
                                         Math.abs(entidad.getUbicacion().getPosY() - ubicacionCandidata.getPosY());
                         
-                        if (distancia < 20) {
+                        if (distancia < DISTANCIA_MINIMA_ENTRE_BASES) {
                             esAlejada = false;
                             break;  // Si hay una base cercana, romper el bucle interno
                         }
