@@ -14,9 +14,6 @@ public class Simulacion {
         
     private JButton[][] gridButtons; // Matriz para almacenar los botones de la cuadrícula
     
-    public static final int MAX_SIMULATION_SPEED = 300;
-    public int simulationSpeed = 0;
-    
     public static final int ROWS = Ciudad.ROWS;
     public static final int COLUMNS = Ciudad.COLUMNS;
     
@@ -97,7 +94,7 @@ public class Simulacion {
     
     // Método para retroceder al estado anterior
     private void retrocederEstado() {
-        if (historialEstados.size() != tiempo.vida) {
+        if (historialEstados.size() != tiempo.getInstantesTotales()) {
             throw new IllegalStateException("El sistema de retroceso de estados se ha desincronizado!");
         }
         
@@ -113,8 +110,24 @@ public class Simulacion {
         }
     }
     
-    public void runSimulacion() {       
+    public void runSimulacion() {      
+        long inicioBucle, duracionBucle;
+        actualizarEstadoVisual();
+        
         while (simulationRunning) {
+            
+            // Si la velocidad es 0, detener temporalmente la simulación
+            if (tiempo.velocidadTranscursoInstantes == 0) {
+                try {
+                    // Pausa breve para evitar sobrecargar la CPU
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                continue; // Saltar a la siguiente iteración
+            }
+            
+            inicioBucle = System.currentTimeMillis();
             
             if (runningForward) {
         
@@ -127,18 +140,20 @@ public class Simulacion {
                 guardarEstado();
                 
                 // Incrementar el contador de pasos
-                tiempo.transcurrirSegundo(ciudad, dinero);
+                tiempo.transcurrirInstante(ciudad, dinero);
 
-            } else if (runningBackward && tiempo.vida > 0) {
+            } else if (runningBackward && tiempo.getInstantesTotales() > 0) {
                 
                 // Se tira para atrás
                 retrocederEstado();
                 
-                tiempo.revertirSegundo();
+                tiempo.revertirInstante();
             }
             
             actualizarEstadoVisual();
-            Utilities.gestionarDelay(simulationSpeed);
+            
+            duracionBucle = System.currentTimeMillis() - inicioBucle;
+            tiempo.gestionarTranscursoTiempo(duracionBucle);
         }
     }
     

@@ -14,7 +14,7 @@ public class InterfazSimulacion extends JFrame {
     private JTextPane panelTextoInfo;
     private JLabel tiempoLabel;
 
-    JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -Simulacion.MAX_SIMULATION_SPEED, Simulacion.MAX_SIMULATION_SPEED, 0);
+    JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -Tiempo.MAX_VEL_TRANSCURSO_INSTANTES, Tiempo.MAX_VEL_TRANSCURSO_INSTANTES, 0);
     JLabel sliderLabel = new JLabel("Ajustar velocidad: " + 0, JLabel.CENTER);
     JPanel sliderPanel = new JPanel();
 
@@ -93,14 +93,22 @@ public class InterfazSimulacion extends JFrame {
         tiempoLabel = new JLabel();
         tiempoPanel.add(tiempoLabel);
 
-        speedSlider.setMajorTickSpacing(500);
-        speedSlider.setMinorTickSpacing(100);
+        // Determinar el espaciado de las marcas principales dinámicamente, ajustándolo al rango
+        int majorSpacing = tiempo.velocidadTranscursoInstantes / 5;  // Dividir el máximo en 5 partes para las marcas principales
+        
+        // Determinar el espaciado de las marcas menores como una fracción de las principales
+        int minorSpacing = majorSpacing / 5;  // Por ejemplo, dividir el espaciado mayor en 5 para las marcas menores
+        
+        // Configurar el espaciado en el slider
+        speedSlider.setMajorTickSpacing(majorSpacing);
+        speedSlider.setMinorTickSpacing(minorSpacing);
+        
         speedSlider.setPaintTicks(true);
         speedSlider.setPaintLabels(true);
         speedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                actualizarEstadoSlider(simulacion);
+                actualizarSliderSpeedSimulation(simulacion, tiempo);
             }
         });
 
@@ -176,37 +184,36 @@ public class InterfazSimulacion extends JFrame {
         }
     }
 
-    public void actualizarEstadoSlider(Simulacion simulacion) {
+    public void actualizarSliderSpeedSimulation(Simulacion simulacion, Tiempo tiempo) {
         int sliderValue = speedSlider.getValue();
         int deadZone = 5;
 
         if (Math.abs(sliderValue) <= deadZone) {
-            simulacion.simulationSpeed = 0;
+            tiempo.setVelocidadTranscursoInstantes(0);
             simulacion.runningForward = false;
             simulacion.runningBackward = false;
             speedSlider.setValue(0);
         } else if (sliderValue > deadZone) {
-            simulacion.simulationSpeed = sliderValue;
+            tiempo.setVelocidadTranscursoInstantes(sliderValue);
             simulacion.runningForward = true;
             simulacion.runningBackward = false;
         } else if (sliderValue < -deadZone) {
-            simulacion.simulationSpeed = -sliderValue;
+            tiempo.setVelocidadTranscursoInstantes(sliderValue);
             simulacion.runningForward = false;
             simulacion.runningBackward = true;
         }
 
-        sliderLabel.setText("Velocidad: " + Math.abs(simulacion.simulationSpeed) + (sliderValue < 0 ? " (retroceso)" : " (avance)"));
+        sliderLabel.setText("Velocidad: " + Math.abs(tiempo.velocidadTranscursoInstantes) + (simulacion.runningForward ? " (avance)" : " (retroceso)"));
     }
 
     public void actualizarTiempoLabel(Tiempo tiempo) {
         // Formatear el tiempo en una cadena
         String tiempoFormateado = String.format(
-            "Año: %d, Mes: %d, Día: %d, Hora: %02d, Minuto: %02d, Segundo: %02d",
-            tiempo.año, tiempo.mes, tiempo.dia, tiempo.hora, tiempo.minuto, tiempo.segundo
-        );
-    
+            "Hora (%02d/%02d/%02d) - Mes (%02d/%d)",
+            tiempo.hora, tiempo.minuto, tiempo.segundo, tiempo.mes, tiempo.año
+        );    
         // Actualizar el texto del label con la cadena formateada
-        tiempoLabel.setText("Tiempo: | " + tiempoFormateado);
+        tiempoLabel.setText("[ " + tiempoFormateado + " ]");
     }
     
     public void actualizarInfoCasillaSeleccionada(Ciudad ciudad) {

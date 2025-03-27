@@ -20,7 +20,6 @@ public class Movilidad {
         Impresora.printAzul("Sea bienvenido al programa SGMS.");
         Impresora.printAzul("Siéntase libre de experimentar como desee con la simulación.");
         Impresora.print("------------------------------------------------------------------------------------------------");
-        Impresora.print("\n");
     }
     
     /**
