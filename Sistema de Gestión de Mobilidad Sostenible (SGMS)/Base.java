@@ -10,6 +10,7 @@ import java.awt.Color;
 public class Base extends EntidadFija
 {
     private static int contadorInstancias = 0;
+    public static Color colorClase = Color.RED;
 
     public ArrayList<Vehiculo> vehiculosDisponibles; // Vehículos almacenados dentro de la base disponibles para ser usados
     
@@ -21,7 +22,7 @@ public class Base extends EntidadFija
     public Base(int x, int y)
     {
         super(x, y);
-        setColor(Color.RED);
+        setColor(colorClase);
 
         vehiculosDisponibles = new ArrayList<>();
         vehiculosInhabilitados = new ArrayList<>();

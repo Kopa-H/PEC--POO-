@@ -82,6 +82,6 @@ public class GestorMenus extends Menu {
         // Mostrar el panel
         cardLayout.show(cardsPanel, panel.getName());
         
-        System.out.println("Navegando a " + panel.getName());
+        Impresora.printNaranja("\nNavegando a " + panel.getName());
     }
 }

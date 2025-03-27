@@ -76,6 +76,30 @@ public class RandomGenerator implements Serializable {
         return ubi;
     }
     
+    public Ubicacion getUbicacionLibreAlejadaRandom(Ciudad ciudad, Ubicacion ubicacionReferencia) {
+        Ubicacion ubi = new Ubicacion();
+        int posX, posY;
+    
+        // Obtener las coordenadas de la ubicación de referencia
+        int referenciaX = ubicacionReferencia.getPosX();
+        int referenciaY = ubicacionReferencia.getPosY();
+    
+        // Generar posiciones aleatorias hasta que encontremos una libre y suficientemente alejada
+        do {
+            posX = random.nextInt(Ciudad.ROWS);
+            posY = random.nextInt(Ciudad.COLUMNS);
+    
+            ubi.setUbicacion(posX, posY);
+    
+            // Calcular la distancia total (distancia de Manhattan)
+            int distanciaTotal = Math.abs(referenciaX - posX) + Math.abs(referenciaY - posY);
+    
+            // Continuar si la ubicación está ocupada o si no cumple la distancia mínima
+        } while (ciudad.posicionOcupada(ubi) || distanciaTotal < 20);  // Comprobar si la ubicación está ocupada o muy cerca
+    
+        return ubi;
+    }
+    
     public Vehiculo getVehiculoDisponibleRandom(Base base) {
         // Verificar si la lista no está vacía
         if (base.vehiculosDisponibles.isEmpty()) {

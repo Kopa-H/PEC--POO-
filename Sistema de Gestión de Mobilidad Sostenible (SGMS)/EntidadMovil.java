@@ -316,7 +316,7 @@ public abstract class EntidadMovil extends Entidad {
             // Si se ha llegado a una moto, se sube y planea un trayecto hacia una dirección aleatoria
             if (this instanceof Usuario && entidadDestino instanceof Moto moto) {
                 // La moto comienza un rumbo hacia una posición aleatoria de la ciudad
-                Ubicacion ubicacion = randomGenerator.getUbicacionLibreRandom(ciudad);
+                Ubicacion ubicacion = randomGenerator.getUbicacionLibreAlejadaRandom(ciudad);
                 moto.planearTrayecto(ubicacion, null);
             
                 empezarSeguimiento(ciudad, moto);

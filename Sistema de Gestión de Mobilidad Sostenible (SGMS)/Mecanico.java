@@ -9,7 +9,7 @@ import java.awt.Color;
 public class Mecanico extends Trabajador {
     
     private static int contadorInstancias = 0;
-    public static Color colorClase = Color.CYAN;
+    public static final Color colorClase = Color.CYAN;
     
     /**
      * Constructor for objects of class TrabajadorMecanico

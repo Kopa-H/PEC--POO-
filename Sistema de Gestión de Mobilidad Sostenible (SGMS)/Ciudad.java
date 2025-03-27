@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.awt.Color;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.List;
 
 public class Ciudad {
     // Variables de instancia
@@ -23,6 +24,20 @@ public class Ciudad {
     
     public void setEntidades(CopyOnWriteArrayList<Entidad> newEntidades) {
         entidades = newEntidades;
+    }
+    
+    public List<Entidad> obtenerEntidadesPorClase(Class<? extends Entidad> tipoClase) {
+        List<Entidad> entidadesFiltradas = new CopyOnWriteArrayList<>();
+    
+        // Iterar sobre la lista de entidades
+        for (Entidad entidad : entidades) {
+            // Si la entidad es del tipo especificado, añadirla a la lista filtrada
+            if (tipoClase.isInstance(entidad)) {
+                entidadesFiltradas.add(entidad);
+            }
+        }
+    
+        return entidadesFiltradas;
     }
     
     // Método para mover una entidad al principio de la lista
@@ -51,7 +66,42 @@ public class Ciudad {
         RandomGenerator randomGenerator = new RandomGenerator();
         
         for (int i = 0; i < cantidad; i++) {
-            Ubicacion ubi = randomGenerator.getUbicacionLibreRandom(this);
+            Ubicacion ubi = null;
+            boolean espacioEncontrado = false;
+    
+            // Si la clase es Base, buscar una ubicación alejada de al menos 20 bloques de cualquier otra Base
+            if (claseEntidad.equals(Base.class)) {
+                for (int intentos = 0; intentos < 100; intentos++) {  // Limitar el número de intentos
+                    Ubicacion ubicacionCandidata = randomGenerator.getUbicacionLibreRandom(this);
+                    boolean esAlejada = true;
+    
+                    // Verificar que esté al menos a 20 bloques de cualquier otra Base
+                    for (Entidad entidad : obtenerEntidadesPorClase(Base.class)) {
+                        int distancia = Math.abs(entidad.getUbicacion().getPosX() - ubicacionCandidata.getPosX()) +
+                                        Math.abs(entidad.getUbicacion().getPosY() - ubicacionCandidata.getPosY());
+                        
+                        if (distancia < 20) {
+                            esAlejada = false;
+                            break;  // Si hay una base cercana, romper el bucle interno
+                        }
+                    }
+    
+                    if (esAlejada) {
+                        ubi = ubicacionCandidata;
+                        espacioEncontrado = true;
+                        break;  // Salir del bucle si se encontró un lugar adecuado
+                    }
+                }
+    
+                // Si no se encontró una ubicación válida, mostrar mensaje y continuar
+                if (!espacioEncontrado) {
+                    Impresora.printRojo("No se ha encontrado espacio disponible para una nueva Base.");
+                    return ultimaEntidad;
+                }
+            } else {
+                // Si no es una Base, se genera una ubicación libre sin restricciones adicionales
+                ubi = randomGenerator.getUbicacionLibreRandom(this);
+            }
             
             try {
                 // Crear la entidad de acuerdo con el tipo y la ubicación
@@ -62,14 +112,14 @@ public class Ciudad {
                 addElement((Entidad) entidad);
                 Color color = entidad.getColor();
                 simulacion.mostrarEntidad(entidad.getUbicacion(), color);
-                
-                Impresora.printAzul("Se ha añadido una entidad " + claseEntidad.getSimpleName() + " en: " + ubi.toString());
-                
-                // Si no existe ninguna base y se está añadiendo un vehículo, se agregan dos bases (las mínimas para que las bicis viajen de una a la otra)
-                if (encontrarEntidad(Base.class, 0) == null) {
+    
+                Impresora.printAzul("\nSe ha añadido una entidad " + claseEntidad.getSimpleName() + " en: " + ubi.toString());
+    
+                // Si no existe ninguna base y se está añadiendo un vehículo, se agregan dos bases
+                if (encontrarEntidad(Base.class, 0) == null && !claseEntidad.equals(Base.class)) {
                     agregarBase(simulacion, 2, 2);
                     agregarBase(simulacion, 2, 2);
-                    Impresora.printAzul("Se han añadido dos Bases dado que no existía ninguna");
+                    Impresora.printAzul("\nSe han añadido dos bases dado que no existía ninguna");
                 }
             
             } catch (Exception e) {
@@ -82,6 +132,8 @@ public class Ciudad {
     
         
     public void agregarBase(Simulacion simulacion, int numBicicletas, int numPatinetes) {
+        
+        
         Base base = agregarEntidad(simulacion, 1, Base.class);
         
         for (int i = 0; i < numBicicletas; i++) {
@@ -89,7 +141,7 @@ public class Ciudad {
             Bicicleta bici = new Bicicleta(base.getUbicacion().getPosX(), base.getUbicacion().getPosY());
             base.agregarVehiculoDisponible(bici);
             addElement(bici); 
-            System.out.println("Se ha añadido una bici a la base.");
+            Impresora.printAzul("\nSe ha añadido una bici a la base " + base.toSimpleString());
         }
         
         for (int i = 0; i < numPatinetes; i++) {
@@ -97,7 +149,7 @@ public class Ciudad {
             Patinete patinete = new Patinete(base.getUbicacion().getPosX(), base.getUbicacion().getPosY());
             base.agregarVehiculoDisponible(patinete);
             addElement(patinete); 
-            System.out.println("Se ha añadido un patinete a la base.");
+            Impresora.printAzul("\nSe ha añadido una bici a la base " + base.toSimpleString());
         }
     }
     

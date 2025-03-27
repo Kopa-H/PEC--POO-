@@ -51,7 +51,7 @@ public class Menu {
         // Centrar la ventana en la pantalla
         frame.setLocationRelativeTo(null);
         
-        System.out.println("Se ha abierto una nueva ventana " + nombre);
+        Impresora.printNaranja("\nSe ha abierto una nueva ventana " + nombre);
             
         return frame;
     }
@@ -68,7 +68,7 @@ public class Menu {
         // Centrar el dialogo en la pantalla
         dialog.setLocationRelativeTo(null);
         
-        System.out.println("Se ha abierto un nuevo diálogo " + nombre);
+        Impresora.printNaranja("\nSe ha abierto un nuevo diálogo " + nombre);
         
         return dialog;
     }

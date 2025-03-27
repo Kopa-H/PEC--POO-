@@ -37,12 +37,12 @@ public class TecnicoMantenimiento extends Trabajador {
         
             // Si se ha cargado la batería por completo, el trabajador abandona su labor
             if (vehiculoAsignado.getPorcentajeBateria() >= 100) {
-                Impresora.printMagenta(this.toSimpleString() + " ha cargado por completo a " + vehiculoAsignado.toSimpleString());
+                Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha cargado por completo a " + vehiculoAsignado.toSimpleString());
                 terminarTrabajo();
             }
         // Los técnicos de mantenimiento pueden reparar bases, pero NO vehículos
         } else if (entidadAsignada instanceof Base base) {
-            Impresora.printMagenta(this.toSimpleString() + " está trabajando en " + entidadAsignada.toSimpleString());
+            Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " está trabajando en " + entidadAsignada.toSimpleString());
             base.restaurarEstadoMecanico();
         
             if (!(base.tieneFalloMecanico())) {

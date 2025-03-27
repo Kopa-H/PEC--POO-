@@ -10,7 +10,7 @@ public class Moto extends Vehiculo
 {
     private static int contadorInstancias = 0;
     private static final int MAX_DISTANCIA_BATERIA = 100;
-    public static Color colorClase = Color.PINK;
+    public static Color colorClase = Color.GREEN;
     
     /**
      * Constructor for objects of class Moto

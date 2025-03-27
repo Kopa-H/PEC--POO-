@@ -102,7 +102,12 @@ public abstract class Entidad implements Serializable
         if (estadoMecanico > 0) {
             // Hacer que la disminución de estadoMecanico sea aleatoria
             if (new Random().nextDouble() < 0.5) { // Probabilidad de restar
-                estadoMecanico--; // Disminuye el estado mecánico en 1
+                estadoMecanico--; // Disminuye el estado mecánico en 1, aunque la entidad ya tenga un fallo mecáncico (se deteriora por envejecimiento)
+            }
+            
+            // Si la entidad ya tiene un fallo mecánico, no hace falta seguir
+            if (tieneFalloMecanico) {
+                return;
             }
             
             contadorComprobacionFallo++; // Incrementa el contador en cada llamada
@@ -121,6 +126,12 @@ public abstract class Entidad implements Serializable
                 contadorComprobacionFallo = 0; // Reinicia el contador después de la comprobación
             }
         } else {
+            
+            // Si la entidad ya tiene un fallo mecánico, no hace falta seguir
+            if (tieneFalloMecanico) {
+                return;
+            }
+            
             activarFalloMecanico(); // Si el estado mecánico llega a 0, forzar el fallo
             
             // Solo las bases alertan del fallo, los otros vehículos requieren de que un usuario los vaya a utilizar, lo vea y lo notifique
