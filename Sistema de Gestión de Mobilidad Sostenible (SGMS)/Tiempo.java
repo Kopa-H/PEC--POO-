@@ -42,6 +42,21 @@ public class Tiempo {
         return (ciclos / segundosInternosPorCiclo) / (segundosEnDia);
     }
     
+    // Verifica si el alquiler fue en el último mes
+    public boolean esUltimoMes(int mesAlquiler) {
+        return mesAlquiler == mes;
+    }
+    
+    // Verifica si el alquiler fue en los últimos 3 meses consecutivos
+    public boolean esMesReciente(int mesAlquiler, int mesesRecientes) {
+        return mesAlquiler >= (mes - mesesRecientes + 1);
+    }
+    
+    // Verifica si el alquiler fue en los últimos 6 meses
+    public boolean esUltimosSeisMeses(int mesAlquiler) {
+        return mesAlquiler >= (mes - 6);
+    }
+    
     public Color getColorHora() {
         int horaActual = hora;
         int minutoActual = minuto; // Asumimos que también tienes el minuto para mayor suavidad

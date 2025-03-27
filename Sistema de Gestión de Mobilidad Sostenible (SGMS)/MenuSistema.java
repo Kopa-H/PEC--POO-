@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JScrollPane;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import javax.swing.JFrame;
 
 public class MenuSistema extends Menu {
 
@@ -152,39 +155,85 @@ public class MenuSistema extends Menu {
     public void visualizarEstadoPromociones() {
         Menu menu = new Menu();
         menu.nombre = "Estado Promociones";
-        JDialog dialogo = menu.crearNuevoDialogo();
+        JFrame frame = menu.crearNuevaVentana();
         
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel();
-                
-        // Se itera sobre todos los usuarios
-        ArrayList<Entidad> usuarios = ciudad.obtenerEntidadesPorClase(Usuario.class);
         
-        for (Usuario usuario : usuarios) {
-            // SE añade un JPanel del usuario con su nombre e id
+        // Se itera sobre todos los usuarios
+        List<Entidad> entidades = ciudad.obtenerEntidadesPorClase(Usuario.class);
+        
+        for (Entidad entidad : entidades) {
+            Usuario usuario = (Usuario) entidad;
             
-            for (InfoAlquiler infoAlquiler : registroInfoAlquileres) {
+            // Crear un JPanel para el usuario con su nombre e ID
+            JPanel panelUsuario = new JPanel();
+            panelUsuario.setLayout(new BoxLayout(panelUsuario, BoxLayout.Y_AXIS));
+            panelUsuario.add(new JLabel("Usuario: " + usuario.getNombre() + " (ID: " + usuario.getId() + ")"));
+            
+            // Variables para las condiciones de promoción
+            int vehiculosUltimoMes = 0;
+            int vehiculosTresMesesSeguidos = 0;
+            HashSet<Class<? extends Vehiculo>> tiposVehiculosUsados = new HashSet<>();
+            
+            // Se itera sobre su registro de alquileres
+            for (InfoAlquiler infoAlquiler : usuario.registroInfoAlquileres) {
+                // Verificar si el alquiler es del último mes
+                if (simulacion.tiempo.esUltimoMes(infoAlquiler.getMes())) {
+                    vehiculosUltimoMes++;
+                }
                 
+                // Verificar si alquiló 10 vehículos en 3 meses consecutivos
+                if (simulacion.tiempo.esMesReciente(infoAlquiler.getMes(), 3)) {
+                    vehiculosTresMesesSeguidos++;
+                }
+                
+                // Guardar el tipo de vehículo usado en los últimos 6 meses
+                if (simulacion.tiempo.esUltimosSeisMeses(infoAlquiler.getMes())) {
+                    tiposVehiculosUsados.add(infoAlquiler.getClaseVehiculo());
+                }
             }
             
-            if (15 vehiculos usados en en ultimo mes)
+            // Condiciones para la promoción
+            boolean puedePromocionar = false;
             
-            if (10 vehiculos al mes durante 3 meses seguidos)
-            
-            if (todos los tipos de vehiculo usados en los ultimos 6 meses)
-            
-            // SE añade un boton si es que puede promocionar
-            eventlistener{
-                usuario.promocionarUsuario();
+            // Si ha usado 15 vehículos en el último mes
+            if (vehiculosUltimoMes >= 15) {
+                panelUsuario.add(new JLabel("Cumple con la promoción: 15 vehículos alquilados en el último mes"));
+                puedePromocionar = true;
             }
+            
+            // Si ha usado 10 vehículos por mes durante 3 meses seguidos
+            if (vehiculosTresMesesSeguidos >= 30) { // 10 vehículos por mes * 3 meses
+                panelUsuario.add(new JLabel("Cumple con la promoción: 10 vehículos por mes durante 3 meses seguidos"));
+                puedePromocionar = true;
+            }
+            
+            // Si ha usado todos los tipos de vehículos en los últimos 6 meses
+            if (tiposVehiculosUsados.size() == Vehiculo.obtenerTotalTiposVehiculo()) {
+                panelUsuario.add(new JLabel("Cumple con la promoción: Usó todos los tipos de vehículos en los últimos 6 meses"));
+                puedePromocionar = true;
+            }
+            
+            // Si el usuario cumple con alguna promoción, añadir botón para promocionar
+            if (puedePromocionar) {
+                JButton botonPromocionar = new JButton("Promocionar Usuario");
+                botonPromocionar.addActionListener(e -> {
+                    usuario.promocionarUsuario();
+                    JOptionPane.showMessageDialog(null, "Usuario promocionado con éxito!");
+                });
+                panelUsuario.add(botonPromocionar);
+            }
+            
+            // Añadir el panel del usuario al panel general
+            panel.add(panelUsuario);
         }
         
         // Añadir el panel al JFrame
-        dialogo.add(agregarScroll(panel));
-        
-        dialogo.setVisible(true);
+        frame.add(agregarScroll(panel));
+        frame.setVisible(true);
     }
-    
+
     public void iniciarGestorEntidades() {
         Menu menu = new Menu();
         menu.nombre = "Gestor Entidades";

@@ -74,6 +74,7 @@ public class Usuario extends Persona {
     
     public void promocionarUsuario() {
         tipoMembresia = TipoMembresia.PREMIUM;
+        Impresora.printVerde("\nEl usuario " + this.toSimpleString() + " ha sido promocionado a Usuario Premium");
     }
     
     /**

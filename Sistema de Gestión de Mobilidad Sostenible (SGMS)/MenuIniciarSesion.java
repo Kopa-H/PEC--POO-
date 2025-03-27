@@ -20,6 +20,7 @@ public class MenuIniciarSesion extends Menu {
     public MenuIniciarSesion(Simulacion simulacion, Ciudad ciudad, GestorMenus gestorMenus) {
         this.simulacion = simulacion;
         this.ciudad = ciudad;
+
         this.gestorMenus = gestorMenus;
         this.frame = gestorMenus.frame;
         

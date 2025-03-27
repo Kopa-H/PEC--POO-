@@ -15,7 +15,7 @@ abstract public class Vehiculo extends EntidadMovil {
     // Contiene el valor de distancia que puede recorrer el vehículo (indicador de la batería)
     private int autonomiaBateria;
         
-    public enum TipoVehiculo {
+    public static enum TipoVehiculo {
         MOTO, BICI, PATINETE;
     }
 
@@ -28,6 +28,10 @@ abstract public class Vehiculo extends EntidadMovil {
         
         this.DISTANCIA_MAX_BATERIA = distanciaMaxBateria;
         autonomiaBateria = distanciaMaxBateria;
+    }
+    
+    public static int obtenerTotalTiposVehiculo() {
+        return TipoVehiculo.values().length;
     }
        
     /**

@@ -13,4 +13,12 @@ public class InfoAlquiler {
         this.mes = tiempo.mes;
         this.claseVehiculo = vehiculoEscogido.getClass();
     }
+    
+    public int getMes() {
+        return mes;
+    }
+    
+    public Class<? extends Vehiculo> getClaseVehiculo() {
+        return claseVehiculo;
+    }
 }
