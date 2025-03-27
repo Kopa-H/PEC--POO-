@@ -218,30 +218,26 @@ public class InterfazSimulacion extends JFrame {
         checkBoxAutonomia.setBackground(colorDia);
         tiempoPanel.setBackground(colorDia);
         
-        // Determinar el color de texto adecuado para contraste con interpolación suave
-        Color colorTexto = obtenerColorTexto(colorDia);
+        // Determinar el color de texto adecuado para contraste
+        Color colorTexto = obtenerColorTextoContraste(colorDia);
         
         // Aplicar color de texto a los labels
         sliderLabel.setForeground(colorTexto);
         tiempoLabel.setForeground(colorTexto);
         checkBoxAutonomia.setForeground(colorTexto);
-        // Asegúrate de aplicar el color de texto a todos los JLabels que necesiten cambiar
     }
     
-    // Método para determinar el color de texto adecuado con interpolación suave
-    private Color obtenerColorTexto(Color fondo) {
+    // Método para determinar el color de texto adecuado con contraste asegurado
+    private Color obtenerColorTextoContraste(Color fondo) {
         // Calcula el brillo del color de fondo utilizando la fórmula para la luminancia
         double luminancia = (0.2126 * fondo.getRed() + 0.7152 * fondo.getGreen() + 0.0722 * fondo.getBlue()) / 255;
         
-        // Factor de interpolación entre blanco y negro para un cambio más suave
-        float factor = (float) (Math.abs(luminancia - 0.5) * 2);  // El factor varía entre 0 (oscuro) y 1 (claro)
-        
-        // Interpolar suavemente entre blanco y negro usando el factor
-        int r = (int) (factor * 255);
-        int g = (int) (factor * 255);
-        int b = (int) (factor * 255);
-        
-        return new Color(r, g, b);
+        // Si la luminancia es mayor que 0.5 (fondo claro), usar color negro; si no, usar blanco
+        if (luminancia > 0.5) {
+            return Color.BLACK;  // Fondo claro, texto oscuro
+        } else {
+            return Color.WHITE;  // Fondo oscuro, texto claro
+        }
     }
     
     public void actualizarEstadoInfoPanel(Ciudad ciudad, int row, int col) {       
