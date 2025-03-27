@@ -9,7 +9,7 @@ import java.awt.Color;
 public class Usuario extends Persona {
     private static int contadorInstancias = 0;
     public static Color colorClase = Color.ORANGE;
-    
+
     // instance variables - replace the example below with your own
     private double saldo;
     public enum TipoMembresia {
@@ -36,9 +36,39 @@ public class Usuario extends Persona {
     public void actuar(Ciudad ciudad) {
         super.actuar(ciudad);
         
+        // Si al aumentarle la edad en la superclase coincide con un día de pago, paga
+        if (edad % DIAS_ENTRE_PAGOS == 0) {
+            pagarTasas();
+        }
+        
         if (!enTrayecto && !isSiguiendoEntidad()) {
             intentarPlanearTrayecto(ciudad, Base.class);
             intentarPlanearTrayecto(ciudad, Moto.class);
+        }
+    }
+    
+    private void pagarTasas() {
+        if (saldo - PRECIO_EUROS_TASAS < 0) {
+            Impresora.printRojo("\nEl usuario " + this.toSimpleString() + " no ha podido pagar el importe de sus tasas");
+    
+            // Calcular la cantidad necesaria para recargar el saldo
+            double cantidadNecesaria = PRECIO_EUROS_TASAS - saldo;
+            
+            // Generar una cantidad aleatoria entre [cantidadNecesaria, 2 * cantidadNecesaria]
+            double cantidadRecargar = cantidadNecesaria + (Math.random() * cantidadNecesaria); // Se añade algo más para la próxima con algo de aleatoriedads
+            
+            // Recargar el saldo con la cantidad generada
+            recargarSaldo(cantidadRecargar);
+            
+            Impresora.printVerde("\n" + this.toSimpleString() + " ha recargado " + cantidadRecargar + "€");
+            
+            // Se llama a la propia función para proceder con el pago de las tasas
+            pagarTasas();
+        
+        } else {
+            // Si tiene suficiente saldo, paga las tasas
+            saldo -= PRECIO_EUROS_TASAS;
+            Impresora.printVerde("\nEl usuario " + toSimpleString() + " ha pagado las tasas de " + PRECIO_EUROS_TASAS + "€.");
         }
     }
     

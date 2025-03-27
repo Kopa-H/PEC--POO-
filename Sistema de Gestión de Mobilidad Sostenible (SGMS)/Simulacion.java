@@ -31,12 +31,17 @@ public class Simulacion {
     
     public Ciudad ciudad;
     
+    public Tiempo tiempo;
+    public Dinero dinero;
+    
     private ArrayList<Estado> historialEstados;
     
     InterfazSimulacion interfaz;
     
     public Simulacion(Ciudad ciudad) {
         this.ciudad = ciudad;
+        tiempo = new Tiempo();
+        dinero = new Dinero();
         
         historialEstados = new ArrayList<>();
         gridButtons = new JButton[ROWS][COLUMNS];
@@ -120,11 +125,12 @@ public class Simulacion {
                 for (Entidad entidad : ciudad.getEntidades()) {
                     entidad.actuar(ciudad);
                 }
-        
+                
                 // Se almacena el estado actual de la simulación para poder retroceder
                 guardarEstado();
                 
                 // Incrementar el contador de pasos
+                tiempo.transcurrirInstante();
                 step++;
 
             } else if (runningBackward && step > 0) {
@@ -132,7 +138,7 @@ public class Simulacion {
                 // Se tira para atrás
                 retrocederEstado();
                 
-                step--;
+                tiempo.revertirInstante();
             }
             
             actualizarEstadoVisual();

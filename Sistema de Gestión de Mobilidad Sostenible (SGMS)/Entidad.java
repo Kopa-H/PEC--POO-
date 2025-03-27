@@ -26,7 +26,7 @@ public abstract class Entidad implements Serializable
     private int contadorComprobacionFallo = 0; // Contador de llamadas a la función
     private final int limiteComprobacionFallo = 250; // Número de llamadas antes de hacer la comprobación
 
-    private int edad; // El número de steps que ha vivido la entidads
+    protected int edad; // El número de steps que ha vivido la entidads
     
     // Variable registra si la entidad sufre un daño mecánico. En ese caso, el próximo usuario en interactuar con ella lo notificará y el mecánico lo arreglará.
     private boolean tieneFalloMecanico = false;

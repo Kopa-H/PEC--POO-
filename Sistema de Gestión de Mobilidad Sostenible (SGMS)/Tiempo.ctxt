@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Tiempo
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ TIempo\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=Tiempo()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ TIempo\r\n
+comment2.params=
+comment2.target=void\ transcurrirInstante()
+comment3.params=
+comment3.target=void\ transcurrirSegundo()
+comment4.params=
+comment4.target=void\ revertirInstante()
+comment5.params=
+comment5.target=void\ revertirSegundo()
+numComments=6
