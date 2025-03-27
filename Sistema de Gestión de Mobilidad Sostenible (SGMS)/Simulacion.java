@@ -94,7 +94,7 @@ public class Simulacion {
     
     // Método para retroceder al estado anterior
     private void retrocederEstado() {
-        if (historialEstados.size() != tiempo.getInstantesTotales()) {
+        if (historialEstados.size() != tiempo.getCiclosTotales()) {
             throw new IllegalStateException("El sistema de retroceso de estados se ha desincronizado!");
         }
         
@@ -117,7 +117,7 @@ public class Simulacion {
         while (simulationRunning) {
             
             // Si la velocidad es 0, detener temporalmente la simulación
-            if (tiempo.velocidadTranscursoInstantes == 0) {
+            if (tiempo.getVelocidad() == 0) {
                 try {
                     // Pausa breve para evitar sobrecargar la CPU
                     Thread.sleep(100);
@@ -140,14 +140,14 @@ public class Simulacion {
                 guardarEstado();
                 
                 // Incrementar el contador de pasos
-                tiempo.transcurrirInstante(ciudad, dinero);
+                tiempo.transcurrirCiclo(ciudad, dinero);
 
-            } else if (runningBackward && tiempo.getInstantesTotales() > 0) {
+            } else if (runningBackward && tiempo.getCiclosTotales() > 0) {
                 
                 // Se tira para atrás
                 retrocederEstado();
                 
-                tiempo.revertirInstante();
+                tiempo.revertirCiclo();
             }
             
             actualizarEstadoVisual();
@@ -158,10 +158,12 @@ public class Simulacion {
     }
     
      public void actualizarEstadoVisual() {
-        // Limpiar la cuadrícula visual (poner todos los botones en blanco)
+        Color colorDia = tiempo.getColorHora();
+         
+        // Limpiar la cuadrícula visual (poner todos los botones su color según la hora)
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                gridButtons[i][j].setBackground(Color.WHITE);
+                gridButtons[i][j].setBackground(colorDia);
             }
         }
         

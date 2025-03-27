@@ -1,3 +1,4 @@
+import java.awt.Color;
 
 /**
  * Write a description of class TIempo here.
@@ -13,10 +14,10 @@ public class Tiempo {
     private int segundosEnMes = 30 * segundosEnDia; // Suponiendo meses de 30 días
     private int segundosEnAño = 12 * segundosEnMes; // Suponiendo años de 12 meses de 30 días cada uno
     
-    // instance variables - replace the example below with your own
-    public int diasEntrePagos = 60;
-    
-    private int segundosPorInstante = 60;
+    private int segundosInternosPorCiclo = 5 * 60; // Se mide en segundosInternos / ciclo. Indica el número de segundos que transcurren en cada ciclo del bucle
+    private int velocidad = 0; // La velocidad se mide en ciclos / segundoReal
+    public static final int MAX_VELOCIDAD = 50; // La máxima velocidad es que se ejecuten 50 ciclos del bucle por cada segundo real.
+    // 50 ciclos por segundo indican que la velocidad máxima son 60*50 segundos internos / segundo real
     
     public int segundo = 0;
     public int minuto = 0;
@@ -24,19 +25,42 @@ public class Tiempo {
     public int dia = 0;
     public int mes = 0;
     public int año = 0;
-        
-    public static final int MAX_VEL_TRANSCURSO_INSTANTES = 50;
-    public int velocidadTranscursoInstantes = 0;
-
-    /**
-     * Constructor for objects of class TIempo
-     */
-    public Tiempo() {
+    
+    // instance variables - replace the example below with your own
+    public int diasEntrePagos = 60;
+    
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
     }
     
-    public void setVelocidadTranscursoInstantes(int velocidadTranscursoInstantes) {
-        this.velocidadTranscursoInstantes = velocidadTranscursoInstantes;
+    // La velocidad del tiempo se mide en cuántos segundos dura un ciclo
+    public int getVelocidad() {
+        return velocidad;
     }
+    
+public Color getColorHora() {
+    int horaActual = hora;
+
+    // Definir colores para distintos rangos de hora
+    Color color = Color.BLACK;
+
+    if (horaActual >= 6 && horaActual < 12) {
+        // Color claro para la mañana (6 AM - 12 PM)
+        color = new Color(255, 255, 200);  // Un color claro, amarillo pálido
+    } else if (horaActual >= 12 && horaActual < 18) {
+        // Color aún más claro para la tarde (12 PM - 6 PM)
+        color = new Color(255, 255, 100);  // Un color amarillo claro
+    } else if (horaActual >= 18 && horaActual < 24) {
+        // Color oscuro para la noche (6 PM - 12 AM)
+        color = new Color(50, 50, 50);    // Un color gris oscuro
+    } else if (horaActual >= 0 && horaActual < 6) {
+        // Color más oscuro para la madrugada (12 AM - 6 AM)
+        color = new Color(20, 20, 20);    // Un color casi negro
+    }
+
+    return color;
+}
+
     
     public int getSegundosTotales() {
         // Calcular el total de segundos acumulados
@@ -48,18 +72,18 @@ public class Tiempo {
           (año * segundosEnAño);
     }
     
-    public int getInstantesTotales() {
-        return getSegundosTotales() / segundosPorInstante;
+    public int getCiclosTotales() {
+        return getSegundosTotales() / segundosInternosPorCiclo;
     }
     
-    public void transcurrirInstante(Ciudad ciudad, Dinero dinero) {
-        for (int i=0; i < segundosPorInstante; i++) {
+    public void transcurrirCiclo(Ciudad ciudad, Dinero dinero) {
+        for (int i=0; i < segundosInternosPorCiclo; i++) {
             transcurrirSegundo(ciudad, dinero);
         }
     }
     
-    public void revertirInstante() {
-        for (int i=0; i < segundosPorInstante; i++) {
+    public void revertirCiclo() {
+        for (int i=0; i < segundosInternosPorCiclo; i++) {
             revertirSegundo();
         }
     }
@@ -126,16 +150,20 @@ public class Tiempo {
     
     public void gestionarTranscursoTiempo(long duracionBucle) {        
         try {
-            // Tiempo objetivo en milisegundos (dependiendo de simulationSpeed)
-            // Si simulationSpeed es 1, será 1000 ms, si es 2 será 500 ms, etc.
-            long tiempoObjetivo = 1000L / velocidadTranscursoInstantes;
+            // Calcular los milisegundos de un ciclo en función de la velocidad.
+            // Si la velocidad es 0, el bucle no avanza.
+            if (velocidad > 0) {
+                // Tiempo objetivo en milisegundos: 1000 ms (1 segundo) dividido por la velocidad (ciclos/segundo real)
+                long tiempoObjetivo = 1000L / velocidad;
     
-            // Calcular el tiempo de delay que falta para llegar al tiempo objetivo
-            long tiempoRestante = tiempoObjetivo - duracionBucle;
+                // Calcular el tiempo restante para alcanzar el tiempo objetivo después de la duración del bucle
+                long tiempoRestante = tiempoObjetivo - duracionBucle;
     
-            // Si el tiempo restante es positivo, aplicar el delay. Si es negativo, no hacer nada (el bucle ha tardado más del tiempo objetivo)
-            if (tiempoRestante > 0) {
-                Thread.sleep(tiempoRestante);
+                // Si el tiempo restante es positivo, aplicar el delay para alcanzar el objetivo.
+                // Si es negativo, significa que el bucle ya ha tardado más de lo deseado, y no se debe aplicar un delay.
+                if (tiempoRestante > 0) {
+                    Thread.sleep(tiempoRestante);
+                }
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
