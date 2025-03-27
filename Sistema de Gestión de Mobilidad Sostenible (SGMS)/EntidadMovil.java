@@ -236,7 +236,7 @@ public abstract class EntidadMovil extends Entidad {
         return false;
     }
     
-    public void seguirTrayecto(Ciudad ciudad) {         
+    public void seguirTrayecto(Ciudad ciudad, Tiempo tiempo) {         
         // Verificamos si aún hay movimientos por hacer
         if (!trayecto.isEmpty()) {
             // Se verifica que la entidad seguida NO está en movimiento. En este caso se termina el trayecto
@@ -305,6 +305,11 @@ public abstract class EntidadMovil extends Entidad {
                         empezarSeguimiento(ciudad, vehiculoEscogido);
                         
                         baseDestino.vehiculosDisponibles.remove(vehiculoEscogido);
+                        
+                        // Se almacena la información del alquiler
+                        InfoAlquiler infoAlquiler = new InfoAlquiler(tiempo, vehiculoEscogido);
+                        usuario.registroInfoAlquileres.add(infoAlquiler);
+                        
                     } else {
                         Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " no puede iniciar ningún viaje porque no existe otra base disponible a la que viajar en estos momentos.");
                     }
@@ -347,11 +352,11 @@ public abstract class EntidadMovil extends Entidad {
         return enTrayecto;
     }
     
-    public void actuar(Ciudad ciudad) {
+    public void actuar(Ciudad ciudad, Tiempo tiempo) {
         super.actuar(ciudad);
         
         if (enTrayecto) {
-            seguirTrayecto(ciudad);
+            seguirTrayecto(ciudad, tiempo);
         } else {
             // Si la entidad está siguiendo a una entidad que ha terminado su trayecto, se deja de seguir
             if (entidadSeguida != null && !entidadSeguida.enTrayecto) {

@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * Write a description of class Usuario here.
@@ -9,6 +10,8 @@ import java.awt.Color;
 public class Usuario extends Persona {
     private static int contadorInstancias = 0;
     public static Color colorClase = Color.ORANGE;
+    
+    public ArrayList<InfoAlquiler> registroInfoAlquileres;
 
     // instance variables - replace the example below with your own
     private double saldo;
@@ -28,6 +31,8 @@ public class Usuario extends Persona {
         // Se añade entre 50 y 200 €
         saldo = 50 + Math.random() * (150);
         tipoMembresia = TipoMembresia.ESTANDAR;
+        
+        registroInfoAlquileres = new ArrayList<>();
         
         setId(contadorInstancias);  // Asignamos el ID único a esta instancia
         contadorInstancias++;

@@ -117,7 +117,7 @@ public class MenuSistema extends Menu {
         }));
         botones.put("Visualizar Estado Promociones", new Boton("VISUALIZAR ESTADO PROMOCIONES", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Visualizando estado de promociones");
+                visualizarEstadoPromociones();
             }
         }));
         botones.put("Asignar Trabajos", new Boton("ASIGNAR TRABAJOS", new ActionListener() {
@@ -147,6 +147,42 @@ public class MenuSistema extends Menu {
                 JOptionPane.showMessageDialog(frame, "Visualizando estadísticas");
             }
         }));
+    }
+    
+    public void visualizarEstadoPromociones() {
+        Menu menu = new Menu();
+        menu.nombre = "Estado Promociones";
+        JDialog dialogo = menu.crearNuevoDialogo();
+        
+        // Crear el panel para el submenú
+        JPanel panel = menu.crearPanel();
+                
+        // Se itera sobre todos los usuarios
+        ArrayList<Entidad> usuarios = ciudad.obtenerEntidadesPorClase(Usuario.class);
+        
+        for (Usuario usuario : usuarios) {
+            // SE añade un JPanel del usuario con su nombre e id
+            
+            for (InfoAlquiler infoAlquiler : registroInfoAlquileres) {
+                
+            }
+            
+            if (15 vehiculos usados en en ultimo mes)
+            
+            if (10 vehiculos al mes durante 3 meses seguidos)
+            
+            if (todos los tipos de vehiculo usados en los ultimos 6 meses)
+            
+            // SE añade un boton si es que puede promocionar
+            eventlistener{
+                usuario.promocionarUsuario();
+            }
+        }
+        
+        // Añadir el panel al JFrame
+        dialogo.add(agregarScroll(panel));
+        
+        dialogo.setVisible(true);
     }
     
     public void iniciarGestorEntidades() {
