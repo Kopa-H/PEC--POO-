@@ -38,30 +38,29 @@ public class Tiempo {
         return velocidad;
     }
     
-public Color getColorHora() {
-    int horaActual = hora;
-
-    // Definir colores para distintos rangos de hora
-    Color color = Color.BLACK;
-
-    if (horaActual >= 6 && horaActual < 12) {
-        // Color claro para la mañana (6 AM - 12 PM)
-        color = new Color(255, 255, 200);  // Un color claro, amarillo pálido
-    } else if (horaActual >= 12 && horaActual < 18) {
-        // Color aún más claro para la tarde (12 PM - 6 PM)
-        color = new Color(255, 255, 100);  // Un color amarillo claro
-    } else if (horaActual >= 18 && horaActual < 24) {
-        // Color oscuro para la noche (6 PM - 12 AM)
-        color = new Color(50, 50, 50);    // Un color gris oscuro
-    } else if (horaActual >= 0 && horaActual < 6) {
-        // Color más oscuro para la madrugada (12 AM - 6 AM)
-        color = new Color(20, 20, 20);    // Un color casi negro
+    public Color getColorHora() {
+        int horaActual = hora;
+    
+        // Definir colores para distintos rangos de hora
+        Color color = Color.BLACK;
+    
+        if (horaActual >= 6 && horaActual < 12) {
+            // Color claro para la mañana (6 AM - 12 PM)
+            color = new Color(255, 255, 200);  // Un color claro, amarillo pálido
+        } else if (horaActual >= 12 && horaActual < 18) {
+            // Color aún más claro para la tarde (12 PM - 6 PM)
+            color = new Color(255, 255, 100);  // Un color amarillo claro
+        } else if (horaActual >= 18 && horaActual < 24) {
+            // Color oscuro para la noche (6 PM - 12 AM)
+            color = new Color(50, 50, 50);    // Un color gris oscuro
+        } else if (horaActual >= 0 && horaActual < 6) {
+            // Color más oscuro para la madrugada (12 AM - 6 AM)
+            color = new Color(20, 20, 20);    // Un color casi negro
+        }
+    
+        return color;
     }
 
-    return color;
-}
-
-    
     public int getSegundosTotales() {
         // Calcular el total de segundos acumulados
         return segundo +

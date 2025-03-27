@@ -9,7 +9,7 @@ import java.awt.Color;
 public class Patinete extends Vehiculo {
     private static int contadorInstancias = 0;
     private static final int MAX_DISTANCIA_BATERIA = 300;
-    public static Color colorClase = Color.GRAY;
+    public static Color colorClase = new Color(0, 0, 139);
     
     /**
      * Constructor for objects of class Patinete
