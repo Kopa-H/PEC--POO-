@@ -112,7 +112,7 @@ public class Simulacion {
     
     public void runSimulacion() {      
         long inicioBucle, duracionBucle;
-        interfaz.actualizarEstadoGrid(this, ciudad, tiempo);
+        interfaz.actualizarEstadoVisual(this, ciudad, tiempo);
         
         while (simulationRunning) {
             
@@ -150,7 +150,7 @@ public class Simulacion {
                 tiempo.revertirCiclo();
             }
             
-            interfaz.actualizarEstadoGrid(this, ciudad, tiempo);
+            interfaz.actualizarEstadoVisual(this, ciudad, tiempo);
             
             duracionBucle = System.currentTimeMillis() - inicioBucle;
             tiempo.gestionarTranscursoTiempo(duracionBucle);

@@ -44,19 +44,33 @@ public class Tiempo {
     
     public Color getColorHora() {
         int horaActual = hora;
+        int minutoActual = minuto; // Asumimos que también tienes el minuto para mayor suavidad
     
-        // Definir colores para el día y la noche
-        Color color = Color.BLACK;
+        // Convertir la hora y minutos actuales a una fracción de 24 horas
+        float factorHora = (horaActual + minutoActual / 60f) / 24f;
     
-        if (horaActual >= 6 && horaActual < 18) {
-            // Color claro para el día (6 AM - 6 PM)
-            color = new Color(255, 255, 200);  // Un color claro, amarillo pálido
+        // Colores base para interpolar (puedes ajustarlos según prefieras)
+        Color colorInicio = new Color(0, 0, 128);  // Color para medianoche (azul oscuro)
+        Color colorMedio = new Color(255, 255, 200);  // Color para mediodía (amarillo claro)
+        Color colorFinal = new Color(0, 0, 128);  // Color para medianoche (cierre del ciclo)
+    
+        // Dividimos el día en dos transiciones: noche -> día -> noche
+        if (factorHora < 0.5f) {
+            // De medianoche a mediodía (interpolar entre colorInicio y colorMedio)
+            return interpolarColores(colorInicio, colorMedio, factorHora * 2);
         } else {
-            // Color oscuro para la noche (6 PM - 6 AM)
-            color = new Color(50, 50, 50);    // Un color gris oscuro
+            // De mediodía a medianoche (interpolar entre colorMedio y colorFinal)
+            return interpolarColores(colorMedio, colorFinal, (factorHora - 0.5f) * 2);
         }
+    }
     
-        return color;
+    // Método para interpolar entre dos colores
+    private Color interpolarColores(Color c1, Color c2, float factor) {
+        int r = (int) ((c2.getRed() - c1.getRed()) * factor + c1.getRed());
+        int g = (int) ((c2.getGreen() - c1.getGreen()) * factor + c1.getGreen());
+        int b = (int) ((c2.getBlue() - c1.getBlue()) * factor + c1.getBlue());
+    
+        return new Color(r, g, b);
     }
 
     public int getSegundosTotales() {

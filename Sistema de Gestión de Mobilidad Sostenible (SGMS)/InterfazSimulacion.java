@@ -11,7 +11,13 @@ import java.util.ArrayList;
 public class InterfazSimulacion extends JFrame {   
     private static final Color DESCRIPTION_PANE_COLOR = Color.CYAN;
     
+    private JPanel gridPanel;
+    private JPanel southPanel;
     private JTextPane panelTextoInfo;
+    private JPanel tiempoPanel;
+    private JPanel checkBoxPanel;
+    private JCheckBox checkBoxAutonomia;
+    
     private JLabel tiempoLabel;
 
     JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -Tiempo.MAX_VELOCIDAD, Tiempo.MAX_VELOCIDAD, 0);
@@ -31,7 +37,7 @@ public class InterfazSimulacion extends JFrame {
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel gridPanel = new JPanel(new GridLayout(Simulacion.ROWS, Simulacion.COLUMNS));
+        gridPanel = new JPanel(new GridLayout(Simulacion.ROWS, Simulacion.COLUMNS));
         
         // Se crea la ventana independiente para el estatus panel
         Menu menu = new Menu();
@@ -54,7 +60,7 @@ public class InterfazSimulacion extends JFrame {
                         if (!isLocked) {
                             rowSelected = row;
                             colSelected = col;
-                            actualizarEstadoPanel(ciudad, row, col);
+                            actualizarEstadoInfoPanel(ciudad, row, col);
                         }
                     }
 
@@ -88,10 +94,12 @@ public class InterfazSimulacion extends JFrame {
         frame.setVisible(true);
         
         add(gridPanel, BorderLayout.CENTER);
-
-        JPanel tiempoPanel = new JPanel();
+        
+        // Crear el JLabel y establecerle el nombre
         tiempoLabel = new JLabel();
-        tiempoPanel.add(tiempoLabel);
+        // Ahora añadimos el panel de tiempo al panel exterior
+        tiempoPanel = new JPanel();
+        tiempoPanel.add(tiempoLabel);  // Añadir el panel con el label al panel exterior
 
         // Determinar el espaciado de las marcas principales dinámicamente, ajustándolo al rango
         int majorSpacing = tiempo.MAX_VELOCIDAD / 5;  // Dividir el máximo en 5 partes para las marcas principales
@@ -116,7 +124,7 @@ public class InterfazSimulacion extends JFrame {
         sliderPanel.add(sliderLabel, BorderLayout.NORTH);
         sliderPanel.add(speedSlider, BorderLayout.CENTER);
 
-        JPanel southPanel = new JPanel();
+        southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
         southPanel.add(tiempoPanel);
         southPanel.add(Box.createVerticalStrut(10));
@@ -126,7 +134,7 @@ public class InterfazSimulacion extends JFrame {
         add(southPanel, BorderLayout.SOUTH);
 
         // Añadir el checkbox
-        JCheckBox checkBoxAutonomia = new JCheckBox("Activar Autonomía");
+        checkBoxAutonomia = new JCheckBox("Activar Autonomía");
         checkBoxAutonomia.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -138,7 +146,7 @@ public class InterfazSimulacion extends JFrame {
             }
         });
 
-        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel = new JPanel();
         checkBoxPanel.add(checkBoxAutonomia);
         
         // Posicionar el checkbox en la parte derecha inferior
@@ -163,13 +171,11 @@ public class InterfazSimulacion extends JFrame {
         panelTextoInfo.setCaretColor(DESCRIPTION_PANE_COLOR); 
     }
     
-    public void actualizarEstadoGrid(Simulacion simulacion, Ciudad ciudad, Tiempo tiempo) {
-        Color colorDia = tiempo.getColorHora();
-         
+    public void actualizarEstadoVisual(Simulacion simulacion, Ciudad ciudad, Tiempo tiempo) {       
         // Limpiar la cuadrícula visual (poner todos los botones su color según la hora)
         for (int i = 0; i < ciudad.ROWS; i++) {
             for (int j = 0; j < ciudad.COLUMNS; j++) {
-                simulacion.gridButtons[i][j].setBackground(colorDia);
+                simulacion.gridButtons[i][j].setBackground(Color.WHITE);
             }
         }
         
@@ -193,13 +199,52 @@ public class InterfazSimulacion extends JFrame {
             simulacion.mostrarEntidad(ubi, color); // Actualiza la posición en la interfaz gráfica
         }
         
+        actualizarAspectoDiaNoche(tiempo);
+        
         actualizarTiempoLabel(tiempo);
         
         // Sirve para que se actualice la información mostrada de la casilla señalada de la interfaz
         actualizarInfoCasillaSeleccionada(ciudad);
     }
     
-    public void actualizarEstadoPanel(Ciudad ciudad, int row, int col) {       
+    private void actualizarAspectoDiaNoche(Tiempo tiempo) {
+        Color colorDia = tiempo.getColorHora();
+        this.getContentPane().setBackground(colorDia);
+        gridPanel.setBackground(colorDia);
+        sliderPanel.setBackground(colorDia);
+        speedSlider.setBackground(colorDia);
+        southPanel.setBackground(colorDia);
+        checkBoxPanel.setBackground(colorDia);
+        checkBoxAutonomia.setBackground(colorDia);
+        tiempoPanel.setBackground(colorDia);
+        
+        // Determinar el color de texto adecuado para contraste con interpolación suave
+        Color colorTexto = obtenerColorTexto(colorDia);
+        
+        // Aplicar color de texto a los labels
+        sliderLabel.setForeground(colorTexto);
+        tiempoLabel.setForeground(colorTexto);
+        checkBoxAutonomia.setForeground(colorTexto);
+        // Asegúrate de aplicar el color de texto a todos los JLabels que necesiten cambiar
+    }
+    
+    // Método para determinar el color de texto adecuado con interpolación suave
+    private Color obtenerColorTexto(Color fondo) {
+        // Calcula el brillo del color de fondo utilizando la fórmula para la luminancia
+        double luminancia = (0.2126 * fondo.getRed() + 0.7152 * fondo.getGreen() + 0.0722 * fondo.getBlue()) / 255;
+        
+        // Factor de interpolación entre blanco y negro para un cambio más suave
+        float factor = (float) (Math.abs(luminancia - 0.5) * 2);  // El factor varía entre 0 (oscuro) y 1 (claro)
+        
+        // Interpolar suavemente entre blanco y negro usando el factor
+        int r = (int) (factor * 255);
+        int g = (int) (factor * 255);
+        int b = (int) (factor * 255);
+        
+        return new Color(r, g, b);
+    }
+    
+    public void actualizarEstadoInfoPanel(Ciudad ciudad, int row, int col) {       
         panelTextoInfo.setText("");
         
         // Separar las entidades de tipo Base de las demás
@@ -281,6 +326,6 @@ public class InterfazSimulacion extends JFrame {
     }
     
     public void actualizarInfoCasillaSeleccionada(Ciudad ciudad) {
-        actualizarEstadoPanel(ciudad, rowSelected, colSelected);
+        actualizarEstadoInfoPanel(ciudad, rowSelected, colSelected);
     }
 }
