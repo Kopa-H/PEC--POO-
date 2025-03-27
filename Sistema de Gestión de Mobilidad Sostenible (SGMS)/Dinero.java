@@ -16,7 +16,6 @@ public class Dinero {
     public Dinero() {
     }
     
-    
     public void verificarCobroDeTasas(Ciudad ciudad, Tiempo tiempo) {
         List<Entidad> entidades = ciudad.obtenerEntidadesPorClase(Usuario.class);
         

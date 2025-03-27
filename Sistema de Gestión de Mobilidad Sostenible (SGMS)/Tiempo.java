@@ -9,20 +9,24 @@ public class Tiempo
 {
     // instance variables - replace the example below with your own
     public int diasEntrePagos = 60;
-    private int instantes;
+    public int instantes;
     private int segundosPorInstante = 30;
     
-    private int segundo = 0;
-    private int minuto = 0;
-    private int hora = 0;
-    private int dia = 0;
-    private int mes = 0;
-    private int año = 0;
+    public int segundo = 0;
+    public int minuto = 0;
+    public int hora = 0;
+    public int dia = 0;
+    public int mes = 0;
+    public int año = 0;
 
     /**
      * Constructor for objects of class TIempo
      */
     public Tiempo() {
+    }
+    
+    public int getInstantes() {
+        return instantes;
     }
     
     public void transcurrirInstante(Ciudad ciudad, Dinero dinero) {
@@ -38,19 +42,24 @@ public class Tiempo
     private void transcurrirSegundo() {
         segundo++;
         
-        if (segundo % 60 == 0) {
+        if (segundo == 60) {  // Verificar si hemos llegado a 60 segundos
+            segundo = 0;  // Reiniciar los segundos a cero
             minuto++;
             
-            if (minuto % 60 == 0) {
+            if (minuto == 60) {  // Verificar si hemos llegado a 60 minutos
+                minuto = 0;  // Reiniciar los minutos a cero
                 hora++;
                 
-                if (hora % 24 == 0) {
+                if (hora == 24) {  // Verificar si hemos llegado a 24 horas
+                    hora = 0;  // Reiniciar las horas a cero
                     dia++;
                     
-                    if (dia % 30 == 0) {
+                    if (dia == 30) {  // Verificar si hemos llegado a 30 días
+                        dia = 0;  // Reiniciar los días a cero
                         mes++;
-                
-                        if (mes % 12 == 0) {
+                    
+                        if (mes == 12) {  // Verificar si hemos llegado a 12 meses
+                            mes = 0;  // Reiniciar los meses a cero
                             año++;
                         }
                     }

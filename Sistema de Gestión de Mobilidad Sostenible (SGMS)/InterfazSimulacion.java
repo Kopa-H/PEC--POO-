@@ -12,7 +12,7 @@ public class InterfazSimulacion extends JFrame {
     private static final Color DESCRIPTION_PANE_COLOR = Color.CYAN;
     
     private JTextPane panelTextoInfo;
-    private JLabel stepLabel;
+    private JLabel tiempoLabel;
 
     JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, -Simulacion.MAX_SIMULATION_SPEED, Simulacion.MAX_SIMULATION_SPEED, 0);
     JLabel sliderLabel = new JLabel("Ajustar velocidad: " + 0, JLabel.CENTER);
@@ -26,7 +26,7 @@ public class InterfazSimulacion extends JFrame {
     private int rowSelected = 0;
     private int colSelected = 0;
 
-    public InterfazSimulacion(Simulacion simulacion, Ciudad ciudad, JButton[][] gridButtons, int step) {
+    public InterfazSimulacion(Simulacion simulacion, Ciudad ciudad, JButton[][] gridButtons, Tiempo tiempo) {
         setTitle("Simulación de Ciudad");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,9 +89,9 @@ public class InterfazSimulacion extends JFrame {
         
         add(gridPanel, BorderLayout.CENTER);
 
-        JPanel stepPanel = new JPanel();
-        stepLabel = new JLabel("Paso: " + step);
-        stepPanel.add(stepLabel);
+        JPanel tiempoPanel = new JPanel();
+        tiempoLabel = new JLabel("Paso: " + step);
+        tiempoPanel.add(tiempoLabel);
 
         speedSlider.setMajorTickSpacing(500);
         speedSlider.setMinorTickSpacing(100);
@@ -110,7 +110,7 @@ public class InterfazSimulacion extends JFrame {
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
-        southPanel.add(stepPanel);
+        southPanel.add(tiempoPanel);
         southPanel.add(Box.createVerticalStrut(10));
         southPanel.add(sliderPanel);
         southPanel.add(Box.createVerticalStrut(10));
@@ -198,8 +198,15 @@ public class InterfazSimulacion extends JFrame {
         sliderLabel.setText("Velocidad: " + Math.abs(simulacion.simulationSpeed) + (sliderValue < 0 ? " (retroceso)" : " (avance)"));
     }
 
-    public void actualizarStepLabel(int step) {
-        stepLabel.setText("Paso: " + step);
+    public void actualizarTiempoLabel(Tiempo tiempo) {
+        // Formatear el tiempo en una cadena
+        String tiempoFormateado = String.format(
+            "Año: %d, Mes: %d, Día: %d, Hora: %02d, Minuto: %02d, Segundo: %02d",
+            tiempo.año, tiempo.mes, tiempo.dia, tiempo.hora, tiempo.minuto, tiempo.segundo
+        );
+    
+        // Actualizar el texto del label con la cadena formateada
+        tiempoLabel.setText("Tiempo: | " + tiempoFormateado);
     }
     
     public void actualizarInfoCasillaSeleccionada(Ciudad ciudad) {

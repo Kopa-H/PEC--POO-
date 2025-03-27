@@ -14,8 +14,6 @@ public class Simulacion {
         
     private JButton[][] gridButtons; // Matriz para almacenar los botones de la cuadrícula
     
-    private int step; // Recuento de pasos
-    
     public static final int MAX_SIMULATION_SPEED = 300;
     public int simulationSpeed = 0;
     
@@ -45,10 +43,9 @@ public class Simulacion {
         
         historialEstados = new ArrayList<>();
         gridButtons = new JButton[ROWS][COLUMNS];
-        step = 0;
         
         // Se crea la interfaz
-        interfaz = new InterfazSimulacion(this, ciudad, gridButtons, step);
+        interfaz = new InterfazSimulacion(this, ciudad, gridButtons, tiempo);
     }
     
     public JButton[][] getGridButtons() {
@@ -100,7 +97,7 @@ public class Simulacion {
     
     // Método para retroceder al estado anterior
     private void retrocederEstado() {
-        if (historialEstados.size() != step) {
+        if (historialEstados.size() != tiempo.instantes) {
             throw new IllegalStateException("El sistema de retroceso de estados se ha desincronizado!");
         }
         
@@ -131,9 +128,8 @@ public class Simulacion {
                 
                 // Incrementar el contador de pasos
                 tiempo.transcurrirInstante(ciudad, dinero);
-                step++;
 
-            } else if (runningBackward && step > 0) {
+            } else if (runningBackward && tiempo.instantes > 0) {
                 
                 // Se tira para atrás
                 retrocederEstado();
@@ -174,7 +170,7 @@ public class Simulacion {
             mostrarEntidad(ubi, color); // Actualiza la posición en la interfaz gráfica
         }
         
-        interfaz.actualizarStepLabel(step);
+        interfaz.actualizarTiempoLabel(tiempo);
         
         // Sirve para que se actualice la información mostrada de la casilla señalada de la interfaz
         interfaz.actualizarInfoCasillaSeleccionada(ciudad);
