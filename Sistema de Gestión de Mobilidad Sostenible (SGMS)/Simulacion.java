@@ -130,7 +130,7 @@ public class Simulacion {
                 guardarEstado();
                 
                 // Incrementar el contador de pasos
-                tiempo.transcurrirInstante();
+                tiempo.transcurrirInstante(ciudad, dinero);
                 step++;
 
             } else if (runningBackward && step > 0) {

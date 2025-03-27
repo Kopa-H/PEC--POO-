@@ -8,7 +8,7 @@
 public class Tiempo
 {
     // instance variables - replace the example below with your own
-    private int diasEntrePagos = 60;
+    public int diasEntrePagos = 60;
     private int instantes;
     private int segundosPorInstante = 30;
     
@@ -25,12 +25,14 @@ public class Tiempo
     public Tiempo() {
     }
     
-    public void transcurrirInstante() {
+    public void transcurrirInstante(Ciudad ciudad, Dinero dinero) {
         instantes++;
         
         for (int i=0; i < segundosPorInstante; i++) {
             transcurrirSegundo(); 
         }
+        
+        dinero.verificarCobroDeTasas(ciudad, this);
     }
     
     private void transcurrirSegundo() {
