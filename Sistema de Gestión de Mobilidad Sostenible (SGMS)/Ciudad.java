@@ -97,8 +97,8 @@ public class Ciudad {
     
                 // Si no se encontró una ubicación válida, mostrar mensaje y continuar
                 if (!espacioEncontrado) {
-                    Impresora.printRojo("No se ha encontrado espacio disponible para una nueva Base.");
-                    return ultimaEntidad;
+                    Impresora.printRojo("\nNo se ha encontrado espacio disponible para agregar una nueva Base");
+                    return null;
                 }
             } else {
                 // Si no es una Base, se genera una ubicación libre sin restricciones adicionales
@@ -134,9 +134,12 @@ public class Ciudad {
     
         
     public void agregarBase(Simulacion simulacion, int numBicicletas, int numPatinetes) {
-        
-        
         Base base = agregarEntidad(simulacion, 1, Base.class);
+        
+        // Si no ha habido espacio suficiente para generar una nueva base
+        if (base == null) {
+            return;
+        }
         
         for (int i = 0; i < numBicicletas; i++) {
             // Añadir bici
