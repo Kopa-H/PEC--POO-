@@ -1,3 +1,4 @@
+import java.io.Serializable;
 
 /**
  * Write a description of class Alquiler here.
@@ -5,7 +6,7 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-public class InfoAlquiler {
+public class InfoAlquiler implements Serializable {
     private int mes;
     private Class<? extends Vehiculo> claseVehiculo;
     

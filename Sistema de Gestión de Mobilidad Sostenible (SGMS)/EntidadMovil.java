@@ -236,7 +236,8 @@ public abstract class EntidadMovil extends Entidad {
         return false;
     }
     
-    public void seguirTrayecto(Ciudad ciudad, Tiempo tiempo) {         
+    public void seguirTrayecto(Ciudad ciudad) {         
+        
         // Verificamos si aún hay movimientos por hacer
         if (!trayecto.isEmpty()) {
             // Se verifica que la entidad seguida NO está en movimiento. En este caso se termina el trayecto
@@ -307,7 +308,7 @@ public abstract class EntidadMovil extends Entidad {
                         baseDestino.vehiculosDisponibles.remove(vehiculoEscogido);
                         
                         // Se almacena la información del alquiler
-                        InfoAlquiler infoAlquiler = new InfoAlquiler(tiempo, vehiculoEscogido);
+                        InfoAlquiler infoAlquiler = new InfoAlquiler(ciudad.tiempo, vehiculoEscogido);
                         usuario.registroInfoAlquileres.add(infoAlquiler);
                         
                     } else {
@@ -319,12 +320,16 @@ public abstract class EntidadMovil extends Entidad {
             }
     
             // Si se ha llegado a una moto, se sube y planea un trayecto hacia una dirección aleatoria
-            if (this instanceof Usuario && entidadDestino instanceof Moto moto) {
+            if (this instanceof Usuario usuario && entidadDestino instanceof Moto moto) {
                 // La moto comienza un rumbo hacia una posición aleatoria de la ciudad
                 Ubicacion ubicacion = randomGenerator.getUbicacionLibreAlejadaRandom(ciudad, moto.getUbicacion(), 20);
                 moto.planearTrayecto(ubicacion, null);
             
                 empezarSeguimiento(ciudad, moto);
+                
+                // Se almacena la información del alquiler
+                InfoAlquiler infoAlquiler = new InfoAlquiler(ciudad.tiempo, moto);
+                usuario.registroInfoAlquileres.add(infoAlquiler);
             }
     
             entidadDestino = null;
@@ -352,11 +357,11 @@ public abstract class EntidadMovil extends Entidad {
         return enTrayecto;
     }
     
-    public void actuar(Ciudad ciudad, Tiempo tiempo) {
+    public void actuar(Ciudad ciudad) {
         super.actuar(ciudad);
         
         if (enTrayecto) {
-            seguirTrayecto(ciudad, tiempo);
+            seguirTrayecto(ciudad);
         } else {
             // Si la entidad está siguiendo a una entidad que ha terminado su trayecto, se deja de seguir
             if (entidadSeguida != null && !entidadSeguida.enTrayecto) {

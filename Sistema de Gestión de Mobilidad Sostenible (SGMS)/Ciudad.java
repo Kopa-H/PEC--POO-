@@ -11,6 +11,8 @@ public class Ciudad {
     
     private static final int DISTANCIA_MINIMA_ENTRE_BASES = 20;
     
+    public Tiempo tiempo;
+    
     public static final int ROWS = 50;
     public static final int COLUMNS = 50;
 

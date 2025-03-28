@@ -38,6 +38,8 @@ public class Simulacion {
         tiempo = new Tiempo();
         dinero = new Dinero();
         
+        ciudad.tiempo = tiempo;
+        
         historialEstados = new ArrayList<>();
         gridButtons = new JButton[ROWS][COLUMNS];
         
