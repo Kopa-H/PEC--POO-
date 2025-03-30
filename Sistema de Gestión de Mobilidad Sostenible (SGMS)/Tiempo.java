@@ -125,6 +125,13 @@ public class Tiempo {
                 minuto = 0;  // Reiniciar los minutos a cero
                 hora++;
                 
+                // Si son las ocho de la mañana
+                if (hora == 8) {
+                    Impresora.printRojo("\nEL DÍA AMANECE SOLEADO");
+                } else if (hora == 21) {
+                    Impresora.printRojo("\nLA NOCHE ESTÁ TRANQUILA");
+                }
+                
                 if (hora == 24) {  // Verificar si hemos llegado a 24 horas
                     hora = 0;  // Reiniciar las horas a cero
                     dia++;

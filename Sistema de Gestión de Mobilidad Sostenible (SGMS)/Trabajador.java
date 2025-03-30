@@ -87,16 +87,16 @@ abstract public class Trabajador extends Persona
             // Si el trabajador no está en trayecto
             if (!enTrayecto) {
             
-                // Si el trabajador aún no se encuentra donde la entidad asignada, planea un trayecto hacia ella
-                if (!(entidadAsignada.getUbicacion().equals(this.getUbicacion()))) {
-                    planearTrayecto(entidadAsignada.getUbicacion(), entidadAsignada);
-                    return;
-                }
-                
-                // Si el trabajador se encuentra en la localización de traslado, así como su entidad asignada, lo ha finalizado
+                // Si el trabajador se encuentra en la localización de traslado lo ha finalizado
                 if (this.isModoTraslado() && ubicacionTraslado.equals(this.getUbicacion())) {
                     Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() +  " ha finalizado su traslado de " + entidadAsignada.toSimpleString() + " hacia " + ubicacionTraslado);
                     this.terminarTrabajo();
+                    return;
+                }
+                
+                // Si el trabajador aún no se encuentra donde la entidad asignada, planea un trayecto hacia ella
+                if (!(entidadAsignada.getUbicacion().equals(this.getUbicacion()))) {
+                    planearTrayecto(entidadAsignada.getUbicacion(), entidadAsignada);
                     return;
                 }
                 
