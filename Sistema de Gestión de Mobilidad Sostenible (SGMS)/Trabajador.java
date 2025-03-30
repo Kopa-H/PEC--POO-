@@ -70,6 +70,7 @@ abstract public class Trabajador extends Persona
         // Si no tiene ninguna entidad asignada, busca uno que necesite atención
         if (entidadAsignada == null) {
             
+            // Si las entidades NO son autónomas, se evite que busque asignarse trabajo
             if (!ciudad.isEntidadesAutonomas()) {
                 return;
             }
@@ -86,7 +87,7 @@ abstract public class Trabajador extends Persona
             // Si el trabajador no está en trayecto
             if (!enTrayecto) {
             
-                // Si el trabajador aún no se encuentra donde la entidad asignada
+                // Si el trabajador aún no se encuentra donde la entidad asignada, planea un trayecto hacia ella
                 if (!(entidadAsignada.getUbicacion().equals(this.getUbicacion()))) {
                     planearTrayecto(entidadAsignada.getUbicacion(), entidadAsignada);
                     return;
@@ -94,20 +95,20 @@ abstract public class Trabajador extends Persona
                 
                 // Si el trabajador se encuentra en la localización de traslado, así como su entidad asignada, lo ha finalizado
                 if (this.isModoTraslado() && ubicacionTraslado.equals(this.getUbicacion())) {
-                    Impresora.printVerde("El trabajador " + this.toSimpleString() +  " ha finalizado su traslado de " + entidadAsignada.toSimpleString() + " hacia " + ubicacionTraslado);
+                    Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() +  " ha finalizado su traslado de " + entidadAsignada.toSimpleString() + " hacia " + ubicacionTraslado);
                     this.terminarTrabajo();
+                    return;
                 }
-                
                 
                 // Si el tanto el trabajador como la entidad están en una base, y están en la misma ubicación, A TRABAJAR!
                 if (ciudad.posicionOcupadaPor(this.getUbicacion(), Base.class)) {
                     this.trabajar();
+                    return;
+                }
                 
-                } else if (ciudad.posicionOcupadaPor(entidadAsignada.getUbicacion(), Vehiculo.class)) {
-                    // Si se ha llegado al vehículo, pero NO está en una base, se lleva a la base más cercana
-                    // o se lleva a la posición escogida por el usuario desde el menú si el trabajador está en modo traslado
-                    
-                    // Dado que la entidad es un vehículo, se hace el cast
+                // Si se ha llegado al vehículo, pero NO está en una base, se lleva a la base más cercana
+                // o se lleva a la posición escogida por el usuario desde el menú si el trabajador está en modo traslado
+                if (ciudad.posicionOcupadaPor(entidadAsignada.getUbicacion(), Vehiculo.class)) {                    
                     Vehiculo vehiculoAsignado = (Vehiculo) entidadAsignada;
                     
                     if (this.isModoTraslado()) {
@@ -115,6 +116,8 @@ abstract public class Trabajador extends Persona
                     } else {
                         trasladarVehiculoToBase(ciudad, vehiculoAsignado);
                     }
+                    
+                    return;
                 }
             }
         }
@@ -131,7 +134,6 @@ abstract public class Trabajador extends Persona
             intentarAsignarEntidad(ciudad, ciudad.encontrarEntidadConFalloMecanico(Base.class));
         } else {
             // Si existen bases disponibles a las que llevar el vehículo
-            
             arrastrarVehiculo(ciudad, this, vehiculoAsignado, baseCercana.getUbicacion(), baseCercana);
         }
     }

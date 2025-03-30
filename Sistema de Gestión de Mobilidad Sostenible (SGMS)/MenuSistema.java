@@ -149,13 +149,39 @@ public class MenuSistema extends Menu {
         // Se selecciona el tipo de vehículo
         Class<?> claseVehiculo = utilidadesMenu.seleccionarClase("vehiculo");
         
+        // Verificar si el valor es nulo
+        if (claseVehiculo == null) {
+            dialogo.dispose(); // Cerrar el diálogo si el valor es nulo
+            return; // Salir del método
+        }
+    
         // Se selecciona su índice
         int indice = utilidadesMenu.seleccionarIndice();
         
+        // Verificar si el índice no es válido (-1 indica un valor no seleccionado en el ejemplo previo)
+        if (indice == -1) {
+            dialogo.dispose(); // Cerrar el diálogo si no se seleccionó un índice válido
+            return; // Salir del método
+        }
+    
         Vehiculo vehiculoSeleccionado = (Vehiculo) ciudad.encontrarEntidad(claseVehiculo, indice);
-
+        
+        // Verificar si el vehículo es nulo
+        if (vehiculoSeleccionado == null) {
+            dialogo.dispose(); // Cerrar el diálogo si no se encontró un vehículo
+            return; // Salir del método
+        }
+    
+        // Se selecciona la ubicación de destino
         Ubicacion ubicacionDestino = utilidadesMenu.seleccionarUbicacion();
         
+        // Verificar si la ubicación es nula
+        if (ubicacionDestino == null) {
+            dialogo.dispose(); // Cerrar el diálogo si no se seleccionó una ubicación válida
+            return; // Salir del método
+        }
+    
+        // Si todos los valores son válidos, se procede con el traslado del vehículo
         Trabajador trabajadorAccedido = (Trabajador) personaAccedida; 
         trabajadorAccedido.activarModoTraslado();
         trabajadorAccedido.setUbicacionTraslado(ubicacionDestino);
