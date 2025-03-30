@@ -24,6 +24,7 @@ abstract public class Trabajador extends Persona
     
     public void setEntidadAsignada(Entidad entidadAsignada) {
         this.entidadAsignada = entidadAsignada;
+        Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se ha asignado " + entidadAsignada.toSimpleString() + " para trabajar");
     }
     
     public boolean isTrabajando() {

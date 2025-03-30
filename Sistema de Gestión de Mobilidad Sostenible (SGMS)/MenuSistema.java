@@ -627,7 +627,7 @@ public class MenuSistema extends Menu {
             }
         }));
         
-        nombreBoton = "Asignar Vehículo";
+        nombreBoton = "Asignar Entidad";
         botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Trabajador trabajador = (Trabajador) personaAccedida;
@@ -638,17 +638,17 @@ public class MenuSistema extends Menu {
                 }
 
                 // Seleccionamos la clase de vehículo
-                Class<?> claseVehiculo = utilidadesMenu.seleccionarClase("vehiculo");
+                Class<?> claseEntidad = utilidadesMenu.seleccionarClase("entidad");
 
-                if (claseVehiculo == null) {
+                if (claseEntidad == null) {
                     // Mostrar mensaje de error si no se seleccionó ninguna clase de vehículo
-                    JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna clase de vehículo.",
+                    JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna clase de entidad.",
                                                   "Error de selección", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 // Intentar encontrar una entidad con fallo mecánico de la clase seleccionada
-                Entidad entidadPorAsignar = ciudad.encontrarEntidadConFalloMecanico(claseVehiculo);
+                Entidad entidadPorAsignar = ciudad.encontrarEntidadConFalloMecanico(claseEntidad);
 
                 if (entidadPorAsignar == null) {
                     // Mostrar mensaje si no se encontró ninguna entidad con fallo mecánico
@@ -656,8 +656,8 @@ public class MenuSistema extends Menu {
                                                   "Fallo Mecánico No Encontrado", JOptionPane.WARNING_MESSAGE);
                 } else {
                     // Intentar asignar el vehículo al trabajador
-                    trabajador.intentarAsignarEntidad(ciudad, entidadPorAsignar);
-                    JOptionPane.showMessageDialog(null, "Vehículo asignado correctamente.",
+                    trabajador.setEntidadAsignada(entidadPorAsignar);
+                    JOptionPane.showMessageDialog(null, "Entidad asignada correctamente.",
                                                   "Asignación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 }
             }

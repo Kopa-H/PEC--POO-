@@ -124,6 +124,7 @@ public class MenuIniciarSesion extends Menu {
         // Definir roles directamente en el HashMap
         botones.put("Administrador", new Boton("Administrador", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                Impresora.printVerde("\nInicio de sesión en el sistema como ADMINISTRADOR");
                 iniciarMenuSistema(TipoUsuario.ADMINISTRADOR, null);
             }
         }));
@@ -133,7 +134,7 @@ public class MenuIniciarSesion extends Menu {
                 Persona personaIdentificada = identificarse(Usuario.class);
                 
                 if (personaIdentificada != null) {
-                    System.out.println("Usuario identificado como [" + personaIdentificada.toString() + "]");
+                    Impresora.printVerde("\nInicio de sesión de [" + personaIdentificada.toString() + "] en el sistema");
                     iniciarMenuSistema(TipoUsuario.USUARIO_NORMAL, personaIdentificada);
                 }
             }
@@ -143,7 +144,7 @@ public class MenuIniciarSesion extends Menu {
                 Persona personaIdentificada = identificarse(Usuario.class);
                 
                 if (personaIdentificada != null) {
-                    System.out.println("Usuario identificado como [" + personaIdentificada.toString() + "]");
+                    Impresora.printVerde("\nInicio de sesión de [" + personaIdentificada.toString() + "] en el sistema");
                     iniciarMenuSistema(TipoUsuario.USUARIO_PREMIUM, personaIdentificada);
                 }
             }
@@ -153,7 +154,7 @@ public class MenuIniciarSesion extends Menu {
               Persona personaIdentificada = identificarse(TecnicoMantenimiento.class);
                 
                 if (personaIdentificada != null) {
-                    System.out.println("Usuario identificado como [" + personaIdentificada.toString() + "]");
+                    Impresora.printVerde("\nInicio de sesión de [" + personaIdentificada.toString() + "] en el sistema");
                     iniciarMenuSistema(TipoUsuario.TECNICO_MANTENIMIENTO, personaIdentificada);
                 }
             }
@@ -163,7 +164,7 @@ public class MenuIniciarSesion extends Menu {
                Persona personaIdentificada = identificarse(Mecanico.class);
                 
                 if (personaIdentificada != null) {
-                    System.out.println("Usuario identificado como [" + personaIdentificada.toString() + "]");
+                    Impresora.printVerde("\nInicio de sesión de [" + personaIdentificada.toString() + "] en el sistema");
                     iniciarMenuSistema(TipoUsuario.MECANICO, personaIdentificada);
                 }
             }

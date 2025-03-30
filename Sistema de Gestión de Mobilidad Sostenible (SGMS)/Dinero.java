@@ -28,6 +28,7 @@ public class Dinero {
                 int edadUsuarioEnDias = tiempo.pasarCiclosToDias(usuario.edad);
                 
                 if (edadUsuarioEnDias % tiempo.diasEntrePagos == 0) {
+                    Impresora.printVerde("\nHa llegado el día de cobro para " + usuario.toSimpleString() + ". Procediendo a realizar el cobro...");
                     cobrarTasasUsuarios(usuario);
                 }
             }

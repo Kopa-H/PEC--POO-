@@ -245,11 +245,14 @@ public class InterfazSimulacion extends JFrame {
         
         // Separar las entidades de tipo Base de las demás
         ArrayList<Entidad> entidadesBase = new ArrayList<>();
+        ArrayList<Entidad> entidadesPersona = new ArrayList<>();
         ArrayList<Entidad> otrasEntidades = new ArrayList<>();
         
         for (Entidad entidad : ciudad.getEntidades()) {
             if (entidad instanceof Base) {
                 entidadesBase.add(entidad);  // Añadir las entidades Base a una lista separada
+            } else if (entidad instanceof Persona) {
+                entidadesPersona.add(entidad);
             } else {
                 otrasEntidades.add(entidad);  // Añadir el resto a otra lista
             }
@@ -257,6 +260,12 @@ public class InterfazSimulacion extends JFrame {
     
         // Mostrar las entidades Base primero
         for (Entidad entidad : entidadesBase) {
+            if (entidad.getUbicacion().getPosX() == row && entidad.getUbicacion().getPosY() == col) {
+                panelTextoInfo.setText(panelTextoInfo.getText() + entidad.toString() + "\n\n");
+            }
+        }
+        
+        for (Entidad entidad : entidadesPersona) {
             if (entidad.getUbicacion().getPosX() == row && entidad.getUbicacion().getPosY() == col) {
                 panelTextoInfo.setText(panelTextoInfo.getText() + entidad.toString() + "\n\n");
             }
