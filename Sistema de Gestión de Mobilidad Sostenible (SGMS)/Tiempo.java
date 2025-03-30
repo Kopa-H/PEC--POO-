@@ -114,6 +114,14 @@ public class Tiempo {
         }
     }
     
+    // Método para formatear el tiempo y la fecha como cadena
+    public String formatearTiempo() {
+        return String.format(
+            "Hora (%02dh:%02dm:%02ds) - Fecha (%02d/%02d/%04d)",
+            this.hora, this.minuto, this.segundo, this.dia, this.mes, this.año
+        );
+    }
+    
     public void transcurrirSegundo(Ciudad ciudad, Dinero dinero) {
         segundo++;
         
@@ -127,7 +135,7 @@ public class Tiempo {
                 
                 // Si son las ocho de la mañana
                 if (hora == 8) {
-                    Impresora.printRojo("\nEL DÍA AMANECE SOLEADO");
+                    Impresora.printRojo("\nEL DÍA AMANECE SOLEADO [" + formatearTiempo() + "]");
                 } else if (hora == 21) {
                     Impresora.printRojo("\nLA NOCHE ESTÁ TRANQUILA");
                 }

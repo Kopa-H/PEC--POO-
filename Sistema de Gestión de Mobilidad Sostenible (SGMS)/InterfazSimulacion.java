@@ -322,10 +322,7 @@ public class InterfazSimulacion extends JFrame {
 
     public void actualizarTiempoLabel(Tiempo tiempo) {
         // Formatear el tiempo en una cadena
-        String tiempoFormateado = String.format(
-            "Hora (%02dh:%02dm:%02ds) - Fecha (%02d/%02d/%04d)",
-            tiempo.hora, tiempo.minuto, tiempo.segundo, tiempo.dia, tiempo.mes, tiempo.año
-        );    
+        String tiempoFormateado = tiempo.formatearTiempo();
         // Actualizar el texto del label con la cadena formateada
         tiempoLabel.setText("[ " + tiempoFormateado + " ]");
     }
