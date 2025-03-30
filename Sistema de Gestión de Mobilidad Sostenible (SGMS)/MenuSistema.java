@@ -74,21 +74,8 @@ public class MenuSistema extends Menu {
                 break;
 
             case TipoUsuario.TECNICO_MANTENIMIENTO:
-                agregarOpcionesComunesTrabajadores();
-                botones.put("Trasladar Vehículo", new Boton("TRASLADAR VEHÍCULO", new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        iniciarMenuTrasladoVehiculo();
-                    }
-                }));
-                break;
-
             case TipoUsuario.MECANICO:
                 agregarOpcionesComunesTrabajadores();
-                botones.put("Generar Última Factura", new Boton("GENERAR ÚLTIMA FACTURA", new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        JOptionPane.showMessageDialog(frame, "Generar última factura seleccionada");
-                    }
-                }));
                 break;
         }
     }
@@ -684,6 +671,20 @@ public class MenuSistema extends Menu {
                     JOptionPane.showMessageDialog(null, "Entidad asignada correctamente.",
                                                   "Asignación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 }
+            }
+        }));
+        
+        nombreBoton = "Generar Última Factura";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Generar última factura seleccionada");
+            }
+        }));
+        
+        nombreBoton = "Trasladar Vehículo";
+        botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                iniciarMenuTrasladoVehiculo();
             }
         }));
     }
