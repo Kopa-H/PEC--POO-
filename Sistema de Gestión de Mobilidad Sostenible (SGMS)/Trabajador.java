@@ -47,7 +47,12 @@ abstract public class Trabajador extends Persona
     
     public void setEntidadAsignada(Entidad entidadAsignada) {
         this.entidadAsignada = entidadAsignada;
-        Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se ha asignado " + entidadAsignada.toSimpleString() + " para trabajar");
+        
+        if (isModoTraslado) {
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se ha asignado " + entidadAsignada.toSimpleString() + " para trasladar");
+        } else {
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se ha asignado " + entidadAsignada.toSimpleString() + " para trabajar");
+        }
     }
     
     public boolean isTrabajando() {
@@ -86,6 +91,13 @@ abstract public class Trabajador extends Persona
                     planearTrayecto(entidadAsignada.getUbicacion(), entidadAsignada);
                     return;
                 }
+                
+                // Si el trabajador se encuentra en la localización de traslado, así como su entidad asignada, lo ha finalizado
+                if (this.isModoTraslado() && ubicacionTraslado.equals(this.getUbicacion())) {
+                    Impresora.printVerde("El trabajador " + this.toSimpleString() +  " ha finalizado su traslado de " + entidadAsignada.toSimpleString() + " hacia " + ubicacionTraslado);
+                    this.terminarTrabajo();
+                }
+                
                 
                 // Si el tanto el trabajador como la entidad están en una base, y están en la misma ubicación, A TRABAJAR!
                 if (ciudad.posicionOcupadaPor(this.getUbicacion(), Base.class)) {
@@ -126,12 +138,12 @@ abstract public class Trabajador extends Persona
     
     public void arrastrarVehiculo(Ciudad ciudad, Persona personaQueArrastra, Vehiculo vehiculoArrastrado, Ubicacion ubicacionDestino, Entidad entidadDestino) {
         
-        Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoArrastrado.toSimpleString() + " a la base más cercana para trabajar");
-        
         if (entidadDestino != null) {
             planearTrayecto(entidadDestino.getUbicacion(), entidadDestino);
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoArrastrado.toSimpleString() + " hacia " + entidadDestino.toSimpleString());
         } else {
             planearTrayecto(ubicacionDestino, null);
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoArrastrado.toSimpleString() + " hacia " + ubicacionDestino.toString());
         }
         
         // El vehículo sigue a la persona
@@ -147,6 +159,7 @@ abstract public class Trabajador extends Persona
         
         if (isModoTraslado()) {
             desactivarModoTraslado();
+            setUbicacionTraslado(null);
             Impresora.printColorClase(this.getClass(), "\n" + "El trabajador " + this.toSimpleString() + " desactiva su modo traslado");
         }
     }
