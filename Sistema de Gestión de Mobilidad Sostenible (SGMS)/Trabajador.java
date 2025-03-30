@@ -10,12 +10,35 @@ abstract public class Trabajador extends Persona
     // Almacena el vehículo que el trabajador tiene asignado
     Entidad entidadAsignada = null;
     
+    private boolean isModoTraslado = false;
+    private Ubicacion ubicacionTraslado;
+    
     /**
      * Constructor for objects of class Trabajador
      */
     public Trabajador(int posX, int posY)
     {
         super(posX, posY);
+    }
+    
+    public void setUbicacionTraslado(Ubicacion ubi) {
+        ubicacionTraslado = ubi;
+    }
+    
+    public Ubicacion getUbicacionTraslado() {
+        return ubicacionTraslado;
+    }
+    
+    public void activarModoTraslado() {
+        isModoTraslado = true;
+    }
+    
+    public void desactivarModoTraslado() {
+        isModoTraslado = false;
+    }
+
+    public boolean isModoTraslado() {
+        return isModoTraslado;
     }
     
     public Entidad getEntidadAsignada() {
@@ -70,30 +93,50 @@ abstract public class Trabajador extends Persona
                 
                 } else if (ciudad.posicionOcupadaPor(entidadAsignada.getUbicacion(), Vehiculo.class)) {
                     // Si se ha llegado al vehículo, pero NO está en una base, se lleva a la base más cercana
+                    // o se lleva a la posición escogida por el usuario desde el menú si el trabajador está en modo traslado
                     
                     // Dado que la entidad es un vehículo, se hace el cast
                     Vehiculo vehiculoAsignado = (Vehiculo) entidadAsignada;
                     
-                    // La persona planea un trayecto hacia la base más cercana
-                    Base baseCercana = (Base) ciudad.encontrarEntidadUsableMasCercana(this, Base.class);
-                    
-                    // Si no hay ningun base disponible, modifica su trabajo para reparar bases
-                    if (baseCercana == null) {
-                        terminarTrabajo();
-                        Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha abandonado su trabajo con la intención de reparar bases con urgencia");
-                        intentarAsignarEntidad(ciudad, ciudad.encontrarEntidadConFalloMecanico(Base.class));
-                        
+                    if (this.isModoTraslado()) {
+                        arrastrarVehiculo(ciudad, this, vehiculoAsignado, this.getUbicacionTraslado(), null);
                     } else {
-                        Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoAsignado.toSimpleString() + " a la base más cercana para trabajar");
-                        planearTrayecto(baseCercana.getUbicacion(), baseCercana);
-                        
-                        // El vehículo sigue a la persona
-                        vehiculoAsignado.empezarSeguimiento(ciudad, this);
+                        trasladarVehiculoToBase(ciudad, vehiculoAsignado);
                     }
-                    
                 }
             }
         }
+    }
+    
+    public void trasladarVehiculoToBase(Ciudad ciudad, Vehiculo vehiculoAsignado) {
+        // La persona planea un trayecto hacia la base más cercana
+        Base baseCercana = (Base) ciudad.encontrarEntidadUsableMasCercana(this, Base.class);
+        
+        // Si no hay ningun base disponible, modifica su trabajo para reparar bases
+        if (baseCercana == null) {
+            terminarTrabajo();
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha abandonado su trabajo con la intención de reparar bases con urgencia");
+            intentarAsignarEntidad(ciudad, ciudad.encontrarEntidadConFalloMecanico(Base.class));
+        } else {
+            // Si existen bases disponibles a las que llevar el vehículo
+            
+            arrastrarVehiculo(ciudad, this, vehiculoAsignado, baseCercana.getUbicacion(), baseCercana);
+        }
+    }
+    
+    public void arrastrarVehiculo(Ciudad ciudad, Persona personaQueArrastra, Vehiculo vehiculoArrastrado, Ubicacion ubicacionDestino, Entidad entidadDestino) {
+        
+        Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoArrastrado.toSimpleString() + " a la base más cercana para trabajar");
+        
+        if (entidadDestino != null) {
+            planearTrayecto(entidadDestino.getUbicacion(), entidadDestino);
+        } else {
+            planearTrayecto(ubicacionDestino, null);
+        }
+        
+        // El vehículo sigue a la persona
+        vehiculoArrastrado.empezarSeguimiento(ciudad, this);
+
     }
     
     abstract public void trabajar();
@@ -101,6 +144,11 @@ abstract public class Trabajador extends Persona
     public void terminarTrabajo() {
         Impresora.printColorClase(this.getClass(), "\n" + "El trabajador " + this.toSimpleString() + " ha terminado su trabajo con " + entidadAsignada.toSimpleString());
         entidadAsignada = null;
+        
+        if (isModoTraslado()) {
+            desactivarModoTraslado();
+            Impresora.printColorClase(this.getClass(), "\n" + "El trabajador " + this.toSimpleString() + " desactiva su modo traslado");
+        }
     }
     
     abstract public boolean intentarAsignarEntidad(Ciudad ciudad, Entidad entidad);

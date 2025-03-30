@@ -77,7 +77,7 @@ public class MenuSistema extends Menu {
                 agregarOpcionesComunesTrabajadores();
                 botones.put("Trasladar Vehículo", new Boton("TRASLADAR VEHÍCULO", new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        JOptionPane.showMessageDialog(frame, "Trasladar vehículo seleccionada");
+                        iniciarMenuTrasladoVehiculo();
                     }
                 }));
                 break;
@@ -92,7 +92,7 @@ public class MenuSistema extends Menu {
                 break;
         }
     }
-
+    
     private void agregarOpcionesAdministrador() {
         // Botones existentes
         botones.put("Abrir Gestor de Entidades", new Boton("ABRIR GESTOR DE ENTIDADES", new ActionListener() {
@@ -151,10 +151,35 @@ public class MenuSistema extends Menu {
             }
         }));
     }
+    
+    public void iniciarMenuTrasladoVehiculo() {
+        Menu menu = new Menu();
+        menu.nombre = "Menú de traslado de vehículo";
+        
+        JDialog dialogo = menu.crearNuevoDialogo();
+        JPanel panel = menu.crearPanel();
+    
+        // Se selecciona el tipo de vehículo
+        Class<?> claseVehiculo = utilidadesMenu.seleccionarClase("vehiculo");
+        
+        // Se selecciona su índice
+        int indice = utilidadesMenu.seleccionarIndice();
+        
+        Vehiculo vehiculoSeleccionado = (Vehiculo) ciudad.encontrarEntidad(claseVehiculo, indice);
+
+        Ubicacion ubicacionDestino = utilidadesMenu.seleccionarUbicacion();
+        
+        Trabajador trabajadorAccedido = (Trabajador) personaAccedida; 
+        trabajadorAccedido.activarModoTraslado();
+        trabajadorAccedido.setUbicacionTraslado(ubicacionDestino);
+        trabajadorAccedido.setEntidadAsignada(vehiculoSeleccionado);
+    }
+    
 
     public void visualizarEstadoPromociones() {
         Menu menu = new Menu();
         menu.nombre = "Estado Promociones";
+        frame.setTitle(menu.nombre);
         JFrame frame = menu.crearNuevaVentana();
     
         // Crear el panel para el submenú
@@ -579,7 +604,6 @@ public class MenuSistema extends Menu {
         }));
     }
 
-
     private void agregarOpcionesComunesTrabajadores() {
         String nombreBoton;
     
@@ -660,17 +684,6 @@ public class MenuSistema extends Menu {
                     JOptionPane.showMessageDialog(null, "Entidad asignada correctamente.",
                                                   "Asignación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 }
-            }
-        }));
-        
-        botones.put("Trabajar", new Boton("TRABAJAR", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Iniciando trabajo");
-            }
-        }));
-        botones.put("Definir Periodo Inactividad del Vehículo", new Boton("DEFINIR PERIODO INACTIVIDAD DEL VEHÍCULO", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Definiendo periodo de inactividad del vehículo");
             }
         }));
     }

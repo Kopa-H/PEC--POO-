@@ -156,6 +156,81 @@ public class UtilidadesMenu extends Menu
         return indiceSeleccionado[0]; // Devolver el índice seleccionado
     }
     
+    public Ubicacion seleccionarUbicacion() {
+        final Ubicacion[] ubicacionSeleccionada = {null}; // Inicializamos la ubicación seleccionada como null
+    
+        // Crear el diálogo
+        Menu menu = new Menu();
+        menu.nombre = "Seleccionar Ubicación";
+        JDialog dialogo = menu.crearNuevoDialogo();
+    
+        // Crear el panel para el submenú
+        JPanel panel = menu.crearPanel();
+    
+        // Etiquetas y campos de texto para las coordenadas X e Y
+        JLabel etiquetaX = new JLabel("Introduce la posición X:");
+        JTextField campoX = new JTextField(10);
+        
+        JLabel etiquetaY = new JLabel("Introduce la posición Y:");
+        JTextField campoY = new JTextField(10);
+    
+        // Añadir las etiquetas y campos al panel
+        panel.add(etiquetaX, BorderLayout.NORTH);
+        panel.add(campoX, BorderLayout.CENTER);
+        panel.add(etiquetaY, BorderLayout.SOUTH);
+        panel.add(campoY, BorderLayout.AFTER_LAST_LINE);
+    
+        // Botón para aceptar la ubicación
+        JButton botonAceptar = new JButton("Aceptar");
+        botonAceptar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int x = Integer.parseInt(campoX.getText());
+                    int y = Integer.parseInt(campoY.getText());
+    
+                    // Validar que las coordenadas estén dentro de los límites de Ciudad.ROWS y Ciudad.COLUMNS
+                    if (x >= 0 && x < Ciudad.ROWS && y >= 0 && y < Ciudad.COLUMNS) {
+                        // Asignar la ubicación seleccionada si las entradas son válidas
+                        ubicacionSeleccionada[0] = new Ubicacion(x, y);
+                    } else {
+                        // Mostrar mensaje de error si está fuera de los límites
+                        JOptionPane.showMessageDialog(dialogo, "La ubicación no está dentro de los límites de la ciudad.\n" +
+                                "Filas válidas (X): 0 a " + (Ciudad.ROWS - 1) + "\n" +
+                                "Columnas válidas (Y): 0 a " + (Ciudad.COLUMNS - 1),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(dialogo, "Por favor, introduce números válidos para X e Y.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                dialogo.dispose(); // Cerrar el diálogo tras la selección (independientemente de la validez)
+            }
+        });
+    
+        // Botón para cancelar
+        JButton botonCancelar = new JButton("Cancelar");
+        botonCancelar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dialogo.dispose(); // Cerrar el diálogo sin selección
+            }
+        });
+    
+        // Agregar los botones al panel
+        JPanel botonesPanel = new JPanel();
+        botonesPanel.add(botonAceptar);
+        botonesPanel.add(botonCancelar);
+        panel.add(botonesPanel, BorderLayout.SOUTH);
+    
+        // Añadir el panel al JFrame
+        dialogo.add(panel);
+    
+        // Mostrar el diálogo
+        dialogo.pack();
+        dialogo.setVisible(true);
+    
+        // Devolver la ubicación seleccionada (puede ser null si se canceló la selección o es inválida)
+        return ubicacionSeleccionada[0];
+    }
+    
     public enum TipoInfoMostrada {
         VEHICULOS, BATERIAS, ESTADO_MECANICO, BASES
     }
