@@ -226,10 +226,12 @@ public class Ciudad {
                         continue;
                     }
     
-                    // También debería añadir la lógica para descartar bicis o patinetes si no hay batería suficiente para alcanzar una base
+                    // Si el vehículo está reservado y la entidad que busca NO es la que hizo la reserva, se descarta
+                    if (vehiculo.isReservado && entidadBuscando != vehiculo.usuarioReserva) {
+                        continue;
+                    }
                 }
                 
-    
                 // Calculamos la distancia Manhattan entre la ubicación actual y la entidad
                 int distancia = Math.abs(entidad.getUbicacion().getPosX() - entidadBuscando.getUbicacion().getPosX()) 
                               + Math.abs(entidad.getUbicacion().getPosY() - entidadBuscando.getUbicacion().getPosY());

@@ -190,12 +190,6 @@ public abstract class EntidadMovil extends Entidad {
         this.enTrayecto = true;
         this.entidadDestino = entidadDestino;
         
-        // Si se trata de un usuario, significa que ha comenzado un alquiler
-        if (this instanceof Usuario usuario) {
-            usuario.tiempoInicioAlquiler = new Tiempo(ciudad.tiempo);
-            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha comenzado un nuevo alquiler");
-        }
-        
         if (entidadDestino != null) {
             Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha comenzado un trayecto hacia " + entidadDestino.toSimpleString() + " en " + ubiDestino.toString());
         } else {
@@ -340,16 +334,22 @@ public abstract class EntidadMovil extends Entidad {
         // El objeto se mueve al final de la lista de entidades para que se muestre siempre una posición detrás de la entidad seguida
         ciudad.moverEntidadAlPrincipio(this);
         
+        // Si se trata de un usuario, significa que ha comenzado un alquiler
+        if (this instanceof Usuario usuario) {
+            usuario.tiempoInicioAlquiler = new Tiempo(ciudad.tiempo);
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha comenzado un nuevo alquiler");
+        }
+        
         Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha comenzado a seguir a " + entidadSeguida.toSimpleString());
     }
     
-    public void abandonarSeguimiento() {
+    public void abandonarSeguimiento(Ciudad ciudad) {
         Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha dejado de seguir a " + entidadSeguida.toSimpleString());
         
         // Si es un usuario, significa que ha terminado el alquiler en curso
-        if (this instanceof Usuario) {
+        if (this instanceof Usuario usuario && entidadSeguida instanceof Vehiculo vehiculo) {
+            usuario.generarInfoAlquiler(ciudad, vehiculo);
             Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha terminado su alquiler en curso");
-            
         }
         
         entidadSeguida = null;
@@ -368,24 +368,24 @@ public abstract class EntidadMovil extends Entidad {
         } else {
             // Si la entidad está siguiendo a una entidad que ha terminado su trayecto, se deja de seguir
             if (entidadSeguida != null && !entidadSeguida.enTrayecto) {
-                abandonarSeguimiento();
+                abandonarSeguimiento(ciudad);
             }
             
             // Si la entidad está siguiendo a otra, se sigue
             if (siguiendoEntidad && entidadSeguida != null) {
-                seguirEntidadMovil();
+                seguirEntidadMovil(ciudad);
             }
         }
     }
     
-    public void seguirEntidadMovil() {       
+    public void seguirEntidadMovil(Ciudad ciudad) {       
         if (this instanceof Usuario usuario && entidadSeguida.tieneFalloMecanico() && !entidadSeguida.tieneAlertaFalloMecanico()) {
             usuario.alertarFalloMecanico(entidadSeguida);
         }
         
         // Si la entidad seguida es un vehículo y está en mal estado, se deja de seguir
         if (isVehiculoMalEstado()) {
-            this.abandonarSeguimiento();
+            this.abandonarSeguimiento(ciudad);
             return;
         }
 

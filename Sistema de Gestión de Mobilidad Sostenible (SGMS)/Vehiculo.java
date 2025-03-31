@@ -14,7 +14,12 @@ abstract public class Vehiculo extends EntidadMovil {
     
     // Contiene el valor de distancia que puede recorrer el vehículo (indicador de la batería)
     private int autonomiaBateria;
-        
+    
+    public static final int DURACION_MAXIMA_RESERVA = 3; // en horas 
+    public Tiempo tiempoInicioReserva;
+    public boolean isReservado;
+    public Usuario usuarioReserva;    
+    
     public static enum TipoVehiculo {
         MOTO, BICI, PATINETE;
     }
@@ -26,8 +31,41 @@ abstract public class Vehiculo extends EntidadMovil {
         // initialise instance variables
         super(posX, posY);
         
+        isReservado = false;
+        usuarioReserva = null;
+        
         this.DISTANCIA_MAX_BATERIA = distanciaMaxBateria;
         autonomiaBateria = distanciaMaxBateria;
+    }
+    
+    private void cancelarReserva() {
+        Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha cancelado su reserva realizada por " + usuarioReserva.toSimpleString());
+        isReservado = false;
+        usuarioReserva = null;
+    }
+    
+    public void actuar(Ciudad ciudad) {
+        super.actuar(ciudad);
+        
+        // En caso de que esté reservado, se comprueba si la reserva ha alcanzado el tiempo máximo
+        if (isReservado) {
+            
+            // se verifica que no haya transcurrido ningún día ni mes ni año
+            if (ciudad.tiempo.dia != tiempoInicioReserva.dia ||
+                ciudad.tiempo.mes != tiempoInicioReserva.mes ||
+                ciudad.tiempo.año != tiempoInicioReserva.año) 
+            {  
+                Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha sobrepasado el tiempo máximo de reserva");
+                cancelarReserva();
+                return;
+            }
+            
+            if (ciudad.tiempo.hora - tiempoInicioReserva.hora > DURACION_MAXIMA_RESERVA) {
+                Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha sobrepasado el tiempo máximo de reserva");
+                cancelarReserva();
+                return;
+            }
+        }
     }
     
     public static int obtenerTotalTiposVehiculo() {
