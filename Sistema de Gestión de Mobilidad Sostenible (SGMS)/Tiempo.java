@@ -231,6 +231,13 @@ public class Tiempo implements Serializable {
         );
     }
     
+    public String formatearHora() {
+        return String.format(
+            "%02dh:%02dm:%02ds",
+            this.hora, this.minuto, this.segundo
+        );
+    }
+    
     public void transcurrirSegundo(Ciudad ciudad, Dinero dinero) {
         segundo++;
         
