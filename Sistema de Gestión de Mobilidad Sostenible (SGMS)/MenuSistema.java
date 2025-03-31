@@ -130,7 +130,6 @@ public class MenuSistema extends Menu {
     
         JFrame frame = menu.crearNuevaVentana();
         JPanel panel = menu.crearPanel();
-
  
         ArrayList<Usuario> usuarios = new ArrayList<>();
         ArrayList<Trabajador> trabajadores = new ArrayList<>();
@@ -153,16 +152,12 @@ public class MenuSistema extends Menu {
         panel.add(generarEstadisticasTrabajadores(trabajores));
         
         panel.add(generarEstadisticasVehiculos(vehiculos));
-         
-
-        
-        
         
         frame.add(agregarScroll(panel));
         frame.setVisible(true);
     }
     
-    private JPanel generarEstadisticasGenerales() {
+    private JPanel generarEstadisticasGenerales() {        
         TOTAL FACTURADO TRABAJADORES
         TOTAL PAGADO USUARIOS
         BENEFICIOS = DINERO TOTAL PAGADO USUARIOS - DINERO TOTAL FACTURADO TRABAJADORES
@@ -171,16 +166,50 @@ public class MenuSistema extends Menu {
     }
     
     private JPanel generarEstadisticasUsuarios(ArrayList<Usuario> usuarios) {
-        NUMERO DE USUARIOS NORMALES
-        NUMERO DE USUARIOS PREMIUM
-        TOTAL DINERO PAGADO POR TASAS
-        
+        // Inicializamos las variables para estadísticas
+        int usuariosNormales = 0;
+        int usuariosPremium = 0;
+        double totalPagadoTasas = 0;
+    
+        // Calculamos las estadísticas a partir de la lista de usuarios
+        for (Usuario usuario : usuarios) {
+            if (usuario.isPremium()) {
+                usuariosPremium++;
+            } else {
+                usuariosNormales++;
+            }
+            totalPagadoTasas += usuario.getTotalPagadoTasas();
+        }
+    
+        // Creamos el panel donde mostraremos las estadísticas
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Layout para organizar los elementos en vertical
+    
+        // Creamos etiquetas para mostrar cada estadística
+        JLabel labelUsuariosNormales = new JLabel("Usuarios Normales: " + usuariosNormales);
+        JLabel labelUsuariosPremium = new JLabel("Usuarios Premium: " + usuariosPremium);
+        JLabel labelTotalPagadoTasas = new JLabel("Total Pagado en Tasas: " + totalPagadoTasas);
+    
+        // Añadimos las etiquetas al panel
+        panel.add(labelUsuariosNormales);
+        panel.add(labelUsuariosPremium);
+        panel.add(labelTotalPagadoTasas);
+    
+        // Devolvemos el panel listo para ser agregado al panel general
         return panel;
     }
+
     
     private JPanel generarEstadisticasTrabajadores(ArrayList<Trabajador> trabajadores) {
-        NUMERO DE TRABAJOS COMPLETADOS
-        DINERO TOTAL GANADO
+        int trabajadores = trabajadores.size();
+        int trabajosCompletados = 0;
+        int totalFacturado = 0;
+        
+        // Calculamos las estadísticas a partir de la lista
+        for (Trabajador trabajador : trabajadores) {
+            trabajosCompletados += trabajador.trabajosCompletados;
+            totalFacturado += trabajador.totalFacturado;
+        }
         
         return panel;
     }

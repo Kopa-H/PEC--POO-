@@ -15,6 +15,8 @@ public class Usuario extends Persona {
 
     // instance variables - replace the example below with your own
     private double saldo;
+    public double totalPagadoTasas;
+    
     public boolean isPremium;
     
     // Variables que registran el tiempo de cada alquiler
@@ -30,6 +32,7 @@ public class Usuario extends Persona {
         setColor(colorClase);
         // Se añade entre 50 y 200 €
         saldo = 50 + Math.random() * (150);
+        totalPagadoTasas = 0;
         isPremium = false;
         
         registroInfoAlquileres = new ArrayList<>();

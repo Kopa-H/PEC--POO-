@@ -62,6 +62,7 @@ public class Dinero {
         } else {
             // Si tiene suficiente saldo, paga las tasas
             usuario.setSaldo(usuario.getSaldo() - precioTasasEnEuros);
+            usuario.totalPagadoTasas += precioTasasEnEuros;
             Impresora.printVerde("\nEl usuario " + usuario.toSimpleString() + " ha pagado las tasas de " + precioTasasEnEuros + "€.");
         }
     }
