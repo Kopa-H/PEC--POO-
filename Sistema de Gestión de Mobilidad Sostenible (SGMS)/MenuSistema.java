@@ -132,15 +132,27 @@ public class MenuSistema extends Menu {
         JPanel panel = menu.crearPanel();
 
  
-        
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+        ArrayList<Trabajador> trabajadores = new ArrayList<>();
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+
+        for (Entidad entidad : ciudad.entidades) {
+            if (entidad instanceof Usuario) {
+                usuarios.add(entidad);
+            } else if (entidad instanceof Trabajador) {
+                trabajores.add(entidad);
+            } else if (entidad instanceof Vehiculos) {
+                vehiculos.add(entidad);
+            }
+        }
            
         panel.add(generarEstadisticasGenerales());
         
-        panel.add(generarEstadisticasUsuarios());
+        panel.add(generarEstadisticasUsuarios(usuarios));
         
-        panel.add(generarEstadisticasTrabajadores());
+        panel.add(generarEstadisticasTrabajadores(trabajores));
         
-        panel.add(generarEstadisticasVehiculos());
+        panel.add(generarEstadisticasVehiculos(vehiculos));
          
 
         
@@ -158,7 +170,7 @@ public class MenuSistema extends Menu {
         return panel;
     }
     
-    private JPanel generarEstadisticasUsuarios() {
+    private JPanel generarEstadisticasUsuarios(ArrayList<Usuario> usuarios) {
         NUMERO DE USUARIOS NORMALES
         NUMERO DE USUARIOS PREMIUM
         TOTAL DINERO PAGADO POR TASAS
@@ -166,14 +178,14 @@ public class MenuSistema extends Menu {
         return panel;
     }
     
-    private JPanel generarEstadisticasTrabajadores() {
+    private JPanel generarEstadisticasTrabajadores(ArrayList<Trabajador> trabajadores) {
         NUMERO DE TRABAJOS COMPLETADOS
         DINERO TOTAL GANADO
         
         return panel;
     }
 
-    private JPanel generarEstadisticasVehiculos() {
+    private JPanel generarEstadisticasVehiculos(ArrayList<Vehiculo> vehiculos) {
         MOTOS USADAS
         BICILETAS USADAS
         PATINETES USADOS
