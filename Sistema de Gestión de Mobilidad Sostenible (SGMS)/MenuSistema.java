@@ -188,6 +188,26 @@ public class MenuSistema extends Menu {
         trabajadorAccedido.setEntidadAsignada(ciudad, vehiculoSeleccionado);
     }
     
+    public void mostrarFacturasTrabajador() {
+        Menu menu = new Menu();
+        menu.nombre = "Menú de traslado de vehículo";
+        
+        JDialog dialogo = menu.crearNuevoDialogo();
+        JPanel panel = menu.crearPanel();
+        
+        Trabajador trabajadorAccedido = (Trabajador) personaAccedida;
+        
+        for (InfoFactura factura : trabajadorAccedido.registroInfoFacturas) {
+            JLabel facturaLabel = new JLabel("<html>" + factura.toString().replace("\n", "<br>") + "</html>");
+            facturaLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Espaciado interno
+            panel.add(facturaLabel);
+    
+            // Espaciado entre facturas
+            panel.add(Box.createVerticalStrut(10));
+        }
+        dialogo.add(agregarScroll(panel));
+        dialogo.setVisible(true);
+    }
 
     public void visualizarEstadoPromociones() {
         Menu menu = new Menu();
@@ -700,10 +720,10 @@ public class MenuSistema extends Menu {
             }
         }));
         
-        nombreBoton = "Generar Última Factura";
+        nombreBoton = "Generar Facturas";
         botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Generar última factura seleccionada");
+                mostrarFacturasTrabajador();
             }
         }));
         
