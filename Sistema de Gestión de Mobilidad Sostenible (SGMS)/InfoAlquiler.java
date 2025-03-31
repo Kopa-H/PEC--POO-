@@ -1,27 +1,33 @@
 import java.io.Serializable;
 
 public class InfoAlquiler implements Serializable {
-    private int mes;
-    private Class<? extends Vehiculo> claseVehiculo;
+    private Usuario usuario;
     
-    InfoAlquiler(Tiempo tiempo, Vehiculo vehiculoEscogido) {
-        this.mes = tiempo.mes;
-        this.claseVehiculo = vehiculoEscogido.getClass();
+    private Vehiculo vehiculoAlquilado;
+    
+    private int mesAlquiler;
+    private Tiempo tiempoAlquiler;
+    
+    InfoAlquiler(Usuario usuario, Vehiculo vehiculoAlquilado) {
+        this.mesAlquiler = usuario.tiempoFinalAlquiler.mes;
+        this.tiempoAlquiler = Tiempo.calcularTiempoEntreTiempos(usuario.tiempoInicioAlquiler, usuario.tiempoFinalAlquiler);
+        this.vehiculoAlquilado = vehiculoAlquilado;
     }
     
-    public int getMes() {
-        return mes;
+    public int getMesAlquiler() {
+        return mesAlquiler;
     }
     
-    public Class<? extends Vehiculo> getClaseVehiculo() {
-        return claseVehiculo;
+    public Class<? extends Vehiculo> getClaseVehiculoAlquilado() {
+        return vehiculoAlquilado.getClass();
     }
 
     @Override
     public String toString() {
         return "===== ALQUILER =====\n" +
-               "Mes: " + mes + "\n" +
-               "Vehículo Alquilado: " + claseVehiculo.getSimpleName() + "\n" +
+               "Usuario: " + usuario.getNombre() + "\n" +
+               "Mes alquiler: " + mesAlquiler + "\n" +
+               "Entidad Alquilada: " + vehiculoAlquilado.toSimpleString() + "\n" +
                "=====================";
     }
 }

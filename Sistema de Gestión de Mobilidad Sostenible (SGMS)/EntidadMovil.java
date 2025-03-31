@@ -312,11 +312,6 @@ public abstract class EntidadMovil extends Entidad {
                         empezarSeguimiento(ciudad, vehiculoEscogido);
                         
                         baseDestino.vehiculosDisponibles.remove(vehiculoEscogido);
-                        
-                        // Se almacena la información del alquiler
-                        InfoAlquiler infoAlquiler = new InfoAlquiler(ciudad.tiempo, vehiculoEscogido);
-                        usuario.registroInfoAlquileres.add(infoAlquiler);
-                        
                     } else {
                         Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " no puede iniciar ningún viaje porque no existe otra base disponible a la que viajar en estos momentos.");
                     }
@@ -332,10 +327,6 @@ public abstract class EntidadMovil extends Entidad {
                 moto.planearTrayecto(ciudad, ubicacion, null);
             
                 empezarSeguimiento(ciudad, moto);
-                
-                // Se almacena la información del alquiler
-                InfoAlquiler infoAlquiler = new InfoAlquiler(ciudad.tiempo, moto);
-                usuario.registroInfoAlquileres.add(infoAlquiler);
             }
     
             entidadDestino = null;

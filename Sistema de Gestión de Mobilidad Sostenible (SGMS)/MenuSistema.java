@@ -328,18 +328,18 @@ public class MenuSistema extends Menu {
                     // Se itera sobre su registro de alquileres
                     for (InfoAlquiler infoAlquiler : usuario.registroInfoAlquileres) {
                         // Verificar si el alquiler es del último mes
-                        if (simulacion.tiempo.esUltimoMes(infoAlquiler.getMes())) {
+                        if (simulacion.tiempo.esUltimoMes(infoAlquiler.getMesAlquiler())) {
                             vehiculosUltimoMes++;
                         }
     
                         // Verificar si alquiló 10 vehículos en 3 meses consecutivos
-                        if (simulacion.tiempo.esMesReciente(infoAlquiler.getMes(), 3)) {
+                        if (simulacion.tiempo.esMesReciente(infoAlquiler.getMesAlquiler(), 3)) {
                             vehiculosTresMesesSeguidos++;
                         }
     
                         // Guardar el tipo de vehículo usado en los últimos 6 meses
-                        if (simulacion.tiempo.esUltimosSeisMeses(infoAlquiler.getMes())) {
-                            tiposVehiculosUsados.add(infoAlquiler.getClaseVehiculo());
+                        if (simulacion.tiempo.esUltimosSeisMeses(infoAlquiler.getMesAlquiler())) {
+                            tiposVehiculosUsados.add(infoAlquiler.getClaseVehiculoAlquilado());
                         }
                     }
     

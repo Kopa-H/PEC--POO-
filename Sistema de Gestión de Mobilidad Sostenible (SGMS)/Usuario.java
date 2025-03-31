@@ -38,6 +38,14 @@ public class Usuario extends Persona {
         contadorInstancias++;
     }
     
+    public void generarInfoAlquiler(Ciudad ciudad, Vehiculo vehiculoAlquilado) {
+        // Se genera la factura del trabajo realizado
+        tiempoFinalAlquiler = new Tiempo(ciudad.tiempo);
+        
+        InfoAlquiler alquiler = new InfoAlquiler(this, vehiculoAlquilado); 
+        registroInfoAlquileres.add(alquiler);
+    }
+    
     @Override
     public void actuar(Ciudad ciudad) {
         super.actuar(ciudad);
