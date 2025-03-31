@@ -43,7 +43,7 @@ public class Mecanico extends Trabajador {
         
         if (!(entidadAsignada.tieneFalloMecanico())) {
             this.generarFactura(ciudad);
-            terminarTrabajo();
+            terminarTrabajo(true);
         }
     }
 }

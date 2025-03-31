@@ -4,7 +4,7 @@ public class InfoFactura implements Serializable {
     private Entidad entidadTrabajada;
     private Trabajador trabajador;
     private Tiempo tiempoTrabajado;
-    private double price;
+    private double precio;
     
     private static final double IVA = 0.21;
     
@@ -12,7 +12,9 @@ public class InfoFactura implements Serializable {
         this.trabajador = trabajador;
         this.tiempoTrabajado = Tiempo.calcularTiempoEntreTiempos(trabajador.tiempoInicioTrabajo, trabajador.tiempoFinalTrabajo);
         this.entidadTrabajada = entidadTrabajada;
-        this.price = calcularPrecio();
+        this.precio = calcularPrecio();
+        
+        trabajador.totalFacturado += precio;
     }
     
     public double calcularPrecio() {
@@ -29,7 +31,7 @@ public class InfoFactura implements Serializable {
                "Precio Base: " + trabajador.precioBase + "€\n" +
                "Precio por Hora: " + trabajador.precioPorHora + "€\n" +
                "IVA: " + (IVA * 100) + "%\n" +
-               "Precio Total: " + price + "€\n" +
+               "Precio Total: " + precio + "€\n" +
                "===================";
     }
 }

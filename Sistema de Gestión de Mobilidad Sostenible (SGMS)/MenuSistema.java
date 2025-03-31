@@ -119,11 +119,74 @@ public class MenuSistema extends Menu {
         }));
         botones.put("Visualizar Estadísticas", new Boton("VISUALIZAR ESTADÍSTICAS", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Visualizando estadísticas");
+                visualizarEstadisticas(ciudad);
             }
         }));
     }
+    
+    public void visualizarEstadisticas(Ciudad ciudad) {
+        Menu menu = new Menu();
+        menu.nombre = "Estadísticas de la Simulación";
+    
+        JFrame frame = menu.crearNuevaVentana();
+        JPanel panel = menu.crearPanel();
 
+ 
+        
+           
+        panel.add(generarEstadisticasGenerales());
+        
+        panel.add(generarEstadisticasUsuarios());
+        
+        panel.add(generarEstadisticasTrabajadores());
+        
+        panel.add(generarEstadisticasVehiculos());
+         
+
+        
+        
+        
+        frame.add(agregarScroll(panel));
+        frame.setVisible(true);
+    }
+    
+    private JPanel generarEstadisticasGenerales() {
+        TOTAL FACTURADO TRABAJADORES
+        TOTAL PAGADO USUARIOS
+        BENEFICIOS = DINERO TOTAL PAGADO USUARIOS - DINERO TOTAL FACTURADO TRABAJADORES
+            
+        return panel;
+    }
+    
+    private JPanel generarEstadisticasUsuarios() {
+        NUMERO DE USUARIOS NORMALES
+        NUMERO DE USUARIOS PREMIUM
+        TOTAL DINERO PAGADO POR TASAS
+        
+        return panel;
+    }
+    
+    private JPanel generarEstadisticasTrabajadores() {
+        NUMERO DE TRABAJOS COMPLETADOS
+        DINERO TOTAL GANADO
+        
+        return panel;
+    }
+
+    private JPanel generarEstadisticasVehiculos() {
+        MOTOS USADAS
+        BICILETAS USADAS
+        PATINETES USADOS
+        
+        FALLOS MECANICOS PRODUCIDOS
+        RECARGAS DE BATERIA
+        NUMERO VIAJES
+        VECES ARRASTRADOS
+        DISTANCIA RECORRIDA
+
+        return panel;
+    }
+    
     public void iniciarMenuTarifas() {
         Menu menu = new Menu();
         menu.nombre = "Menú Tarifas";
@@ -831,7 +894,7 @@ public class MenuSistema extends Menu {
 
                 // Comprobar si el trabajador ya tiene una entidad asignada
                 if (trabajador.getEntidadAsignada() != null) {
-                    trabajador.terminarTrabajo();
+                    trabajador.terminarTrabajo(false);
                 }
 
                 // Seleccionamos la clase de vehículo

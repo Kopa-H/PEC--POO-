@@ -23,12 +23,18 @@ abstract public class Trabajador extends Persona
     public double precioPorHora;
     public double precioBase;
     
+    int trabajosCompletados;
+    double totalFacturado;
+    
     /**
      * Constructor for objects of class Trabajador
      */
     public Trabajador(int posX, int posY)
     {
         super(posX, posY);
+    
+        trabajosCompletados = 0;
+        totalFacturado = 0;
     
         registroInfoFacturas = new ArrayList<>();
     }
@@ -107,7 +113,7 @@ abstract public class Trabajador extends Persona
                 if (this.isModoTraslado() && ubicacionTraslado.equals(this.getUbicacion())) {
                     Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() +  " ha finalizado su traslado de " + entidadAsignada.toSimpleString() + " hacia " + ubicacionTraslado);
                     this.generarFactura(ciudad);
-                    this.terminarTrabajo();
+                    this.terminarTrabajo(true);
                     return;
                 }
                 
@@ -146,7 +152,7 @@ abstract public class Trabajador extends Persona
         
         // Si no hay ningun base disponible, modifica su trabajo para reparar bases
         if (baseCercana == null) {
-            terminarTrabajo();
+            terminarTrabajo(false);
             Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha abandonado su trabajo con la intención de reparar bases con urgencia");
             
             Base basePorReparar = (Base) ciudad.encontrarEntidadConFalloMecanico(Base.class);
@@ -185,8 +191,15 @@ abstract public class Trabajador extends Persona
     
     abstract public void trabajar(Ciudad ciudad);
     
-    public void terminarTrabajo() {        
-        Impresora.printColorClase(this.getClass(), "\n" + "El trabajador " + this.toSimpleString() + " ha terminado su trabajo con " + entidadAsignada.toSimpleString());
+    // El parámetro indica si se está llamando a esta función una vez el trabajo ha sido debidamente completado, o se termina por otras razones
+    public void terminarTrabajo(boolean trabajoCompletado) {      
+        if (trabajoCompletado) {
+            Impresora.printColorClase(this.getClass(), "\n" + "El trabajador " + this.toSimpleString() + " ha terminado su trabajo con " + entidadAsignada.toSimpleString());
+            trabajosCompletados++;
+        } else {
+            Impresora.printColorClase(this.getClass(), "\n" + "El trabajador " + this.toSimpleString() + " ha abandonado su trabajo con " + entidadAsignada.toSimpleString());
+        }
+        
         entidadAsignada = null;
         
         tiempoInicioTrabajo = null;

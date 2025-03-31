@@ -43,7 +43,7 @@ public class TecnicoMantenimiento extends Trabajador {
                 Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha cargado por completo a " + vehiculoAsignado.toSimpleString());
                 
                 this.generarFactura(ciudad);
-                terminarTrabajo();
+                terminarTrabajo(true);
             }
         // Los técnicos de mantenimiento pueden reparar bases, pero NO vehículos
         } else if (entidadAsignada instanceof Base base) {
@@ -51,7 +51,7 @@ public class TecnicoMantenimiento extends Trabajador {
         
             if (!(base.tieneFalloMecanico())) {
                 this.generarFactura(ciudad);
-                terminarTrabajo();
+                terminarTrabajo(true);
             }
         }
     }
