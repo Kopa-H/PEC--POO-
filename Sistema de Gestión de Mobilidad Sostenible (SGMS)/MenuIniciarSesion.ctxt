@@ -16,6 +16,4 @@ comment7.params=e
 comment7.target=void\ actionPerformed(java.awt.event.ActionEvent)
 comment8.params=e
 comment8.target=void\ actionPerformed(java.awt.event.ActionEvent)
-comment9.params=e
-comment9.target=void\ actionPerformed(java.awt.event.ActionEvent)
-numComments=10
+numComments=9

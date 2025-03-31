@@ -40,6 +40,7 @@ public class MenuSistema extends Menu {
 
         Menu menu = new Menu();
         menu.nombre = "Menú " + tipoUsuario.name();
+
         this.nombreMenuPrincipal = menu.nombre; 
         
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -579,10 +580,10 @@ public class MenuSistema extends Menu {
             }
         }));
         
-        nombreBoton = "Visualización Historial de Viajes";
+        nombreBoton = "Alquileres realizados";
         botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Visualizando historial de viajes");
+                mostrarAlquileresUsuario();
             }
         }));
         

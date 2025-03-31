@@ -119,7 +119,6 @@ public class MenuIniciarSesion extends Menu {
         return personaSeleccionada[0];
     }
 
-
     private void agregarBotonesMenu(LinkedHashMap<String, Boton> botones) {
         // Definir roles directamente en el HashMap
         botones.put("Administrador", new Boton("Administrador", new ActionListener() {
@@ -129,23 +128,19 @@ public class MenuIniciarSesion extends Menu {
             }
         }));
 
-        botones.put("Usuario Normal", new Boton("Usuario Normal", new ActionListener() {
+        botones.put("Usuario", new Boton("Usuario", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Persona personaIdentificada = identificarse(Usuario.class);
                 
                 if (personaIdentificada != null) {
                     Impresora.printVerde("\nInicio de sesión de [" + personaIdentificada.toString() + "] en el sistema");
-                    iniciarMenuSistema(TipoUsuario.USUARIO_NORMAL, personaIdentificada);
-                }
-            }
-        }));
-        botones.put("Usuario Premium", new Boton("Usuario Premium", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Persona personaIdentificada = identificarse(Usuario.class);
-                
-                if (personaIdentificada != null) {
-                    Impresora.printVerde("\nInicio de sesión de [" + personaIdentificada.toString() + "] en el sistema");
-                    iniciarMenuSistema(TipoUsuario.USUARIO_PREMIUM, personaIdentificada);
+                    
+                    if (((Usuario)personaIdentificada).isPremium) {
+                        iniciarMenuSistema(TipoUsuario.USUARIO_PREMIUM, personaIdentificada);
+                    } else {
+                        iniciarMenuSistema(TipoUsuario.USUARIO_NORMAL, personaIdentificada);
+                    }
+                    
                 }
             }
         }));
