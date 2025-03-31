@@ -185,7 +185,7 @@ public class MenuSistema extends Menu {
         Trabajador trabajadorAccedido = (Trabajador) personaAccedida; 
         trabajadorAccedido.activarModoTraslado();
         trabajadorAccedido.setUbicacionTraslado(ubicacionDestino);
-        trabajadorAccedido.setEntidadAsignada(vehiculoSeleccionado);
+        trabajadorAccedido.setEntidadAsignada(ciudad, vehiculoSeleccionado);
     }
     
 
@@ -693,7 +693,7 @@ public class MenuSistema extends Menu {
                                                   "Fallo Mecánico No Encontrado", JOptionPane.WARNING_MESSAGE);
                 } else {
                     // Intentar asignar el vehículo al trabajador
-                    trabajador.setEntidadAsignada(entidadPorAsignar);
+                    trabajador.setEntidadAsignada(ciudad, entidadPorAsignar);
                     JOptionPane.showMessageDialog(null, "Entidad asignada correctamente.",
                                                   "Asignación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 }

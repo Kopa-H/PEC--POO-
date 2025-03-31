@@ -29,6 +29,31 @@ public class Tiempo {
     // instance variables - replace the example below with your own
     public int diasEntrePagos = 7;
     
+    // Constructor vacío
+    public Tiempo() {
+        
+   }
+   
+    // Constructor
+    public Tiempo(int hora, int minuto, int segundo, int dia, int mes, int año) {
+        this.hora = hora;
+        this.minuto = minuto;
+        this.segundo = segundo;
+        this.dia = dia;
+        this.mes = mes;
+        this.año = año;
+    }
+    
+    // Constructor de copia
+    public Tiempo(Tiempo otro) {
+        this.hora = otro.hora;
+        this.minuto = otro.minuto;
+        this.segundo = otro.segundo;
+        this.dia = otro.dia;
+        this.mes = otro.mes;
+        this.año = otro.año;
+    }
+    
     public void setVelocidad(int velocidad) {
         this.velocidad = velocidad;
     }
@@ -38,6 +63,84 @@ public class Tiempo {
         return velocidad;
     }
     
+    /// Método para calcular la diferencia entre dos tiempos y devolver un nuevo objeto Tiempo
+    public static Tiempo calcularTiempoEntreTiempos(Tiempo inicio, Tiempo fin) {
+        // Variables de diferencia
+        int dias = fin.dia - inicio.dia;
+        int horas = fin.hora - inicio.hora;
+        int minutos = fin.minuto - inicio.minuto;
+        int segundos = fin.segundo - inicio.segundo;
+
+        // Ajustar los segundos
+        if (segundos < 0) {
+            segundos += 60;
+            minutos--;
+        }
+
+        // Ajustar los minutos
+        if (minutos < 0) {
+            minutos += 60;
+            horas--;
+        }
+
+        // Ajustar las horas
+        if (horas < 0) {
+            horas += 24;
+            dias--;
+        }
+
+        // Ajustar los días si han cambiado de mes
+        if (dias < 0) {
+            dias += diasDelMes(inicio.mes, inicio.año);
+            fin.mes--;
+            if (fin.mes < 1) {
+                fin.mes = 12;
+                fin.año--;
+            }
+        }
+
+        // Ajustar los meses si han cambiado de año
+        int meses = fin.mes - inicio.mes;
+        if (meses < 0) {
+            meses += 12;
+            fin.año--;
+        }
+
+        // Calcular la diferencia en años
+        int años = fin.año - inicio.año;
+
+        // Devolver un nuevo objeto Tiempo con la diferencia
+        return new Tiempo(horas, minutos, segundos, dias, meses, años);
+    }
+
+    // Método para obtener los días en un mes considerando años bisiestos
+    private static int diasDelMes(int mes, int año) {
+        switch (mes) {
+            case 1: // Enero
+            case 3: // Marzo
+            case 5: // Mayo
+            case 7: // Julio
+            case 8: // Agosto
+            case 10: // Octubre
+            case 12: // Diciembre
+                return 31;
+            case 4: // Abril
+            case 6: // Junio
+            case 9: // Septiembre
+            case 11: // Noviembre
+                return 30;
+            case 2: // Febrero
+                return esBisiesto(año) ? 29 : 28;
+            default:
+                return 30; // Valor por defecto (seguridad)
+        }
+    }
+
+    // Método para comprobar si un año es bisiesto
+    private static boolean esBisiesto(int año) {
+        return (año % 4 == 0 && año % 100 != 0) || (año % 400 == 0);
+    }
+
     public int pasarCiclosToDias(int ciclos) {
         return (ciclos / segundosInternosPorCiclo) / (segundosEnDia);
     }

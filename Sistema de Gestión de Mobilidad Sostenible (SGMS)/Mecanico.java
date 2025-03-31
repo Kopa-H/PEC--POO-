@@ -11,6 +11,9 @@ public class Mecanico extends Trabajador {
     private static int contadorInstancias = 0;
     public static final Color colorClase = Color.CYAN;
     
+    public static final double precioPorHora = 15;
+    public static final double precioBase = 20;
+    
     /**
      * Constructor for objects of class TrabajadorMecanico
      */
@@ -35,15 +38,12 @@ public class Mecanico extends Trabajador {
         return false;
     }
     
-    public void trabajar() {
+    public void trabajar(Ciudad ciudad) {
         entidadAsignada.restaurarEstadoMecanico();
         
         if (!(entidadAsignada.tieneFalloMecanico())) {
+            this.generarFactura(ciudad);
             terminarTrabajo();
         }
-    }
-
-    public void emitirFactura() {
-        
     }
 }

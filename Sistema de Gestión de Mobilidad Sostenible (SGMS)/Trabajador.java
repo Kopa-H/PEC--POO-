@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * Write a description of class Trabajador here.
@@ -13,12 +14,23 @@ abstract public class Trabajador extends Persona
     private boolean isModoTraslado = false;
     private Ubicacion ubicacionTraslado;
     
+    public ArrayList<InfoFactura> registroInfoFacturas;
+    
+    // Variables que registran el tiempo dedicado a cada entidad
+    public Tiempo tiempoInicioTrabajo;
+    public Tiempo tiempoFinalTrabajo;
+    
+    public double precioPorHora;
+    public double precioBase;
+    
     /**
      * Constructor for objects of class Trabajador
      */
     public Trabajador(int posX, int posY)
     {
         super(posX, posY);
+    
+        registroInfoFacturas = new ArrayList<>();
     }
     
     public void setUbicacionTraslado(Ubicacion ubi) {
@@ -45,8 +57,13 @@ abstract public class Trabajador extends Persona
         return entidadAsignada;
     }
     
-    public void setEntidadAsignada(Entidad entidadAsignada) {
+    public void setEntidadAsignada(Ciudad ciudad, Entidad entidadAsignada) {
         this.entidadAsignada = entidadAsignada;
+        
+        if (ciudad != null) {
+            // Crear una copia usando el constructor de copia
+            tiempoInicioTrabajo = new Tiempo(ciudad.tiempo);
+        }
         
         if (isModoTraslado) {
             Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se ha asignado " + entidadAsignada.toSimpleString() + " para trasladar");
@@ -78,8 +95,7 @@ abstract public class Trabajador extends Persona
             // Se itera sobre todos las entidades y se intenta asignar a su trabajador correspondiente
             for (Entidad entidad : ciudad.getEntidades()) {
                 if (intentarAsignarEntidad(ciudad, entidad)) {
-                    entidadAsignada = entidad;
-                    Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se ha asignado " + entidadAsignada.toSimpleString() + " para trabajar");
+                    setEntidadAsignada(ciudad, entidad);
                 }                   
             }
         } else {
@@ -90,6 +106,7 @@ abstract public class Trabajador extends Persona
                 // Si el trabajador se encuentra en la localización de traslado lo ha finalizado
                 if (this.isModoTraslado() && ubicacionTraslado.equals(this.getUbicacion())) {
                     Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() +  " ha finalizado su traslado de " + entidadAsignada.toSimpleString() + " hacia " + ubicacionTraslado);
+                    this.generarFactura(ciudad);
                     this.terminarTrabajo();
                     return;
                 }
@@ -102,7 +119,7 @@ abstract public class Trabajador extends Persona
                 
                 // Si el tanto el trabajador como la entidad están en una base, y están en la misma ubicación, A TRABAJAR!
                 if (ciudad.posicionOcupadaPor(this.getUbicacion(), Base.class)) {
-                    this.trabajar();
+                    this.trabajar(ciudad);
                     return;
                 }
                 
@@ -153,11 +170,22 @@ abstract public class Trabajador extends Persona
 
     }
     
-    abstract public void trabajar();
+    public void generarFactura(Ciudad ciudad) {
+        // Se genera la factura del trabajo realizado
+        tiempoFinalTrabajo = new Tiempo(ciudad.tiempo);
+        
+        InfoFactura factura = new InfoFactura(this, entidadAsignada); 
+        registroInfoFacturas.add(factura);
+    }
     
-    public void terminarTrabajo() {
+    abstract public void trabajar(Ciudad ciudad);
+    
+    public void terminarTrabajo() {        
         Impresora.printColorClase(this.getClass(), "\n" + "El trabajador " + this.toSimpleString() + " ha terminado su trabajo con " + entidadAsignada.toSimpleString());
         entidadAsignada = null;
+        
+        tiempoInicioTrabajo = null;
+        tiempoFinalTrabajo = null;
         
         if (isModoTraslado()) {
             desactivarModoTraslado();

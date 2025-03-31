@@ -11,6 +11,9 @@ public class TecnicoMantenimiento extends Trabajador {
     private static int contadorInstancias = 0;
     public static Color colorClase = Color.MAGENTA;
     
+    public static final double precioPorHora = 12.5;
+    public static final double precioBase = 15;
+    
     /**
      * Constructor for objects of class TrabajadorMantenimiento
      */
@@ -29,7 +32,7 @@ public class TecnicoMantenimiento extends Trabajador {
         super.actuar(ciudad);
     }
     
-    public void trabajar() {
+    public void trabajar(Ciudad ciudad) {
         // El técnico de mantenimiento sólo se encarga de los vehículos
         if (entidadAsignada instanceof Vehiculo vehiculoAsignado) {
             // Recarga la batería del vehículo
@@ -38,6 +41,8 @@ public class TecnicoMantenimiento extends Trabajador {
             // Si se ha cargado la batería por completo, el trabajador abandona su labor
             if (vehiculoAsignado.getPorcentajeBateria() >= 100) {
                 Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha cargado por completo a " + vehiculoAsignado.toSimpleString());
+                
+                this.generarFactura(ciudad);
                 terminarTrabajo();
             }
         // Los técnicos de mantenimiento pueden reparar bases, pero NO vehículos
@@ -45,6 +50,7 @@ public class TecnicoMantenimiento extends Trabajador {
             base.restaurarEstadoMecanico();
         
             if (!(base.tieneFalloMecanico())) {
+                this.generarFactura(ciudad);
                 terminarTrabajo();
             }
         }

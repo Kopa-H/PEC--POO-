@@ -333,9 +333,9 @@ public class Ciudad {
                 Entidad entidadAsignada = encontrarEntidad(trabajador.getEntidadAsignada().getClass(), idEntidadAsignada);
                 
                 if (entidadAsignada != null) {
-                    trabajador.setEntidadAsignada(entidadAsignada); // Reconectar la entidad asignada
+                    trabajador.setEntidadAsignada(null, entidadAsignada); // Reconectar la entidad asignada
                 } else {
-                    trabajador.setEntidadAsignada(null); // Si no se encuentra la entidad, se desconecta
+                    trabajador.setEntidadAsignada(null, null); // Si no se encuentra la entidad, se desconecta
                 }
             }
             
