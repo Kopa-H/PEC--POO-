@@ -41,7 +41,7 @@ public class InterfazSimulacion extends JFrame {
         
         // Se crea la ventana independiente para el estatus panel
         Menu menu = new Menu();
-        menu.nombre = "InfoUbiSeleccionada";
+        menu.nombre = "Información de Ubicación Seleccionada";
         JFrame frame = menu.crearNuevaVentana();
         frame.setAlwaysOnTop(true);
         panelTextoInfo = new JTextPane();  // Cambiado a JTextPane
@@ -169,6 +169,8 @@ public class InterfazSimulacion extends JFrame {
         panelTextoInfo.setMinimumSize(new java.awt.Dimension(200, 100));  // Establecer el tamaño mínimo
         panelTextoInfo.setMaximumSize(new java.awt.Dimension(200, 100));  // Establecer el tamaño máximo
         panelTextoInfo.setCaretColor(DESCRIPTION_PANE_COLOR); 
+        
+        UtilidadesMenu.aplicarFuenteTexto(panelTextoInfo);
     }
     
     public void actualizarEstadoVisual(Simulacion simulacion, Ciudad ciudad, Tiempo tiempo) {       

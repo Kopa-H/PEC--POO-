@@ -180,7 +180,7 @@ public class MenuSistema extends Menu {
             }
         });
     
-        frame.add(agregarScroll(panel));
+        frame.add(panel);
         frame.setVisible(true);
     }
     
@@ -353,6 +353,8 @@ public class MenuSistema extends Menu {
             distanciaRecorrida += vehiculo.getDistanciaRecorrida();
         }
 
+        double distanciaEnKm = (distanciaRecorrida != 0) ? (1000.0 / distanciaRecorrida) : 0.0;
+        
         // Creamos el panel donde mostraremos las estadísticas de los vehículos
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
@@ -373,7 +375,7 @@ public class MenuSistema extends Menu {
         JLabel labelFallosMecanicos = new JLabel("    Fallos Mecánicos: " + fallosMecanicos);
         JLabel labelRecargasBateria = new JLabel("    Recargas de Batería: " + recargasBateria);
         JLabel labelVecesArrastrados = new JLabel("    Veces Arrastrados: " + vecesArrastrados);
-        JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + (double)1000/distanciaRecorrida + " km");
+        JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + distanciaEnKm + " km");
         
         // Aplicar la fuente a todas las etiquetas
         UtilidadesMenu.aplicarFuenteTexto(labelMotos);

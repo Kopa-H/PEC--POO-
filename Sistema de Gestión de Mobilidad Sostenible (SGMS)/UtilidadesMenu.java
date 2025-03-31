@@ -26,14 +26,14 @@ public class UtilidadesMenu extends Menu {
     }
     
     // Método para aplicar fuente y estilo a la cabecera
-    public static void aplicarFuenteCabecera(JLabel labelCabecera) {
-        labelCabecera.setFont(fontCabecera);
-        labelCabecera.setForeground(Color.BLUE);  // Cambiar el color de la letra si quieres
+    public static void aplicarFuenteCabecera(Component componente) {
+        componente.setFont(fontCabecera);
+        componente.setForeground(Color.BLUE);  // Cambiar el color de la letra si quieres
     }
     
     // Método para aplicar fuente a cualquier JLabel
-    public static void aplicarFuenteTexto(JLabel label) {
-        label.setFont(font);  // Aplicar la fuente
+    public static void aplicarFuenteTexto(Component componente) {
+        componente.setFont(font);  // Aplicar la fuente
     }
     
     public Class<?> seleccionarClase(String tipo) {
