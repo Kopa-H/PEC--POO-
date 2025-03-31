@@ -148,7 +148,12 @@ abstract public class Trabajador extends Persona
         if (baseCercana == null) {
             terminarTrabajo();
             Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha abandonado su trabajo con la intención de reparar bases con urgencia");
-            intentarAsignarEntidad(ciudad, ciudad.encontrarEntidadConFalloMecanico(Base.class));
+            
+            Base basePorReparar = (Base) ciudad.encontrarEntidadConFalloMecanico(Base.class);
+            if (intentarAsignarEntidad(ciudad, basePorReparar)) {
+                setEntidadAsignada(ciudad, basePorReparar);  
+            }
+            
         } else {
             // Si existen bases disponibles a las que llevar el vehículo
             arrastrarVehiculo(ciudad, this, vehiculoAsignado, baseCercana.getUbicacion(), baseCercana);

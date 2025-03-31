@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 public class InfoFactura implements Serializable {
-    private Class<? extends Entidad> claseEntidadTrabajada;
+    private Entidad entidadTrabajada;
     private Trabajador trabajador;
     private Tiempo tiempoTrabajado;
     private double price;
@@ -11,7 +11,7 @@ public class InfoFactura implements Serializable {
     InfoFactura(Trabajador trabajador, Entidad entidadTrabajada) {
         this.trabajador = trabajador;
         this.tiempoTrabajado = Tiempo.calcularTiempoEntreTiempos(trabajador.tiempoInicioTrabajo, trabajador.tiempoFinalTrabajo);
-        this.claseEntidadTrabajada = entidadTrabajada.getClass();
+        this.entidadTrabajada = entidadTrabajada;
         this.price = calcularPrecio();
     }
     
@@ -24,7 +24,7 @@ public class InfoFactura implements Serializable {
     public String toString() {
         return "===== FACTURA =====\n" +
                "Trabajador: " + trabajador.getNombre() + "\n" +
-               "Entidad Trabajada: " + claseEntidadTrabajada.getSimpleName() + "\n" +
+               "Entidad Trabajada: " + entidadTrabajada.toSimpleString() + "\n" +
                "Tiempo Trabajado: " + tiempoTrabajado.hora + " horas\n" +
                "Precio Base: " + trabajador.precioBase + "€\n" +
                "Precio por Hora: " + trabajador.precioPorHora + "€\n" +

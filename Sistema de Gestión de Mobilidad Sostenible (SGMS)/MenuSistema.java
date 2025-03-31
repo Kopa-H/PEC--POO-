@@ -190,25 +190,60 @@ public class MenuSistema extends Menu {
     
     public void mostrarFacturasTrabajador() {
         Menu menu = new Menu();
-        menu.nombre = "Menú de traslado de vehículo";
-        
-        JDialog dialogo = menu.crearNuevoDialogo();
-        JPanel panel = menu.crearPanel();
-        
-        Trabajador trabajadorAccedido = (Trabajador) personaAccedida;
-        
-        for (InfoFactura factura : trabajadorAccedido.registroInfoFacturas) {
-            JLabel facturaLabel = new JLabel("<html>" + factura.toString().replace("\n", "<br>") + "</html>");
-            facturaLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Espaciado interno
-            panel.add(facturaLabel);
+        menu.nombre = "Facturas Trabajador " + personaAccedida.toSimpleString();
     
-            // Espaciado entre facturas
-            panel.add(Box.createVerticalStrut(10));
-        }
-        dialogo.add(agregarScroll(panel));
-        dialogo.setVisible(true);
-    }
+        JFrame frame = menu.crearNuevaVentana();
+        JPanel panel = menu.crearPanel();
 
+        frame.add(agregarScroll(panel));
+        frame.setVisible(true);
+    
+        Trabajador trabajadorAccedido = (Trabajador) personaAccedida;
+    
+        // Etiqueta de "No hay facturas"
+        JLabel mensajeVacio = new JLabel("Todavía no hay ninguna factura.");
+        mensajeVacio.setHorizontalAlignment(SwingConstants.CENTER);
+        mensajeVacio.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+    
+        actualizarFacturas(panel, trabajadorAccedido, mensajeVacio);
+    
+        // Timer que actualiza cada segundo
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarFacturas(panel, trabajadorAccedido, mensajeVacio);
+            }
+        });
+    
+        timer.start();
+    
+        // Cierra el timer cuando se cierre el diálogo
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                timer.stop();
+            }
+        });
+    }
+    
+    // Método que actualiza la lista de facturas
+    private void actualizarFacturas(JPanel panel, Trabajador trabajadorAccedido, JLabel mensajeVacio) {
+        panel.removeAll(); // Limpia el panel antes de actualizar
+    
+        if (trabajadorAccedido.registroInfoFacturas.isEmpty()) {
+            panel.add(mensajeVacio);
+        } else {
+            for (InfoFactura factura : trabajadorAccedido.registroInfoFacturas) {
+                JLabel facturaLabel = new JLabel("<html>" + factura.toString().replace("\n", "<br>") + "</html>");
+                facturaLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                panel.add(facturaLabel);
+                panel.add(Box.createVerticalStrut(10)); // Espaciado entre facturas
+            }
+        }
+    
+        panel.revalidate();
+        panel.repaint();
+    }
     public void visualizarEstadoPromociones() {
         Menu menu = new Menu();
         menu.nombre = "Estado Promociones";

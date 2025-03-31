@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * Write a description of class TIempo here.
@@ -6,7 +7,7 @@ import java.awt.Color;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Tiempo {
+public class Tiempo implements Serializable {
     // Conversión de unidades de tiempo a segundos
     private int segundosEnMinuto = 60;
     private int segundosEnHora = 60 * segundosEnMinuto;
@@ -238,9 +239,9 @@ public class Tiempo {
                 
                 // Si son las ocho de la mañana
                 if (hora == 8) {
-                    Impresora.printRojo("\nEL DÍA AMANECE SOLEADO [" + formatearTiempo() + "]");
+                    Impresora.printGris("\nEL DÍA AMANECE SOLEADO [" + formatearTiempo() + "]");
                 } else if (hora == 21) {
-                    Impresora.printRojo("\nLA NOCHE ESTÁ TRANQUILA");
+                    Impresora.printGris("\nLA NOCHE ESTÁ TRANQUILA");
                 }
                 
                 if (hora == 24) {  // Verificar si hemos llegado a 24 horas

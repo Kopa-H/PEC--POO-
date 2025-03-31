@@ -187,7 +187,8 @@ public class Simulacion {
     
     public void agregarGrupoEntidades() {
         // Añadimos n bases con vehículos
-        ciudad.agregarBase(this, 2, 2);
+        ciudad.agregarBase(this, 1, 1);
+        ciudad.agregarBase(this, 1, 1);
         
         // Añadimos n usuarios
         ciudad.agregarEntidad(this, 2, Usuario.class);

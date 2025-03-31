@@ -11,9 +11,6 @@ public class TecnicoMantenimiento extends Trabajador {
     private static int contadorInstancias = 0;
     public static Color colorClase = Color.MAGENTA;
     
-    public static final double precioPorHora = 12.5;
-    public static final double precioBase = 15;
-    
     /**
      * Constructor for objects of class TrabajadorMantenimiento
      */
@@ -21,6 +18,9 @@ public class TecnicoMantenimiento extends Trabajador {
     {
         super(posX, posY);
         setColor(colorClase);
+        
+        precioPorHora = 12.5;
+        precioBase = 15;
         
         setId(contadorInstancias);
         contadorInstancias++;
@@ -33,7 +33,7 @@ public class TecnicoMantenimiento extends Trabajador {
     }
     
     public void trabajar(Ciudad ciudad) {
-        // El técnico de mantenimiento sólo se encarga de los vehículos
+
         if (entidadAsignada instanceof Vehiculo vehiculoAsignado) {
             // Recarga la batería del vehículo
             vehiculoAsignado.sumarBateria();
