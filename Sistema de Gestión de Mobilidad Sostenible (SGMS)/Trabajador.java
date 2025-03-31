@@ -23,8 +23,8 @@ abstract public class Trabajador extends Persona
     public double precioPorHora;
     public double precioBase;
     
-    int trabajosCompletados;
-    double totalFacturado;
+    private int trabajosCompletados;
+    private double totalFacturado;
     
     /**
      * Constructor for objects of class Trabajador
@@ -37,6 +37,18 @@ abstract public class Trabajador extends Persona
         totalFacturado = 0;
     
         registroInfoFacturas = new ArrayList<>();
+    }
+    
+    public int getTrabajosCompletados() {
+        return trabajosCompletados;
+    }
+    
+    public double getTotalFacturado() {
+        return totalFacturado;
+    }
+    
+    public void sumarTotalFacturado(double x) {
+        totalFacturado += x;
     }
     
     public void setUbicacionTraslado(Ubicacion ubi) {
@@ -178,8 +190,7 @@ abstract public class Trabajador extends Persona
         
         // El vehículo sigue a la persona
         vehiculoArrastrado.empezarSeguimiento(ciudad, this);
-        vehiculoArrastrado.vecesArrastrado++;
-
+        vehiculoArrastrado.incrementarVecesArrastrado();
     }
     
     public void generarFactura(Ciudad ciudad) {

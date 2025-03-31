@@ -191,7 +191,7 @@ public abstract class EntidadMovil extends Entidad {
          
         // Si la entidad que planea el trayecto es un vehículo, significa que ha sido alquilada
         if (this instanceof Vehiculo vehiculo) {
-            vehiculo.vecesAlquilado++;
+            vehiculo.incrementarVecesAlquilado();
         }
 
         // Activar estado de trayecto

@@ -158,13 +158,10 @@ public class MenuSistema extends Menu {
     }
     
     private JPanel generarEstadisticasGenerales(Ciudad ciudad) {
-        // Calculamos el balance del sistema
-        ciudad.dinero.calcularBalanceSistema();
-
         // Obtenemos los valores necesarios
-        double totalFacturadoTrabajadores = ciudad.dinero.totalFacturadoTrabajadores;
-        double totalPagadoUsuarios = ciudad.dinero.totalPagadoUsuarios;
-        double balanceSistema = ciudad.dinero.balanceSistema;
+        double totalFacturadoTrabajadores = ciudad.dinero.getTotalFacturadoTrabajadores();
+        double totalPagadoUsuarios = ciudad.dinero.getTotalPagadoUsuarios();
+        double balanceSistema = ciudad.dinero.getBalanceSistema();
 
         // Creamos el panel para las estadísticas generales
         JPanel panel = new JPanel();
@@ -174,8 +171,12 @@ public class MenuSistema extends Menu {
         JLabel labelFacturadoTrabajadores = new JLabel("Total Facturado a Trabajadores: " + totalFacturadoTrabajadores);
         JLabel labelPagadoUsuarios = new JLabel("Total Pagado por Usuarios: " + totalPagadoUsuarios);
         JLabel labelBalanceSistema = new JLabel("Balance del Sistema: " + balanceSistema);
+        
+        JLabel labelCabecera = new JLabel("  Generales");
 
         // Añadimos las etiquetas al panel
+        panel.add(labelCabecera);
+        panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
         panel.add(labelFacturadoTrabajadores);
         panel.add(labelPagadoUsuarios);
         panel.add(labelBalanceSistema);
@@ -197,7 +198,7 @@ public class MenuSistema extends Menu {
             } else {
                 usuariosNormales++;
             }
-            totalPagadoTasas += usuario.totalPagadoTasas;
+            totalPagadoTasas += usuario.getTotalPagadoTasas();
         }
         
         ciudad.dinero.totalPagadoUsuarios = totalPagadoTasas;
@@ -205,6 +206,8 @@ public class MenuSistema extends Menu {
         // Creamos el panel donde mostraremos las estadísticas
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Layout para organizar los elementos en vertical
+        
+        JLabel labelCabecera = new JLabel("  Usuarios");
     
         // Creamos etiquetas para mostrar cada estadística
         JLabel labelUsuariosNormales = new JLabel("Usuarios Normales: " + usuariosNormales);
@@ -212,6 +215,8 @@ public class MenuSistema extends Menu {
         JLabel labelTotalPagadoTasas = new JLabel("Total Pagado en Tasas: " + totalPagadoTasas);
     
         // Añadimos las etiquetas al panel
+        panel.add(labelCabecera);
+        panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
         panel.add(labelUsuariosNormales);
         panel.add(labelUsuariosPremium);
         panel.add(labelTotalPagadoTasas);
@@ -220,7 +225,7 @@ public class MenuSistema extends Menu {
         return panel;
     }
     
-    private JPanel generarEstadisticasTrabajadores(Ciudad ciudad, ArrayList<Trabajador> trabajadores) {
+    private JPanel generarEstadisticasTrabajadores(Ciudad ciudad, ArrayList<Trabajador> trabajadores) {    
         // Inicializamos las variables de estadísticas
         int numTrabajadores = trabajadores.size();
         int trabajosCompletados = 0;
@@ -228,8 +233,8 @@ public class MenuSistema extends Menu {
 
         // Calculamos las estadísticas a partir de la lista de trabajadores
         for (Trabajador trabajador : trabajadores) {
-            trabajosCompletados += trabajador.trabajosCompletados;
-            totalFacturado += trabajador.totalFacturado;
+            trabajosCompletados += trabajador.getTrabajosCompletados();
+            totalFacturado += trabajador.getTotalFacturado();
         }
 
         // Actualizamos el total facturado a los trabajadores en la ciudad
@@ -238,13 +243,18 @@ public class MenuSistema extends Menu {
         // Creamos el panel donde mostraremos las estadísticas de los trabajadores
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
+        
+        // Añadimos una cabecera
+        JLabel labelCabecera = new JLabel("  Trabajadores");
 
         // Creamos etiquetas para mostrar las estadísticas de trabajadores
         JLabel labelNumTrabajadores = new JLabel("Número de Trabajadores: " + numTrabajadores);
         JLabel labelTrabajosCompletados = new JLabel("Trabajos Completados: " + trabajosCompletados);
-        JLabel labelTotalFacturado = new JLabel("Total Facturado a Trabajadores: " + totalFacturado);
+        JLabel labelTotalFacturado = new JLabel("Total Facturado de Trabajadores: " + totalFacturado);
 
         // Añadimos las etiquetas al panel
+        panel.add(labelCabecera);
+        panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
         panel.add(labelNumTrabajadores);
         panel.add(labelTrabajosCompletados);
         panel.add(labelTotalFacturado);
@@ -254,46 +264,84 @@ public class MenuSistema extends Menu {
     }
 
     private JPanel generarEstadisticasVehiculos(ArrayList<Vehiculo> vehiculos) {
+        // Inicializamos las variables de estadísticas
         int motos = 0;
         int bicis = 0;
         int patinetes = 0;
-        
+
         int motosAlquiladas = 0;
         int bicisAlquiladas = 0;
         int patinetesAlquilados = 0;
         int viajesRealizados = 0;
-        
+
         int fallosMecanicos = 0;
         int recargasBateria = 0;
-        
+
         int vecesArrastrados = 0;
-        
+
         int distanciaRecorrida = 0;
-        
-        // Calculamos las estadísticas a partir de la lista
+
+        // Calculamos las estadísticas a partir de la lista de vehículos
         for (Vehiculo vehiculo : vehiculos) {
             if (vehiculo instanceof Moto) {
                 motos++;
-                motosAlquiladas += vehiculo.vecesAlquilado;
+                motosAlquiladas += vehiculo.getVecesAlquilado();
             } else if (vehiculo instanceof Bicicleta) {
                 bicis++;
-                bicisAlquiladas += vehiculo.vecesAlquilado;
+                bicisAlquiladas += vehiculo.getVecesAlquilado();
             } else if (vehiculo instanceof Patinete) {
                 patinetes++;
-                patinetesAlquilados += vehiculo.vecesAlquilado;
+                patinetesAlquilados += vehiculo.getVecesAlquilado();
             }
-            
+
             viajesRealizados = motosAlquiladas + bicisAlquiladas + patinetesAlquilados;
-            
-            fallosMecanicos += vehiculo.totalFallosMecanicos;
-            
-            recargasBateria += vehiculo.recargasBateria;
-            
-            vecesArrastrados += vehiculo.vecesArrastrado;
-            
-            distanciaRecorrida += vehiculo.distanciaRecorrida;
+
+            fallosMecanicos += vehiculo.getTotalFallosMecanicos();
+            recargasBateria += vehiculo.getRecargasBateria();
+            vecesArrastrados += vehiculo.getVecesArrastrado();
+            distanciaRecorrida += vehiculo.getDistanciaRecorrida();
         }
 
+        // Creamos el panel donde mostraremos las estadísticas de los vehículos
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
+
+        // Añadimos una cabecera
+        JLabel labelCabecera = new JLabel("Estadísticas de Vehículos");
+
+        // Añadimos un espaciado vertical debajo de la cabecera
+        panel.add(labelCabecera);
+        panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
+
+        // Creamos etiquetas para mostrar las estadísticas de vehículos
+        JLabel labelMotos = new JLabel("Motos: " + motos);
+        JLabel labelBicis = new JLabel("Bicicletas: " + bicis);
+        JLabel labelPatinetes = new JLabel("Patinetes: " + patinetes);
+        JLabel labelMotosAlquiladas = new JLabel("Motos Alquiladas: " + motosAlquiladas);
+        JLabel labelBicisAlquiladas = new JLabel("Bicicletas Alquiladas: " + bicisAlquiladas);
+        JLabel labelPatinetesAlquilados = new JLabel("Patinetes Alquilados: " + patinetesAlquilados);
+        JLabel labelViajesRealizados = new JLabel("Viajes Realizados: " + viajesRealizados);
+        JLabel labelFallosMecanicos = new JLabel("Fallos Mecánicos: " + fallosMecanicos);
+        JLabel labelRecargasBateria = new JLabel("Recargas de Batería: " + recargasBateria);
+        JLabel labelVecesArrastrados = new JLabel("Veces Arrastrados: " + vecesArrastrados);
+        JLabel labelDistanciaRecorrida = new JLabel("Distancia Recorrida: " + distanciaRecorrida + " km");
+
+        // Añadimos las etiquetas al panel
+        panel.add(labelMotos);
+        panel.add(labelBicis);
+        panel.add(labelPatinetes);
+        panel.add(Box.createVerticalStrut(10));  // Añadir espaciado vertical entre secciones
+        panel.add(labelMotosAlquiladas);
+        panel.add(labelBicisAlquiladas);
+        panel.add(labelPatinetesAlquilados);
+        panel.add(labelViajesRealizados);
+        panel.add(Box.createVerticalStrut(10));  // Añadir espaciado vertical entre secciones
+        panel.add(labelFallosMecanicos);
+        panel.add(labelRecargasBateria);
+        panel.add(labelVecesArrastrados);
+        panel.add(labelDistanciaRecorrida);
+
+        // Devolvemos el panel con las estadísticas de los vehículos
         return panel;
     }
     

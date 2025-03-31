@@ -20,6 +20,20 @@ public class Dinero {
     public Dinero() {
     }
     
+    public double getTotalFacturadoTrabajadores() {
+        return totalFacturadoTrabajadores;
+    }
+    
+    public double getTotalPagadoUsuarios() {
+        return totalPagadoUsuarios;
+    }
+    
+    public double getBalanceSistema() {
+        // Calculamos el balance del sistema
+        this.calcularBalanceSistema();
+        return balanceSistema;
+    }
+    
     public void calcularBalanceSistema() {
         balanceSistema = totalPagadoUsuarios - totalFacturadoTrabajadores;
     }

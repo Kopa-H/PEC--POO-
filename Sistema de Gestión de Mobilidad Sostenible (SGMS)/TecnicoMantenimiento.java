@@ -42,7 +42,7 @@ public class TecnicoMantenimiento extends Trabajador {
             if (vehiculoAsignado.getPorcentajeBateria() >= 100) {
                 Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha cargado por completo a " + vehiculoAsignado.toSimpleString());
                 
-                vehiculoAsignado.recargasBateria++;
+                vehiculoAsignado.incrementarRecargasBateria();
                 this.generarFactura(ciudad);
                 terminarTrabajo(true);
             }

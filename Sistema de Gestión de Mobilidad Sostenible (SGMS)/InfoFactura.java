@@ -14,7 +14,7 @@ public class InfoFactura implements Serializable {
         this.entidadTrabajada = entidadTrabajada;
         this.precio = calcularPrecio();
         
-        trabajador.totalFacturado += precio;
+        trabajador.sumarTotalFacturado(precio);
     }
     
     public double calcularPrecio() {

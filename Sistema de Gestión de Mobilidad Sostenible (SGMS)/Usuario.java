@@ -41,6 +41,10 @@ public class Usuario extends Persona {
         contadorInstancias++;
     }
     
+    public double getTotalPagadoTasas() {
+        return totalPagadoTasas;
+    }
+    
     public void generarInfoAlquiler(Ciudad ciudad, Vehiculo vehiculoAlquilado) {
         // Se genera la factura del trabajo realizado
         tiempoFinalAlquiler = new Tiempo(ciudad.tiempo);

@@ -15,15 +15,15 @@ abstract public class Vehiculo extends EntidadMovil {
     // Contiene el valor de distancia que puede recorrer el vehículo (indicador de la batería)
     private int autonomiaBateria;
     
-    public int recargasBateria;
+    private int recargasBateria;
     
     public static final int DURACION_MAXIMA_RESERVA = 3; // en horas 
     public Tiempo tiempoInicioReserva;
     public boolean isReservado;
     public Usuario usuarioReserva;
     
-    public int vecesAlquilado;
-    public int vecesArrastrado;
+    private int vecesAlquilado;
+    private int vecesArrastrado;
     
     public static enum TipoVehiculo {
         MOTO, BICI, PATINETE;
@@ -45,6 +45,38 @@ abstract public class Vehiculo extends EntidadMovil {
         
         this.DISTANCIA_MAX_BATERIA = distanciaMaxBateria;
         autonomiaBateria = distanciaMaxBateria;
+    }
+    
+    public int getVecesAlquilado() {
+        return vecesAlquilado;
+    }
+    
+    public int getVecesArrastrado() {
+        return vecesArrastrado;
+    }
+    
+    public int getTotalFallosMecanicos() {
+        return totalFallosMecanicos;
+    }
+    
+    public int getRecargasBateria() {
+        return recargasBateria;
+    }
+    
+    public int getDistanciaRecorrida() {
+        return distanciaRecorrida;
+    }
+    
+    public void incrementarRecargasBateria() {
+        recargasBateria++;
+    }
+    
+    public void incrementarVecesArrastrado() {
+        vecesArrastrado++;
+    }
+    
+    public void incrementarVecesAlquilado() {
+        vecesAlquilado++;
     }
     
     private void cancelarReserva() {
