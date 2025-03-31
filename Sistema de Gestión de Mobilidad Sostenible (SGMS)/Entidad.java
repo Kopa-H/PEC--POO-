@@ -32,6 +32,8 @@ public abstract class Entidad implements Serializable
     private boolean tieneFalloMecanico = false;
     private boolean tieneAlertaFalloMecanico = false;
     
+    public int totalFallosMecanicos = 0;
+    
     /**
      * Constructor que permite inicializar la EntidadMovil en una ubicación específica.
      * 
@@ -155,6 +157,7 @@ public abstract class Entidad implements Serializable
     // Función que se llama si ocurre un fallo mecánico
     public void activarFalloMecanico() {
         tieneFalloMecanico = true;
+        totalFallosMecanicos++;
         Impresora.printNaranja("\nSe ha ACTIVADO un fallo mecánico en " + this.toSimpleString());
     }
     

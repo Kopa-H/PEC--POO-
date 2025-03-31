@@ -178,6 +178,7 @@ abstract public class Trabajador extends Persona
         
         // El vehículo sigue a la persona
         vehiculoArrastrado.empezarSeguimiento(ciudad, this);
+        vehiculoArrastrado.vecesArrastrado++;
 
     }
     

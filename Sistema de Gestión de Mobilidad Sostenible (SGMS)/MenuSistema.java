@@ -144,28 +144,34 @@ public class MenuSistema extends Menu {
                 vehiculos.add(entidad);
             }
         }
-           
-        panel.add(generarEstadisticasGenerales());
         
-        panel.add(generarEstadisticasUsuarios(usuarios));
+        panel.add(generarEstadisticasUsuarios(ciudad, usuarios));
         
-        panel.add(generarEstadisticasTrabajadores(trabajores));
+        panel.add(generarEstadisticasTrabajadores(ciudad, trabajores));
         
         panel.add(generarEstadisticasVehiculos(vehiculos));
+        
+        panel.add(generarEstadisticasGenerales(ciudad));
         
         frame.add(agregarScroll(panel));
         frame.setVisible(true);
     }
     
-    private JPanel generarEstadisticasGenerales() {        
-        TOTAL FACTURADO TRABAJADORES
-        TOTAL PAGADO USUARIOS
-        BENEFICIOS = DINERO TOTAL PAGADO USUARIOS - DINERO TOTAL FACTURADO TRABAJADORES
+    private JPanel generarEstadisticasGenerales(Ciudad ciudad) {        
+
+        
+        ciudad.dinero.calcularBalanceSistema();
+        
+        // DEBES USAR ESTOS VALORES
+        ciudad.dinero.totalFacturadoTrabajadores;
+        ciudad.dinero.totalPagadoUsuarios;
+        ciudad.dinero.balanceSistema;
+    
             
         return panel;
     }
     
-    private JPanel generarEstadisticasUsuarios(ArrayList<Usuario> usuarios) {
+    private JPanel generarEstadisticasUsuarios(Ciudad ciudad, ArrayList<Usuario> usuarios) {
         // Inicializamos las variables para estadísticas
         int usuariosNormales = 0;
         int usuariosPremium = 0;
@@ -180,6 +186,8 @@ public class MenuSistema extends Menu {
             }
             totalPagadoTasas += usuario.getTotalPagadoTasas();
         }
+        
+        ciudad.dinero.totalPagadoUsuarios = totalPagadoTasas;
     
         // Creamos el panel donde mostraremos las estadísticas
         JPanel panel = new JPanel();
@@ -200,7 +208,7 @@ public class MenuSistema extends Menu {
     }
 
     
-    private JPanel generarEstadisticasTrabajadores(ArrayList<Trabajador> trabajadores) {
+    private JPanel generarEstadisticasTrabajadores(Ciudad ciudad, ArrayList<Trabajador> trabajadores) {
         int trabajadores = trabajadores.size();
         int trabajosCompletados = 0;
         int totalFacturado = 0;
@@ -211,19 +219,51 @@ public class MenuSistema extends Menu {
             totalFacturado += trabajador.totalFacturado;
         }
         
+        ciudad.dinero.totalFacturadoTrabajadores = totalFacturado;
+        
         return panel;
     }
 
     private JPanel generarEstadisticasVehiculos(ArrayList<Vehiculo> vehiculos) {
-        MOTOS USADAS
-        BICILETAS USADAS
-        PATINETES USADOS
+        int motos = 0;
+        int bicis = 0;
+        int patinetes = 0;
         
-        FALLOS MECANICOS PRODUCIDOS
-        RECARGAS DE BATERIA
-        NUMERO VIAJES
-        VECES ARRASTRADOS
-        DISTANCIA RECORRIDA
+        int motosAlquiladas = 0;
+        int bicisAlquiladas = 0;
+        int patinetesAlquilados = 0;
+        int viajesRealizados;
+        
+        int fallosMecanicos;
+        int recargasBateria;
+        
+        int vecesArrastrados;
+        
+        int distanciaRecorrida;
+        
+        // Calculamos las estadísticas a partir de la lista
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo instanceof Moto) {
+                motos++;
+                motosAlquiladas += vehiculo.vecesAlquilado;
+            } else if (vehiculo instanceof Bicicleta) {
+                bicis++;
+                bicisAlquiladas += vehiculo.vecesAlquilado;
+            } else if (vehiculo instanceof Patinete) {
+                patinetes++;
+                patinetesAlquilados += vehiculo.vecesAlquilado;
+            }
+            
+            viajesRealizados = motosAlquiladas + bicisAlquiladas + patinetesAlquilados;
+            
+            fallosMecanicos += vehiculo.totalFallosMecanicos;
+            
+            recargasBateria += vehiculo.recargasBateria;
+            
+            vecesArrastrados += vehiculo.vecesArrastrado;
+            
+            distanciaRecorrida += vehiculo.distanciaRecorrida;
+        }
 
         return panel;
     }

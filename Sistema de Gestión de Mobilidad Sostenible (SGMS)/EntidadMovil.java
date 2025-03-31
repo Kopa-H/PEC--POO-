@@ -19,6 +19,8 @@ public abstract class EntidadMovil extends Entidad {
     private EntidadMovil entidadSeguida; // Direccion que está siguiendo entidad movil
     private boolean siguiendoEntidad; // Variable booleana que registra si la entidad está siguiendo a otra entidad
     
+    public int distanciaRecorrida = 0;
+    
     /**
      * Constructor para objetos de la clase EntidadMovil.
      * Inicializa la ubicación en las coordenadas (0,0) por defecto.
@@ -98,6 +100,7 @@ public abstract class EntidadMovil extends Entidad {
      */
     private void mover(int deltaX, int deltaY, Ciudad ciudad) {
         int distancia = 1; // Distancia predeterminada de 1 unidad
+        this.distanciaRecorrida += distancia;
     
         // Calcular el máximo movimiento permitido en cada dirección
         int nuevaPosX = getUbicacion().getPosX() + Math.min(deltaX * Math.min(distancia, (deltaX > 0 ? Ciudad.COLUMNS - 1 - getUbicacion().getPosX() : getUbicacion().getPosX())), distancia);
@@ -184,6 +187,11 @@ public abstract class EntidadMovil extends Entidad {
         
         if (trayecto.size() < 1) {
             Impresora.printRojo("\nError. " + toSimpleString() + " ha comenzado un trayecto nulo");
+        }
+         
+        // Si la entidad que planea el trayecto es un vehículo, significa que ha sido alquilada
+        if (this instanceof Vehiculo vehiculo) {
+            vehiculo.vecesAlquilado++;
         }
 
         // Activar estado de trayecto

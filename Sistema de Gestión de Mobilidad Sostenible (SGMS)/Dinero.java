@@ -9,11 +9,19 @@ import java.util.List;
 public class Dinero {
     // Esto quizás debería moverse a otra clase más general
     public double precioTasasEnEuros = 85.57;    
+    
+    public double totalFacturadoTrabajadores = 0;
+    public double totalPagadoUsuarios = 0;
+    public double balanceSistema; // totalPagadoUsuarios - totalFacturadoTrabajadores 
 
     /**
      * Constructor for objects of class Dinero
      */
     public Dinero() {
+    }
+    
+    public void calcularBalanceSistema() {
+        balanceSistema = totalPagadoUsuarios - totalFacturadoTrabajadores;
     }
     
     public void setPrecioTasas(double precio) {
