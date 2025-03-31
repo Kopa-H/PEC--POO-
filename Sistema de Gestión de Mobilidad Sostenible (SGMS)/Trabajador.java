@@ -113,7 +113,7 @@ abstract public class Trabajador extends Persona
                 
                 // Si el trabajador aún no se encuentra donde la entidad asignada, planea un trayecto hacia ella
                 if (!(entidadAsignada.getUbicacion().equals(this.getUbicacion()))) {
-                    planearTrayecto(entidadAsignada.getUbicacion(), entidadAsignada);
+                    planearTrayecto(ciudad, entidadAsignada.getUbicacion(), entidadAsignada);
                     return;
                 }
                 
@@ -163,10 +163,10 @@ abstract public class Trabajador extends Persona
     public void arrastrarVehiculo(Ciudad ciudad, Persona personaQueArrastra, Vehiculo vehiculoArrastrado, Ubicacion ubicacionDestino, Entidad entidadDestino) {
         
         if (entidadDestino != null) {
-            planearTrayecto(entidadDestino.getUbicacion(), entidadDestino);
+            planearTrayecto(ciudad, entidadDestino.getUbicacion(), entidadDestino);
             Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoArrastrado.toSimpleString() + " hacia " + entidadDestino.toSimpleString());
         } else {
-            planearTrayecto(ubicacionDestino, null);
+            planearTrayecto(ciudad, ubicacionDestino, null);
             Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " se lleva arrastrando a " + vehiculoArrastrado.toSimpleString() + " hacia " + ubicacionDestino.toString());
         }
         

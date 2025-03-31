@@ -17,6 +17,10 @@ public class Usuario extends Persona {
     private double saldo;
     public boolean isPremium;
     
+    // Variables que registran el tiempo de cada alquiler
+    public Tiempo tiempoInicioAlquiler;
+    public Tiempo tiempoFinalAlquiler;
+    
     /**
      * Constructor for objects of class Usuario
      */

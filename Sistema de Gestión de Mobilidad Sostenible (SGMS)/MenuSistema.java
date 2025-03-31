@@ -553,7 +553,7 @@ public class MenuSistema extends Menu {
                         return;
                     }
                     
-                    personaAccedida.planearTrayecto(entidadPorAlquilar.getUbicacion(), entidadPorAlquilar);
+                    personaAccedida.planearTrayecto(ciudad, entidadPorAlquilar.getUbicacion(), entidadPorAlquilar);
                 }
             }
         }));
@@ -701,7 +701,7 @@ public class MenuSistema extends Menu {
                     JButton alquilarButton = new JButton("Alquilar moto");
                     alquilarButton.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            personaAccedida.planearTrayecto(moto.getUbicacion(), moto);
+                            personaAccedida.planearTrayecto(ciudad, moto.getUbicacion(), moto);
                             frame.dispose();
                         }
                     });

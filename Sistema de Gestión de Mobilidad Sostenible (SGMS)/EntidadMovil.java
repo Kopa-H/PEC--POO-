@@ -141,7 +141,7 @@ public abstract class EntidadMovil extends Entidad {
     /**
      * Método que hace que el vehículo inicie un trayecto
      */
-    public void planearTrayecto(Ubicacion ubiDestino, Entidad entidadDestino) {
+    public void planearTrayecto(Ciudad ciudad, Ubicacion ubiDestino, Entidad entidadDestino) {
         int actualX, actualY, destinoX, destinoY, desplazX, desplazY;
         
         destinoX = ubiDestino.getPosX();
@@ -189,6 +189,12 @@ public abstract class EntidadMovil extends Entidad {
         // Activar estado de trayecto
         this.enTrayecto = true;
         this.entidadDestino = entidadDestino;
+        
+        // Si se trata de un usuario, significa que ha comenzado un alquiler
+        if (this instanceof Usuario usuario) {
+            usuario.tiempoInicioAlquiler = new Tiempo(ciudad.tiempo);
+            Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha comenzado un nuevo alquiler");
+        }
         
         if (entidadDestino != null) {
             Impresora.printColorClase(this.getClass(), "\n" + toSimpleString() + " ha comenzado un trayecto hacia " + entidadDestino.toSimpleString() + " en " + ubiDestino.toString());
@@ -301,7 +307,7 @@ public abstract class EntidadMovil extends Entidad {
                     Base baseEscogida = (Base) randomGenerator.getEntidadRandom(ciudad, baseDestino, Base.class);
                     
                     if (baseEscogida != null) {                        
-                        vehiculoEscogido.planearTrayecto(baseEscogida.getUbicacion(), baseEscogida);
+                        vehiculoEscogido.planearTrayecto(ciudad, baseEscogida.getUbicacion(), baseEscogida);
 
                         empezarSeguimiento(ciudad, vehiculoEscogido);
                         
@@ -323,7 +329,7 @@ public abstract class EntidadMovil extends Entidad {
             if (this instanceof Usuario usuario && entidadDestino instanceof Moto moto) {
                 // La moto comienza un rumbo hacia una posición aleatoria de la ciudad
                 Ubicacion ubicacion = randomGenerator.getUbicacionLibreAlejadaRandom(ciudad, moto.getUbicacion(), 20);
-                moto.planearTrayecto(ubicacion, null);
+                moto.planearTrayecto(ciudad, ubicacion, null);
             
                 empezarSeguimiento(ciudad, moto);
                 
@@ -348,6 +354,12 @@ public abstract class EntidadMovil extends Entidad {
     
     public void abandonarSeguimiento() {
         Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha dejado de seguir a " + entidadSeguida.toSimpleString());
+        
+        // Si es un usuario, significa que ha terminado el alquiler en curso
+        if (this instanceof Usuario) {
+            Impresora.printColorClase(this.getClass(), "\n" + this.toSimpleString() + " ha terminado su alquiler en curso");
+            
+        }
         
         entidadSeguida = null;
         siguiendoEntidad = false;
@@ -405,7 +417,7 @@ public abstract class EntidadMovil extends Entidad {
             Ubicacion ubiEntidad = entidad.getUbicacion();
         
             // Planear trayecto hacia la entidad
-            planearTrayecto(ubiEntidad, entidad);
+            planearTrayecto(ciudad, ubiEntidad, entidad);
         }
     }
     
