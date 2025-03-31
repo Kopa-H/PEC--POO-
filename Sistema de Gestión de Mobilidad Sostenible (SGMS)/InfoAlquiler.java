@@ -1,11 +1,5 @@
 import java.io.Serializable;
 
-/**
- * Write a description of class Alquiler here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
 public class InfoAlquiler implements Serializable {
     private int mes;
     private Class<? extends Vehiculo> claseVehiculo;
@@ -21,5 +15,13 @@ public class InfoAlquiler implements Serializable {
     
     public Class<? extends Vehiculo> getClaseVehiculo() {
         return claseVehiculo;
+    }
+
+    @Override
+    public String toString() {
+        return "===== ALQUILER =====\n" +
+               "Mes: " + mes + "\n" +
+               "Vehículo Alquilado: " + claseVehiculo.getSimpleName() + "\n" +
+               "=====================";
     }
 }

@@ -144,41 +144,45 @@ public class MenuSistema extends Menu {
         panel.add(labelTasas);
         panel.add(campoTasas);
         panel.add(Box.createVerticalStrut(10));
-        panel.add(botonConfirmar);
+        
+        // CONSULTAR VEHÍCULOS DISPONIBLES
+        String nombreBoton = "Aceptar";
+        menu.botones.put(nombreBoton, new Boton(nombreBoton, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int dias = Integer.parseInt(campoDias.getText().trim());
+                    double tasas = Double.parseDouble(campoTasas.getText().trim());
+        
+                    if (dias <= 0 || tasas < 0) {
+                        UtilidadesMenu.showMensajeError(dialogo, "Los valores deben ser positivos.");
+                        return;
+                    }
+                    
+                    if (dias > 365) {
+                        UtilidadesMenu.showMensajeError(dialogo, "Los días entre cobros no pueden superar el año (365).");
+                        return;
+                    }
+                    
+                    if (tasas > 1000) {
+                        UtilidadesMenu.showMensajeError(dialogo, "El precio de las tasas no puede superar los 1000€.");
+                        return;
+                    }
+        
+                    ciudad.tiempo.setDiasEntrePagos(dias);
+                    ciudad.dinero.setPrecioTasas(tasas);
+                    UtilidadesMenu.showMensajeExito(dialogo, "Tarifas actualizadas correctamente.");
+                    dialogo.dispose(); // Cierra el diálogo después de confirmar
+        
+                } catch (NumberFormatException ex) {
+                    UtilidadesMenu.showMensajeError(dialogo, "Introduce valores numéricos válidos.");
+                }
+            }
+        }));
+    
+        agregarBotones(menu.botones, panel);
     
         dialogo.add(panel);
         dialogo.setVisible(true);
-    
-        // Acción del botón
-        botonConfirmar.addActionListener(e -> {
-            try {
-                int dias = Integer.parseInt(campoDias.getText().trim());
-                double tasas = Double.parseDouble(campoTasas.getText().trim());
-    
-                if (dias <= 0 || tasas < 0) {
-                    JOptionPane.showMessageDialog(dialogo, "Los valores deben ser positivos.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                
-                if (dias > 365) {
-                    JOptionPane.showMessageDialog(dialogo, "Los días entre cobros no pueden superar el año (365).", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                
-                if (tasas > 1000) {
-                    JOptionPane.showMessageDialog(dialogo, "El precio de las tasas no puede superar los 1000€.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-    
-                ciudad.tiempo.diasEntrePagos = dias;
-                ciudad.dinero.precioTasasEnEuros = tasas;
-                JOptionPane.showMessageDialog(dialogo, "Tarifas actualizadas correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                dialogo.dispose(); // Cierra el diálogo después de confirmar
-    
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(dialogo, "Introduce valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
     }
     
     public void iniciarMenuTrasladoVehiculo() {
@@ -247,13 +251,13 @@ public class MenuSistema extends Menu {
         mensajeVacio.setHorizontalAlignment(SwingConstants.CENTER);
         mensajeVacio.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
     
-        actualizarFacturas(panel, trabajadorAccedido, mensajeVacio);
+        actualizarFacturasMostradas(panel, trabajadorAccedido, mensajeVacio);
     
         // Timer que actualiza cada segundo
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                actualizarFacturas(panel, trabajadorAccedido, mensajeVacio);
+                actualizarFacturasMostradas(panel, trabajadorAccedido, mensajeVacio);
             }
         });
     
@@ -269,7 +273,7 @@ public class MenuSistema extends Menu {
     }
     
     // Método que actualiza la lista de facturas
-    private void actualizarFacturas(JPanel panel, Trabajador trabajadorAccedido, JLabel mensajeVacio) {
+    private void actualizarFacturasMostradas(JPanel panel, Trabajador trabajadorAccedido, JLabel mensajeVacio) {
         panel.removeAll(); // Limpia el panel antes de actualizar
     
         if (trabajadorAccedido.registroInfoFacturas.isEmpty()) {
@@ -286,6 +290,7 @@ public class MenuSistema extends Menu {
         panel.revalidate();
         panel.repaint();
     }
+    
     public void visualizarEstadoPromociones() {
         Menu menu = new Menu();
         menu.nombre = "Estado Promociones";
@@ -382,7 +387,7 @@ public class MenuSistema extends Menu {
                         JButton botonPromocionar = new JButton("Promocionar Usuario");
                         botonPromocionar.addActionListener(e -> {
                             usuario.promocionarUsuario();
-                            JOptionPane.showMessageDialog(null, "Usuario promocionado con éxito!");
+                            UtilidadesMenu.showMensajeExito(null, "Usuario promocionado con éxito");
                         });
                         panelUsuario.add(botonPromocionar);
                     } else {
@@ -484,7 +489,7 @@ public class MenuSistema extends Menu {
                             dialogo.dispose();
                         } catch (NumberFormatException ex) {
                             // Manejar el error si los campos no tienen valores numéricos válidos
-                            JOptionPane.showMessageDialog(dialogo, "Por favor ingrese números válidos.");
+                            UtilidadesMenu.showMensajeError(dialogo, "Por favor ingrese números válidos.");
                         }
                     }
                 });
@@ -544,7 +549,7 @@ public class MenuSistema extends Menu {
                     
                     // Comprobar si se ha encontrado una entidad
                     if (entidadPorAlquilar == null) {
-                        JOptionPane.showMessageDialog(frame, "No se ha podido encontrar ninguna moto disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+                        UtilidadesMenu.showMensajeError(frame, "No se ha podido encontrar ninguna moto disponible.");
                         return;
                     }
                     
@@ -564,7 +569,7 @@ public class MenuSistema extends Menu {
                     Entidad entidad = ciudad.encontrarEntidad(claseEntidad, indice);
                     
                     if (entidad == null) {
-                        JOptionPane.showMessageDialog(frame, "No se ha encontrado la entidad indicada.", "Error", JOptionPane.ERROR_MESSAGE);
+                        UtilidadesMenu.showMensajeError(frame, "No se ha encontrado la entidad indicada.");
                         return;
                     }
                     
@@ -626,7 +631,7 @@ public class MenuSistema extends Menu {
                                     
                                     // Verificar que la cantidad sea mayor que 0
                                     if (cantidad <= 0) {
-                                        JOptionPane.showMessageDialog(dialogo, "Introduce una cantidad mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
+                                        UtilidadesMenu.showMensajeError(dialogo, "Introduce una cantidad mayor a 0");
                                     } else {
                                         // Lógica para recargar el saldo
                                         ((Usuario)personaAccedida).recargarSaldo(cantidad);
@@ -638,7 +643,7 @@ public class MenuSistema extends Menu {
                                     }
                                 } catch (NumberFormatException ex) {
                                     // Manejar el error si no se introduce un número válido
-                                    JOptionPane.showMessageDialog(dialogo, "Introduce una cantidad válida", "Error", JOptionPane.ERROR_MESSAGE);
+                                    UtilidadesMenu.showMensajeError(dialogo, "Introduce una cantidad válida");
                                 }
                             }
                         });
@@ -713,6 +718,63 @@ public class MenuSistema extends Menu {
             }
         }));
     }
+    
+    public void mostrarAlquileresUsuario() {
+        Menu menu = new Menu();
+        menu.nombre = "Alquileres Usuario " + personaAccedida.toSimpleString();
+    
+        JFrame frame = menu.crearNuevaVentana();
+        JPanel panel = menu.crearPanel();
+
+        frame.add(agregarScroll(panel));
+        frame.setVisible(true);
+    
+        Usuario usuarioAccedido = (Usuario) personaAccedida;
+    
+        // Etiqueta de "No hay facturas"
+        JLabel mensajeVacio = new JLabel("Todavía no hay ningún alquiler almacenado.");
+        mensajeVacio.setHorizontalAlignment(SwingConstants.CENTER);
+        mensajeVacio.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+    
+        actualizarAlquileresMostrados(panel, usuarioAccedido, mensajeVacio);
+    
+        // Timer que actualiza cada segundo
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarAlquileresMostrados(panel, usuarioAccedido, mensajeVacio);
+            }
+        });
+    
+        timer.start();
+    
+        // Cierra el timer cuando se cierre el diálogo
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                timer.stop();
+            }
+        });
+    }
+    
+    // Método que actualiza la lista de facturas
+    private void actualizarAlquileresMostrados(JPanel panel, Usuario usuarioAccedido, JLabel mensajeVacio) {
+        panel.removeAll(); // Limpia el panel antes de actualizar
+    
+        if (usuarioAccedido.registroInfoAlquileres.isEmpty()) {
+            panel.add(mensajeVacio);
+        } else {
+            for (InfoAlquiler alquiler : usuarioAccedido.registroInfoAlquileres) {
+                JLabel facturaLabel = new JLabel("<html>" + alquiler.toString().replace("\n", "<br>") + "</html>");
+                facturaLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                panel.add(facturaLabel);
+                panel.add(Box.createVerticalStrut(10)); // Espaciado entre facturas
+            }
+        }
+    
+        panel.revalidate();
+        panel.repaint();
+    }
 
     private void agregarOpcionesComunesTrabajadores() {
         String nombreBoton;
@@ -775,9 +837,7 @@ public class MenuSistema extends Menu {
                 Class<?> claseEntidad = utilidadesMenu.seleccionarClase("entidad");
 
                 if (claseEntidad == null) {
-                    // Mostrar mensaje de error si no se seleccionó ninguna clase de vehículo
-                    JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna clase de entidad.",
-                                                  "Error de selección", JOptionPane.ERROR_MESSAGE);
+                    UtilidadesMenu.showMensajeError(null, "No se ha seleccionado ninguna clase de entidad.");
                     return;
                 }
 
@@ -786,13 +846,12 @@ public class MenuSistema extends Menu {
 
                 if (entidadPorAsignar == null) {
                     // Mostrar mensaje si no se encontró ninguna entidad con fallo mecánico
-                    JOptionPane.showMessageDialog(null, "No se encontró ninguna entidad con fallo mecánico del tipo seleccionado.",
-                                                  "Fallo Mecánico No Encontrado", JOptionPane.WARNING_MESSAGE);
+                    UtilidadesMenu.showMensajeError(null, "No se encontró ninguna entidad con fallo mecánico del tipo seleccionado.");
+                    return;
                 } else {
                     // Intentar asignar el vehículo al trabajador
                     trabajador.setEntidadAsignada(ciudad, entidadPorAsignar);
-                    JOptionPane.showMessageDialog(null, "Entidad asignada correctamente.",
-                                                  "Asignación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    UtilidadesMenu.showMensajeExito(null, "Entidad asignada correctamente.");
                 }
             }
         }));

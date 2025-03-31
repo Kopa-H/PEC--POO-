@@ -15,11 +15,7 @@ public class Usuario extends Persona {
 
     // instance variables - replace the example below with your own
     private double saldo;
-    public enum TipoMembresia {
-        ESTANDAR, PREMIUM
-    }
-    
-    private TipoMembresia tipoMembresia;
+    public boolean isPremium;
     
     /**
      * Constructor for objects of class Usuario
@@ -30,7 +26,7 @@ public class Usuario extends Persona {
         setColor(colorClase);
         // Se añade entre 50 y 200 €
         saldo = 50 + Math.random() * (150);
-        tipoMembresia = TipoMembresia.ESTANDAR;
+        isPremium = false;
         
         registroInfoAlquileres = new ArrayList<>();
         
@@ -49,7 +45,7 @@ public class Usuario extends Persona {
     }
     
     public void reservarVehiculo() {
-        if (tipoMembresia != TipoMembresia.PREMIUM) {
+        if (!isPremium) {
             return;
         }
     }
@@ -68,13 +64,11 @@ public class Usuario extends Persona {
         }
     }
     
-    public TipoMembresia getTipoMembresia() {
-        return tipoMembresia;
-    }
-    
     public void promocionarUsuario() {
-        tipoMembresia = TipoMembresia.PREMIUM;
-        Impresora.printVerde("\nEl usuario " + this.toSimpleString() + " ha sido promocionado a Usuario Premium");
+        if (!isPremium) {
+            isPremium = true;
+            Impresora.printVerde("\nEl usuario " + this.toSimpleString() + " ha sido promocionado a Usuario Premium");
+        }
     }
     
     /**
@@ -91,6 +85,7 @@ public class Usuario extends Persona {
     public String toString() {
         String str = super.toString();  // Llamamos al toString de Trabajador
         str += "  |  Saldo: [" + String.format("%.2f", saldo) + " \u20AC]";
+        str += "  |  Premium: [" + isPremium + "]";
         return str;
     }
 }

@@ -222,7 +222,7 @@ public class Ciudad {
                     }
     
                     // Si el vehículo tiene menos del 20% de batería y la persona no es premium, lo descartamos
-                    if (vehiculo.getPorcentajeBateria() < 20 && !usuario.getTipoMembresia().equals(Usuario.TipoMembresia.PREMIUM)) {
+                    if (vehiculo.getPorcentajeBateria() < 20 && !usuario.isPremium) {
                         continue;
                     }
     

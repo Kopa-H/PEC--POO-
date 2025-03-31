@@ -16,6 +16,11 @@ public class Dinero {
     public Dinero() {
     }
     
+    public void setPrecioTasas(double precio) {
+        precioTasasEnEuros = precio;
+        Impresora.printGris("\nEl precio de las tasas de los usuarios se ha actualizado a " + precioTasasEnEuros + "€");
+    }
+    
     public void verificarCobroDeTasas(Ciudad ciudad, Tiempo tiempo) {
         List<Entidad> entidades = ciudad.obtenerEntidadesPorClase(Usuario.class);
         

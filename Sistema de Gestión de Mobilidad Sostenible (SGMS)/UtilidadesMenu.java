@@ -10,8 +10,16 @@ import java.util.ArrayList;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class UtilidadesMenu extends Menu
-{   
+public class UtilidadesMenu extends Menu {   
+    
+    public static void showMensajeExito(Component parent, String texto) {
+        JOptionPane.showMessageDialog(parent, texto, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public static void showMensajeError(Component parent, String texto) {
+        JOptionPane.showMessageDialog(parent, texto, "Fracaso", JOptionPane.ERROR_MESSAGE);
+    }
+    
     public Class<?> seleccionarClase(String tipo) {
         final Class<?>[] claseSeleccionada = {null};
 

@@ -35,6 +35,11 @@ public class Tiempo implements Serializable {
         
    }
    
+    public void setDiasEntrePagos(int dias) {
+        diasEntrePagos = dias;
+        Impresora.printGris("\nEl número de días entre pagos de las tasas de los usuarios se ha actualizado a " + diasEntrePagos + " días");
+    }
+   
     // Constructor
     public Tiempo(int hora, int minuto, int segundo, int dia, int mes, int año) {
         this.hora = hora;
