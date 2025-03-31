@@ -12,12 +12,28 @@ import java.util.ArrayList;
  */
 public class UtilidadesMenu extends Menu {   
     
+            
+    // Definir una fuente más grande para las etiquetas
+    public static final Font font = new Font("Arial", Font.PLAIN, 16);  // Fuente Arial con tamaño 16
+    public static final Font fontCabecera = new Font("Arial", Font.BOLD, 20);  // Fuente Arial, estilo negrita, tamaño 20
+    
     public static void showMensajeExito(Component parent, String texto) {
         JOptionPane.showMessageDialog(parent, texto, "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
     
     public static void showMensajeError(Component parent, String texto) {
         JOptionPane.showMessageDialog(parent, texto, "Fracaso", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    // Método para aplicar fuente y estilo a la cabecera
+    public static void aplicarFuenteCabecera(JLabel labelCabecera) {
+        labelCabecera.setFont(fontCabecera);
+        labelCabecera.setForeground(Color.BLUE);  // Cambiar el color de la letra si quieres
+    }
+    
+    // Método para aplicar fuente a cualquier JLabel
+    public static void aplicarFuenteTexto(JLabel label) {
+        label.setFont(font);  // Aplicar la fuente
     }
     
     public Class<?> seleccionarClase(String tipo) {

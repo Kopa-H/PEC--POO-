@@ -129,6 +129,8 @@ public class MenuSistema extends Menu {
         menu.nombre = "Estadísticas de la Simulación";
     
         JFrame frame = menu.crearNuevaVentana();
+        frame.setSize(600, 650);
+        
         JPanel panel = menu.crearPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Asegura que los componentes se coloquen en vertical
     
@@ -192,13 +194,18 @@ public class MenuSistema extends Menu {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
 
+        JLabel labelCabecera = new JLabel("Estadísticas Generales");
+        UtilidadesMenu.aplicarFuenteCabecera(labelCabecera);
+        panel.add(labelCabecera);
+        
         // Creamos etiquetas para mostrar las estadísticas generales
         JLabel labelFacturadoTrabajadores = new JLabel("    Total Facturado por Trabajadores: " + String.format("%.2f", totalFacturadoTrabajadores));
         JLabel labelPagadoUsuarios = new JLabel("    Total Pagado por Usuarios: " + String.format("%.2f", totalPagadoUsuarios));
         JLabel labelBalanceSistema = new JLabel("    Balance del Sistema: " + String.format("%.2f", balanceSistema));
-
-        JLabel labelCabecera = new JLabel("<html><b>Estadísticas Generales</b></html>");
-        panel.add(labelCabecera);
+       
+        UtilidadesMenu.aplicarFuenteTexto(labelFacturadoTrabajadores);
+        UtilidadesMenu.aplicarFuenteTexto(labelPagadoUsuarios);
+        UtilidadesMenu.aplicarFuenteTexto(labelBalanceSistema);
         
         // Añadimos las etiquetas al panel
         panel.add(labelFacturadoTrabajadores);
@@ -232,13 +239,18 @@ public class MenuSistema extends Menu {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Layout para organizar los elementos en vertical
         
-        JLabel labelCabecera = new JLabel("<html><b>Estadísticas Usuarios</b></html>");
+        JLabel labelCabecera = new JLabel("Estadísticas Usuarios");
+        UtilidadesMenu.aplicarFuenteCabecera(labelCabecera);
         panel.add(labelCabecera);
     
         // Creamos etiquetas para mostrar cada estadística
         JLabel labelUsuariosNormales = new JLabel("    Usuarios Normales: " + usuariosNormales);
         JLabel labelUsuariosPremium = new JLabel("    Usuarios Premium: " + usuariosPremium);
         JLabel labelTotalPagadoTasas = new JLabel("    Total Pagado en Tasas: " + String.format("%.2f", totalPagadoTasas));
+        
+        UtilidadesMenu.aplicarFuenteTexto(labelUsuariosNormales);
+        UtilidadesMenu.aplicarFuenteTexto(labelUsuariosPremium);
+        UtilidadesMenu.aplicarFuenteTexto(labelTotalPagadoTasas);
 
         panel.add(labelUsuariosNormales);
         panel.add(labelUsuariosPremium);
@@ -276,7 +288,8 @@ public class MenuSistema extends Menu {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
         
         // Añadimos una cabecera
-        JLabel labelCabecera = new JLabel("<html><b>Estadísticas Trabajadores</b></html>");
+        JLabel labelCabecera = new JLabel("Estadísticas Trabajadores");
+        UtilidadesMenu.aplicarFuenteCabecera(labelCabecera);
         panel.add(labelCabecera);
 
         // Creamos etiquetas para mostrar las estadísticas de trabajadores
@@ -284,6 +297,11 @@ public class MenuSistema extends Menu {
         JLabel labelTecnicosMantenimiento = new JLabel("    Técnicos de Mantenimiento: " + tecnicosMantenimiento);
         JLabel labelTrabajosCompletados = new JLabel("    Trabajos Completados: " + trabajosCompletados);
         JLabel labelTotalFacturado = new JLabel("    Total Facturado por Trabajadores: " + String.format("%.2f", totalFacturado));
+        
+        UtilidadesMenu.aplicarFuenteTexto(labelMecanicos);
+        UtilidadesMenu.aplicarFuenteTexto(labelTecnicosMantenimiento);
+        UtilidadesMenu.aplicarFuenteTexto(labelTrabajosCompletados);
+        UtilidadesMenu.aplicarFuenteTexto(labelTotalFacturado);
 
         // Añadimos las etiquetas al panel
         panel.add(labelMecanicos);
@@ -340,7 +358,8 @@ public class MenuSistema extends Menu {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
 
         // Añadimos una cabecera
-        JLabel labelCabecera = new JLabel("<html><b>Estadísticas Vehículos</b></html>");
+        JLabel labelCabecera = new JLabel("Estadísticas Vehículos");
+        UtilidadesMenu.aplicarFuenteCabecera(labelCabecera);
         panel.add(labelCabecera);
         
         // Creamos etiquetas para mostrar las estadísticas de vehículos
@@ -355,6 +374,19 @@ public class MenuSistema extends Menu {
         JLabel labelRecargasBateria = new JLabel("    Recargas de Batería: " + recargasBateria);
         JLabel labelVecesArrastrados = new JLabel("    Veces Arrastrados: " + vecesArrastrados);
         JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + (double)1000/distanciaRecorrida + " km");
+        
+        // Aplicar la fuente a todas las etiquetas
+        UtilidadesMenu.aplicarFuenteTexto(labelMotos);
+        UtilidadesMenu.aplicarFuenteTexto(labelBicis);
+        UtilidadesMenu.aplicarFuenteTexto(labelPatinetes);
+        UtilidadesMenu.aplicarFuenteTexto(labelMotosAlquiladas);
+        UtilidadesMenu.aplicarFuenteTexto(labelBicisAlquiladas);
+        UtilidadesMenu.aplicarFuenteTexto(labelPatinetesAlquilados);
+        UtilidadesMenu.aplicarFuenteTexto(labelViajesRealizados);
+        UtilidadesMenu.aplicarFuenteTexto(labelFallosMecanicos);
+        UtilidadesMenu.aplicarFuenteTexto(labelRecargasBateria);
+        UtilidadesMenu.aplicarFuenteTexto(labelVecesArrastrados);
+        UtilidadesMenu.aplicarFuenteTexto(labelDistanciaRecorrida);
 
         // Añadimos las etiquetas al panel
         panel.add(labelMotos);
