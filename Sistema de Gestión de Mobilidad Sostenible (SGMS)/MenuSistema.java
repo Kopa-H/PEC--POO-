@@ -135,19 +135,19 @@ public class MenuSistema extends Menu {
         ArrayList<Trabajador> trabajadores = new ArrayList<>();
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();
 
-        for (Entidad entidad : ciudad.entidades) {
-            if (entidad instanceof Usuario) {
-                usuarios.add(entidad);
-            } else if (entidad instanceof Trabajador) {
-                trabajores.add(entidad);
-            } else if (entidad instanceof Vehiculos) {
-                vehiculos.add(entidad);
+        for (Entidad entidad : ciudad.getEntidades()) {
+            if (entidad instanceof Usuario usuario) {
+                usuarios.add(usuario);
+            } else if (entidad instanceof Trabajador trabajador) {
+                trabajadores.add(trabajador);
+            } else if (entidad instanceof Vehiculo vehiculo) {
+                vehiculos.add(vehiculo);
             }
         }
         
         panel.add(generarEstadisticasUsuarios(ciudad, usuarios));
         
-        panel.add(generarEstadisticasTrabajadores(ciudad, trabajores));
+        panel.add(generarEstadisticasTrabajadores(ciudad, trabajadores));
         
         panel.add(generarEstadisticasVehiculos(vehiculos));
         
@@ -157,17 +157,30 @@ public class MenuSistema extends Menu {
         frame.setVisible(true);
     }
     
-    private JPanel generarEstadisticasGenerales(Ciudad ciudad) {        
-
-        
+    private JPanel generarEstadisticasGenerales(Ciudad ciudad) {
+        // Calculamos el balance del sistema
         ciudad.dinero.calcularBalanceSistema();
-        
-        // DEBES USAR ESTOS VALORES
-        ciudad.dinero.totalFacturadoTrabajadores;
-        ciudad.dinero.totalPagadoUsuarios;
-        ciudad.dinero.balanceSistema;
-    
-            
+
+        // Obtenemos los valores necesarios
+        double totalFacturadoTrabajadores = ciudad.dinero.totalFacturadoTrabajadores;
+        double totalPagadoUsuarios = ciudad.dinero.totalPagadoUsuarios;
+        double balanceSistema = ciudad.dinero.balanceSistema;
+
+        // Creamos el panel para las estadísticas generales
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
+
+        // Creamos etiquetas para mostrar las estadísticas generales
+        JLabel labelFacturadoTrabajadores = new JLabel("Total Facturado a Trabajadores: " + totalFacturadoTrabajadores);
+        JLabel labelPagadoUsuarios = new JLabel("Total Pagado por Usuarios: " + totalPagadoUsuarios);
+        JLabel labelBalanceSistema = new JLabel("Balance del Sistema: " + balanceSistema);
+
+        // Añadimos las etiquetas al panel
+        panel.add(labelFacturadoTrabajadores);
+        panel.add(labelPagadoUsuarios);
+        panel.add(labelBalanceSistema);
+
+        // Devolvemos el panel con las estadísticas generales
         return panel;
     }
     
@@ -179,12 +192,12 @@ public class MenuSistema extends Menu {
     
         // Calculamos las estadísticas a partir de la lista de usuarios
         for (Usuario usuario : usuarios) {
-            if (usuario.isPremium()) {
+            if (usuario.isPremium) {
                 usuariosPremium++;
             } else {
                 usuariosNormales++;
             }
-            totalPagadoTasas += usuario.getTotalPagadoTasas();
+            totalPagadoTasas += usuario.totalPagadoTasas;
         }
         
         ciudad.dinero.totalPagadoUsuarios = totalPagadoTasas;
@@ -206,21 +219,37 @@ public class MenuSistema extends Menu {
         // Devolvemos el panel listo para ser agregado al panel general
         return panel;
     }
-
     
     private JPanel generarEstadisticasTrabajadores(Ciudad ciudad, ArrayList<Trabajador> trabajadores) {
-        int trabajadores = trabajadores.size();
+        // Inicializamos las variables de estadísticas
+        int numTrabajadores = trabajadores.size();
         int trabajosCompletados = 0;
-        int totalFacturado = 0;
-        
-        // Calculamos las estadísticas a partir de la lista
+        double totalFacturado = 0;
+
+        // Calculamos las estadísticas a partir de la lista de trabajadores
         for (Trabajador trabajador : trabajadores) {
             trabajosCompletados += trabajador.trabajosCompletados;
             totalFacturado += trabajador.totalFacturado;
         }
-        
+
+        // Actualizamos el total facturado a los trabajadores en la ciudad
         ciudad.dinero.totalFacturadoTrabajadores = totalFacturado;
-        
+
+        // Creamos el panel donde mostraremos las estadísticas de los trabajadores
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
+
+        // Creamos etiquetas para mostrar las estadísticas de trabajadores
+        JLabel labelNumTrabajadores = new JLabel("Número de Trabajadores: " + numTrabajadores);
+        JLabel labelTrabajosCompletados = new JLabel("Trabajos Completados: " + trabajosCompletados);
+        JLabel labelTotalFacturado = new JLabel("Total Facturado a Trabajadores: " + totalFacturado);
+
+        // Añadimos las etiquetas al panel
+        panel.add(labelNumTrabajadores);
+        panel.add(labelTrabajosCompletados);
+        panel.add(labelTotalFacturado);
+
+        // Devolvemos el panel con las estadísticas de los trabajadores
         return panel;
     }
 
@@ -232,14 +261,14 @@ public class MenuSistema extends Menu {
         int motosAlquiladas = 0;
         int bicisAlquiladas = 0;
         int patinetesAlquilados = 0;
-        int viajesRealizados;
+        int viajesRealizados = 0;
         
-        int fallosMecanicos;
-        int recargasBateria;
+        int fallosMecanicos = 0;
+        int recargasBateria = 0;
         
-        int vecesArrastrados;
+        int vecesArrastrados = 0;
         
-        int distanciaRecorrida;
+        int distanciaRecorrida = 0;
         
         // Calculamos las estadísticas a partir de la lista
         for (Vehiculo vehiculo : vehiculos) {
