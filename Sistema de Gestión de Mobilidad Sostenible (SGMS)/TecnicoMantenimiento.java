@@ -19,7 +19,7 @@ public class TecnicoMantenimiento extends Trabajador {
         super(posX, posY);
         setColor(colorClase);
         
-        precioPorHora = 12.5;
+        precioPorHora = 7.5;
         precioBase = 15;
         
         setId(contadorInstancias);

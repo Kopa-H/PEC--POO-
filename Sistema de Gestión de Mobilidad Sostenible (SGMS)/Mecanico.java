@@ -19,7 +19,7 @@ public class Mecanico extends Trabajador {
         super(posX, posY);
         setColor(colorClase);
         
-        precioPorHora = 15;
+        precioPorHora = 10;
         precioBase = 20;
         
         setId(contadorInstancias);

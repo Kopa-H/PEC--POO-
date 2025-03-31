@@ -152,10 +152,10 @@ public class MenuSistema extends Menu {
             }
     
             // Agregar estadísticas actualizadas al panel
+            panel.add(generarEstadisticasGenerales(ciudad));
             panel.add(generarEstadisticasUsuarios(ciudad, usuarios));
             panel.add(generarEstadisticasTrabajadores(ciudad, trabajadores));
             panel.add(generarEstadisticasVehiculos(vehiculos));
-            panel.add(generarEstadisticasGenerales(ciudad));
     
             // Revalidar y repintar el panel para que se muestren los cambios
             panel.revalidate();
@@ -193,10 +193,10 @@ public class MenuSistema extends Menu {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
 
         // Creamos etiquetas para mostrar las estadísticas generales
-        JLabel labelFacturadoTrabajadores = new JLabel("    Total Facturado a Trabajadores: " + totalFacturadoTrabajadores);
-        JLabel labelPagadoUsuarios = new JLabel("    Total Pagado por Usuarios: " + totalPagadoUsuarios);
-        JLabel labelBalanceSistema = new JLabel("    Balance del Sistema: " + balanceSistema);
-        
+        JLabel labelFacturadoTrabajadores = new JLabel("    Total Facturado por Trabajadores: " + String.format("%.2f", totalFacturadoTrabajadores));
+        JLabel labelPagadoUsuarios = new JLabel("    Total Pagado por Usuarios: " + String.format("%.2f", totalPagadoUsuarios));
+        JLabel labelBalanceSistema = new JLabel("    Balance del Sistema: " + String.format("%.2f", balanceSistema));
+
         JLabel labelCabecera = new JLabel("<html><b>Estadísticas Generales</b></html>");
         panel.add(labelCabecera);
         
@@ -238,7 +238,7 @@ public class MenuSistema extends Menu {
         // Creamos etiquetas para mostrar cada estadística
         JLabel labelUsuariosNormales = new JLabel("    Usuarios Normales: " + usuariosNormales);
         JLabel labelUsuariosPremium = new JLabel("    Usuarios Premium: " + usuariosPremium);
-        JLabel labelTotalPagadoTasas = new JLabel("    Total Pagado en Tasas: " + totalPagadoTasas);
+        JLabel labelTotalPagadoTasas = new JLabel("    Total Pagado en Tasas: " + String.format("%.2f", totalPagadoTasas));
 
         panel.add(labelUsuariosNormales);
         panel.add(labelUsuariosPremium);
@@ -251,12 +251,19 @@ public class MenuSistema extends Menu {
     
     private JPanel generarEstadisticasTrabajadores(Ciudad ciudad, ArrayList<Trabajador> trabajadores) {    
         // Inicializamos las variables de estadísticas
-        int numTrabajadores = trabajadores.size();
+        int mecanicos = 0;
+        int tecnicosMantenimiento = 0;
         int trabajosCompletados = 0;
         double totalFacturado = 0;
 
         // Calculamos las estadísticas a partir de la lista de trabajadores
         for (Trabajador trabajador : trabajadores) {
+            if (trabajador instanceof Mecanico) {
+                mecanicos++;
+            } else if (trabajador instanceof TecnicoMantenimiento) {
+                tecnicosMantenimiento++;
+            }
+            
             trabajosCompletados += trabajador.getTrabajosCompletados();
             totalFacturado += trabajador.getTotalFacturado();
         }
@@ -273,12 +280,14 @@ public class MenuSistema extends Menu {
         panel.add(labelCabecera);
 
         // Creamos etiquetas para mostrar las estadísticas de trabajadores
-        JLabel labelNumTrabajadores = new JLabel("    Número de Trabajadores: " + numTrabajadores);
+        JLabel labelMecanicos = new JLabel("    Mecánicos: " + mecanicos);
+        JLabel labelTecnicosMantenimiento = new JLabel("    Técnicos de Mantenimiento: " + tecnicosMantenimiento);
         JLabel labelTrabajosCompletados = new JLabel("    Trabajos Completados: " + trabajosCompletados);
-        JLabel labelTotalFacturado = new JLabel("    Total Facturado de Trabajadores: " + totalFacturado);
+        JLabel labelTotalFacturado = new JLabel("    Total Facturado por Trabajadores: " + String.format("%.2f", totalFacturado));
 
         // Añadimos las etiquetas al panel
-        panel.add(labelNumTrabajadores);
+        panel.add(labelMecanicos);
+        panel.add(labelTecnicosMantenimiento);
         panel.add(labelTrabajosCompletados);
         panel.add(labelTotalFacturado);
         panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
@@ -345,7 +354,7 @@ public class MenuSistema extends Menu {
         JLabel labelFallosMecanicos = new JLabel("    Fallos Mecánicos: " + fallosMecanicos);
         JLabel labelRecargasBateria = new JLabel("    Recargas de Batería: " + recargasBateria);
         JLabel labelVecesArrastrados = new JLabel("    Veces Arrastrados: " + vecesArrastrados);
-        JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + distanciaRecorrida + " km");
+        JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + (double)1000/distanciaRecorrida + " km");
 
         // Añadimos las etiquetas al panel
         panel.add(labelMotos);
