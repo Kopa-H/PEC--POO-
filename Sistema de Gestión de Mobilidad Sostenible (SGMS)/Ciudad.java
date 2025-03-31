@@ -11,7 +11,9 @@ public class Ciudad {
     
     private static final int DISTANCIA_MINIMA_ENTRE_BASES = 20;
     
+    // Simulación copia su tiempo y dinero en ciudad, y se mantienen conectados
     public Tiempo tiempo;
+    public Dinero dinero;
     
     public static final int ROWS = 50;
     public static final int COLUMNS = 50;

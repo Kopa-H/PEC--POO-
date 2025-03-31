@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Dinero {
     // Esto quizás debería moverse a otra clase más general
-    private double precioTasasEnEuros = 85.57;    
+    public double precioTasasEnEuros = 85.57;    
 
     /**
      * Constructor for objects of class Dinero

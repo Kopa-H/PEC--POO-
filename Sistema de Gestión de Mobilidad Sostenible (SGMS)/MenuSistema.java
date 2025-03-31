@@ -110,26 +110,10 @@ public class MenuSistema extends Menu {
                 visualizarEstadoPromociones();
             }
         }));
-        botones.put("Asignar Trabajos", new Boton("ASIGNAR TRABAJOS", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Asignando trabajos");
-            }
-        }));
-        botones.put("Visualizar Interacciones Usuarios e Importes", new Boton("VISUALIZAR INTERACCIONES USUARIOS E IMPORTES", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Visualizando interacciones de usuarios e importes");
-            }
-        }));
-        botones.put("Visualizar Interacciones Vehículos", new Boton("VISUALIZAR INTERACCIONES VEHÍCULOS", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Visualizando interacciones de vehículos");
-            }
-        }));
-    
         // Nuevos botones añadidos
         botones.put("Modificar Tarifas", new Boton("MODIFICAR TARIFAS", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Modificando tarifas");
+                iniciarMenuTarifas();
             }
         }));
         botones.put("Visualizar Estadísticas", new Boton("VISUALIZAR ESTADÍSTICAS", new ActionListener() {
@@ -137,6 +121,64 @@ public class MenuSistema extends Menu {
                 JOptionPane.showMessageDialog(frame, "Visualizando estadísticas");
             }
         }));
+    }
+
+    public void iniciarMenuTarifas() {
+        Menu menu = new Menu();
+        menu.nombre = "Menú Tarifas";
+    
+        JDialog dialogo = menu.crearNuevoDialogo();
+        JPanel panel = menu.crearPanel();
+    
+        JLabel labelDias = new JLabel("Introduce el número de días que transcurren entre cobros:");
+        JTextField campoDias = new JTextField(10);
+    
+        JLabel labelTasas = new JLabel("Introduce el precio de las tasas en euros:");
+        JTextField campoTasas = new JTextField(10);
+    
+        JButton botonConfirmar = new JButton("Confirmar");
+    
+        panel.add(labelDias);
+        panel.add(campoDias);
+        panel.add(Box.createVerticalStrut(10)); // Espaciado
+        panel.add(labelTasas);
+        panel.add(campoTasas);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(botonConfirmar);
+    
+        dialogo.add(panel);
+        dialogo.setVisible(true);
+    
+        // Acción del botón
+        botonConfirmar.addActionListener(e -> {
+            try {
+                int dias = Integer.parseInt(campoDias.getText().trim());
+                double tasas = Double.parseDouble(campoTasas.getText().trim());
+    
+                if (dias <= 0 || tasas < 0) {
+                    JOptionPane.showMessageDialog(dialogo, "Los valores deben ser positivos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                if (dias > 365) {
+                    JOptionPane.showMessageDialog(dialogo, "Los días entre cobros no pueden superar el año (365).", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                if (tasas > 1000) {
+                    JOptionPane.showMessageDialog(dialogo, "El precio de las tasas no puede superar los 1000€.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+    
+                ciudad.tiempo.diasEntrePagos = dias;
+                ciudad.dinero.precioTasasEnEuros = tasas;
+                JOptionPane.showMessageDialog(dialogo, "Tarifas actualizadas correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                dialogo.dispose(); // Cierra el diálogo después de confirmar
+    
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(dialogo, "Introduce valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
     }
     
     public void iniciarMenuTrasladoVehiculo() {
