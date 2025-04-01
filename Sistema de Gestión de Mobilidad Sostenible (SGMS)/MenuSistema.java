@@ -63,7 +63,8 @@ public class MenuSistema extends Menu {
 
             case TipoUsuario.USUARIO_PREMIUM:
                 agregarOpcionesUsuarioNormal();
-                botones.put("Reservar", new Boton("RESERVAR (hasta 20' antes)", new ActionListener() {
+                String nombreMenu = "Reservar Vehículo";
+                botones.put(nombreMenu, new Boton(nombreMenu, new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         JOptionPane.showMessageDialog(frame, "Reservar seleccionada");
                     }
@@ -78,42 +79,54 @@ public class MenuSistema extends Menu {
     }
     
     private void agregarOpcionesAdministrador() {
+        String nombreMenu;
+        
         // Botones existentes
-        botones.put("Abrir Gestor de Entidades", new Boton("ABRIR GESTOR DE ENTIDADES", new ActionListener() {
+        nombreMenu = "Gestor de Entidades";
+        botones.put(nombreMenu, new Boton(nombreMenu, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 iniciarGestorEntidades();
             }
         }));
     
         // Nuevos botones con sus respectivas acciones
-        botones.put("Visualizar Estados Baterías", new Boton("VISUALIZAR ESTADOS BATERÍAS", new ActionListener() {
+        nombreMenu = "Visualizar Estados Baterías";
+        botones.put(nombreMenu, new Boton(nombreMenu, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 utilidadesMenu.mostrarInfo(ciudad, UtilidadesMenu.TipoInfoMostrada.BATERIAS);
             }
         }));
         
-        botones.put("Visualizar Estados Mecánicos", new Boton("VISUALIZAR ESTADOS MECÁNICOS", new ActionListener() {
+        nombreMenu = "Visualizar Estados Mecánicos";
+        botones.put(nombreMenu, new Boton(nombreMenu, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 utilidadesMenu.mostrarInfo(ciudad, UtilidadesMenu.TipoInfoMostrada.ESTADO_MECANICO);
             }
         }));
-        botones.put("Visualizar Estado de Bases", new Boton("VISUALIZAR ESTADO DE BASES", new ActionListener() {
+        
+        nombreMenu = "Visualizar Estado Bases";
+        botones.put(nombreMenu, new Boton(nombreMenu, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 utilidadesMenu.mostrarInfo(ciudad, UtilidadesMenu.TipoInfoMostrada.BASES);
             }
         }));
-        botones.put("Visualizar Estado Promociones", new Boton("VISUALIZAR ESTADO PROMOCIONES", new ActionListener() {
+        
+        nombreMenu = "Visualizar Estado Promociones";
+        botones.put(nombreMenu, new Boton(nombreMenu, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 visualizarEstadoPromociones();
             }
         }));
-        // Nuevos botones añadidos
-        botones.put("Modificar Tarifas", new Boton("MODIFICAR TARIFAS", new ActionListener() {
+        
+        nombreMenu = "Modificar Tasas del Servicio";
+        botones.put(nombreMenu, new Boton(nombreMenu, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 iniciarMenuTarifas();
             }
         }));
-        botones.put("Visualizar Estadísticas", new Boton("VISUALIZAR ESTADÍSTICAS", new ActionListener() {
+        
+        nombreMenu = "Visualizar Estadísticas";
+        botones.put(nombreMenu, new Boton(nombreMenu, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 visualizarEstadisticas(ciudad);
             }
