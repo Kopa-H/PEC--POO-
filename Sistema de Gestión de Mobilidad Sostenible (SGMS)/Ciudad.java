@@ -138,8 +138,8 @@ public class Ciudad {
     
                 // Si no existe ninguna base y se está añadiendo un vehículo, se agregan dos bases
                 if (encontrarEntidad(Base.class, 0) == null && !claseEntidad.equals(Base.class)) {
-                    agregarBase(simulacion, 2, 2);
-                    agregarBase(simulacion, 2, 2);
+                    agregarBase(simulacion, 1, 1);
+                    agregarBase(simulacion, 1, 1);
                     Impresora.printAzul("\nSe han añadido dos bases dado que no existía ninguna");
                 }
             
