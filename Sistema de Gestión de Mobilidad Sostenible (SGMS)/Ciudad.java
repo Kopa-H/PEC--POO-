@@ -17,6 +17,8 @@ public class Ciudad {
     
     public static final int ROWS = 50;
     public static final int COLUMNS = 50;
+    
+    public static final int METROS_POR_CUADRANTE = 100;
 
     /**
      * Constructor para objetos de la clase Ciudad.

@@ -65,8 +65,8 @@ public abstract class EntidadMovil extends Entidad {
         return siguiendoEntidad;
     }
     
-    public int getDistanciaRecorrida() {
-        return distanciaRecorrida;
+    public double getDistanciaRecorrida() {
+        return (this.distanciaRecorrida * Ciudad.METROS_POR_CUADRANTE) / 1000.0; // Convertimos 1000 en double para forzar la división con decimales
     }
     
     /**

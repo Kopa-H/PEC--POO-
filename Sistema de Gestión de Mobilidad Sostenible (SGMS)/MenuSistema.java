@@ -354,7 +354,7 @@ public class MenuSistema extends Menu {
 
         int vecesArrastrados = 0;
 
-        int distanciaRecorrida = 0;
+        double distanciaRecorrida = 0;
 
         // Calculamos las estadísticas a partir de la lista de vehículos
         for (Vehiculo vehiculo : vehiculos) {
@@ -376,8 +376,6 @@ public class MenuSistema extends Menu {
             vecesArrastrados += vehiculo.getVecesArrastrado();
             distanciaRecorrida += vehiculo.getDistanciaRecorrida();
         }
-
-        double distanciaEnKm = (distanciaRecorrida != 0) ? (1000.0 / distanciaRecorrida) : 0.0;
         
         // Creamos el panel donde mostraremos las estadísticas de los vehículos
         JPanel panel = new JPanel();
@@ -399,7 +397,8 @@ public class MenuSistema extends Menu {
         JLabel labelFallosMecanicos = new JLabel("    Fallos Mecánicos: " + fallosMecanicos);
         JLabel labelRecargasBateria = new JLabel("    Recargas de Batería: " + recargasBateria);
         JLabel labelVecesArrastrados = new JLabel("    Veces Arrastrados: " + vecesArrastrados);
-        JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + String.format("%.2f", distanciaEnKm) + " km");
+        JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + String.format("%.2f", distanciaRecorrida) + " km");
+        JLabel labelDistanciaRecorridaMediaPorViajeRealizado = new JLabel("    Distancia Media por Viaje Realizado: " + String.format("%.2f", (distanciaRecorrida / viajesRealizados) * 100) + " km/viaje");
         
         // Aplicar la fuente a todas las etiquetas
         UtilidadesMenu.aplicarFuenteTexto(labelMotos);
@@ -413,6 +412,7 @@ public class MenuSistema extends Menu {
         UtilidadesMenu.aplicarFuenteTexto(labelRecargasBateria);
         UtilidadesMenu.aplicarFuenteTexto(labelVecesArrastrados);
         UtilidadesMenu.aplicarFuenteTexto(labelDistanciaRecorrida);
+        UtilidadesMenu.aplicarFuenteTexto(labelDistanciaRecorridaMediaPorViajeRealizado);
 
         // Añadimos las etiquetas al panel
         panel.add(labelMotos);
@@ -428,6 +428,7 @@ public class MenuSistema extends Menu {
         panel.add(labelRecargasBateria);
         panel.add(labelVecesArrastrados);
         panel.add(labelDistanciaRecorrida);
+        panel.add(labelDistanciaRecorridaMediaPorViajeRealizado);
         panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
 
         // Devolvemos el panel con las estadísticas de los vehículos
