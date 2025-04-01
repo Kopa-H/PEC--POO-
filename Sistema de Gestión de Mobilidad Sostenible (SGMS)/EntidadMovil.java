@@ -65,6 +65,10 @@ public abstract class EntidadMovil extends Entidad {
         return siguiendoEntidad;
     }
     
+    public int getDistanciaRecorrida() {
+        return distanciaRecorrida;
+    }
+    
     /**
      * Método para mover la entidad hacia arriba (disminuye la coordenada Y).
      */

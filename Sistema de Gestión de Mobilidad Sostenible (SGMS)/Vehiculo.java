@@ -63,10 +63,6 @@ abstract public class Vehiculo extends EntidadMovil {
         return recargasBateria;
     }
     
-    public int getDistanciaRecorrida() {
-        return distanciaRecorrida;
-    }
-    
     public void incrementarRecargasBateria() {
         recargasBateria++;
     }

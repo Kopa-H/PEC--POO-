@@ -189,7 +189,7 @@ public class MenuSistema extends Menu {
             }
         });
     
-        frame.add(panel);
+        frame.add(agregarScroll(panel));
         frame.setVisible(true);
     }
     
@@ -208,9 +208,9 @@ public class MenuSistema extends Menu {
         panel.add(labelCabecera);
         
         // Creamos etiquetas para mostrar las estadísticas generales
-        JLabel labelFacturadoTrabajadores = new JLabel("    Total Facturado por Trabajadores: " + String.format("%.2f", totalFacturadoTrabajadores));
-        JLabel labelPagadoUsuarios = new JLabel("    Total Pagado por Usuarios: " + String.format("%.2f", totalPagadoUsuarios));
-        JLabel labelBalanceSistema = new JLabel("    Balance del Sistema: " + String.format("%.2f", balanceSistema));
+        JLabel labelFacturadoTrabajadores = new JLabel("    Total Facturado por Trabajadores: " + String.format("%.2f", totalFacturadoTrabajadores) + " €");
+        JLabel labelPagadoUsuarios = new JLabel("    Total Pagado por Usuarios: " + String.format("%.2f", totalPagadoUsuarios) + " €");
+        JLabel labelBalanceSistema = new JLabel("    Balance del Sistema: " + String.format("%.2f", balanceSistema) + " €");
        
         UtilidadesMenu.aplicarFuenteTexto(labelFacturadoTrabajadores);
         UtilidadesMenu.aplicarFuenteTexto(labelPagadoUsuarios);
@@ -255,7 +255,7 @@ public class MenuSistema extends Menu {
         // Creamos etiquetas para mostrar cada estadística
         JLabel labelUsuariosNormales = new JLabel("    Usuarios Normales: " + usuariosNormales);
         JLabel labelUsuariosPremium = new JLabel("    Usuarios Premium: " + usuariosPremium);
-        JLabel labelTotalPagadoTasas = new JLabel("    Total Pagado en Tasas: " + String.format("%.2f", totalPagadoTasas));
+        JLabel labelTotalPagadoTasas = new JLabel("    Total Pagado en Tasas: " + String.format("%.2f", totalPagadoTasas) + " €");
         
         UtilidadesMenu.aplicarFuenteTexto(labelUsuariosNormales);
         UtilidadesMenu.aplicarFuenteTexto(labelUsuariosPremium);
@@ -274,23 +274,28 @@ public class MenuSistema extends Menu {
         // Inicializamos las variables de estadísticas
         int mecanicos = 0;
         int tecnicosMantenimiento = 0;
-        int trabajosCompletados = 0;
-        double totalFacturado = 0;
+        
+        int trabajosCompletadosMecanicos = 0;
+        int trabajosCompletadosTecnicosMantenimiento = 0;
+        
+        double totalFacturadoMecanicos = 0;
+        double totalFacturadoTecnicosMantenimiento = 0;
 
         // Calculamos las estadísticas a partir de la lista de trabajadores
         for (Trabajador trabajador : trabajadores) {
             if (trabajador instanceof Mecanico) {
                 mecanicos++;
+                totalFacturadoMecanicos += trabajador.getTotalFacturado();
+                trabajosCompletadosMecanicos += trabajador.getTrabajosCompletados();
             } else if (trabajador instanceof TecnicoMantenimiento) {
                 tecnicosMantenimiento++;
+                totalFacturadoTecnicosMantenimiento += trabajador.getTotalFacturado();
+                trabajosCompletadosTecnicosMantenimiento += trabajador.getTrabajosCompletados();
             }
-            
-            trabajosCompletados += trabajador.getTrabajosCompletados();
-            totalFacturado += trabajador.getTotalFacturado();
         }
 
         // Actualizamos el total facturado a los trabajadores en la ciudad
-        ciudad.dinero.totalFacturadoTrabajadores = totalFacturado;
+        ciudad.dinero.totalFacturadoTrabajadores = totalFacturadoMecanicos + totalFacturadoTecnicosMantenimiento;
 
         // Creamos el panel donde mostraremos las estadísticas de los trabajadores
         JPanel panel = new JPanel();
@@ -304,19 +309,29 @@ public class MenuSistema extends Menu {
         // Creamos etiquetas para mostrar las estadísticas de trabajadores
         JLabel labelMecanicos = new JLabel("    Mecánicos: " + mecanicos);
         JLabel labelTecnicosMantenimiento = new JLabel("    Técnicos de Mantenimiento: " + tecnicosMantenimiento);
-        JLabel labelTrabajosCompletados = new JLabel("    Trabajos Completados: " + trabajosCompletados);
-        JLabel labelTotalFacturado = new JLabel("    Total Facturado por Trabajadores: " + String.format("%.2f", totalFacturado));
+        
+        JLabel labelTrabajosCompletadosMecanicos = new JLabel("    Trabajos Completados por Mecánicos: " + trabajosCompletadosMecanicos);
+        JLabel labelTrabajosCompletadosTecnicosMantenimiento = new JLabel("    Trabajos Completados por Técnicos Mantenimiento: " + trabajosCompletadosTecnicosMantenimiento);
+        
+        JLabel labelTotalFacturadoMecanicos = new JLabel("    Total Facturado por Mecánicos: " + String.format("%.2f", totalFacturadoMecanicos) + " €");
+        JLabel labelTotalFacturadoTecnicosMantenimiento = new JLabel("    Total Facturado por Técnicos de Mantenimiento: " + String.format("%.2f", totalFacturadoTecnicosMantenimiento) + " €");
         
         UtilidadesMenu.aplicarFuenteTexto(labelMecanicos);
         UtilidadesMenu.aplicarFuenteTexto(labelTecnicosMantenimiento);
-        UtilidadesMenu.aplicarFuenteTexto(labelTrabajosCompletados);
-        UtilidadesMenu.aplicarFuenteTexto(labelTotalFacturado);
+        UtilidadesMenu.aplicarFuenteTexto(labelTrabajosCompletadosMecanicos);
+        UtilidadesMenu.aplicarFuenteTexto(labelTrabajosCompletadosTecnicosMantenimiento);
+        UtilidadesMenu.aplicarFuenteTexto(labelTotalFacturadoMecanicos);
+        UtilidadesMenu.aplicarFuenteTexto(labelTotalFacturadoTecnicosMantenimiento);
 
         // Añadimos las etiquetas al panel
         panel.add(labelMecanicos);
         panel.add(labelTecnicosMantenimiento);
-        panel.add(labelTrabajosCompletados);
-        panel.add(labelTotalFacturado);
+        panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
+        panel.add(labelTrabajosCompletadosMecanicos);
+        panel.add(labelTrabajosCompletadosTecnicosMantenimiento);
+        panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
+        panel.add(labelTotalFacturadoMecanicos);
+        panel.add(labelTotalFacturadoTecnicosMantenimiento);
         panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
 
         // Devolvemos el panel con las estadísticas de los trabajadores
@@ -384,7 +399,7 @@ public class MenuSistema extends Menu {
         JLabel labelFallosMecanicos = new JLabel("    Fallos Mecánicos: " + fallosMecanicos);
         JLabel labelRecargasBateria = new JLabel("    Recargas de Batería: " + recargasBateria);
         JLabel labelVecesArrastrados = new JLabel("    Veces Arrastrados: " + vecesArrastrados);
-        JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + distanciaEnKm + " km");
+        JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + String.format("%.2f", distanciaEnKm) + " km");
         
         // Aplicar la fuente a todas las etiquetas
         UtilidadesMenu.aplicarFuenteTexto(labelMotos);
@@ -905,7 +920,7 @@ public class MenuSistema extends Menu {
                 JPanel panel = menu.crearPanel();
                 
                 // Crear un JLabel para mostrar el saldo
-                JLabel saldoLabel = new JLabel("Saldo disponible: " + ((Usuario)personaAccedida).getSaldo() + "€");
+                JLabel saldoLabel = new JLabel("Saldo disponible: " + ((Usuario)personaAccedida).getSaldo() + " €");
                 panel.add(saldoLabel);
                 
                 String nombreBoton = "Recargar saldo";
@@ -945,7 +960,7 @@ public class MenuSistema extends Menu {
                                         ((Usuario)personaAccedida).recargarSaldo(cantidad);
                                         
                                         // Actualizar el JLabel del saldo
-                                        saldoLabel.setText("Saldo disponible: " + ((Usuario)personaAccedida).getSaldo() + "€");
+                                        saldoLabel.setText("Saldo disponible: " + ((Usuario)personaAccedida).getSaldo() + " €");
                                         
                                         dialogo.dispose();  // Cerrar el diálogo después de la recarga
                                     }
