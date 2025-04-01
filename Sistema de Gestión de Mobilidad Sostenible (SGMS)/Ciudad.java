@@ -35,6 +35,20 @@ public class Ciudad {
         entidades = newEntidades;
     }
     
+    public List<Entidad> ordenarEntidadesPorId(List<Entidad> entidades) {
+        // Ordenar las entidades por su ID
+        entidades.sort((entidad1, entidad2) -> {
+            // Asegúrate de que las entidades son del tipo correcto
+            if (entidad1 instanceof Usuario && entidad2 instanceof Usuario) {
+                Usuario usuario1 = (Usuario) entidad1;
+                Usuario usuario2 = (Usuario) entidad2;
+                return Integer.compare(usuario1.getId(), usuario2.getId());  // Comparar por ID
+            }
+            return 0;  // Si no son usuarios, no se ordena (puedes manejar este caso según sea necesario)
+        });
+        return entidades;
+    }
+    
     public boolean isEntidadesAutonomas() {
         return autonomiaEntidades;
     }

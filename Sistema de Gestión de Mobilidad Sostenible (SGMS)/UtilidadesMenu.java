@@ -14,7 +14,8 @@ public class UtilidadesMenu extends Menu {
     
             
     // Definir una fuente más grande para las etiquetas
-    public static final Font font = new Font("Arial", Font.PLAIN, 16);  // Fuente Arial con tamaño 16
+    public static final Font fontTexto = new Font("Arial", Font.PLAIN, 16);  // Fuente Arial con tamaño 16
+    public static final Font fontTextoConBold = new Font("Arial", Font.BOLD, 16);  // Fuente Arial en negrita con tamaño 16
     public static final Font fontCabecera = new Font("Arial", Font.BOLD, 20);  // Fuente Arial, estilo negrita, tamaño 20
     
     public static void showMensajeExito(Component parent, String texto) {
@@ -33,7 +34,12 @@ public class UtilidadesMenu extends Menu {
     
     // Método para aplicar fuente a cualquier JLabel
     public static void aplicarFuenteTexto(Component componente) {
-        componente.setFont(font);  // Aplicar la fuente
+        componente.setFont(fontTexto);  // Aplicar la fuente
+    }
+    
+    // Método para aplicar fuente a cualquier JLabel
+    public static void aplicarFuenteTextoConBold(Component componente) {
+        componente.setFont(fontTextoConBold);  // Aplicar la fuente
     }
     
     public Class<?> seleccionarClase(String tipo) {
