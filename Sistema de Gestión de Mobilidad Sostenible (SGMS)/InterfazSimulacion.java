@@ -44,6 +44,7 @@ public class InterfazSimulacion extends JFrame {
         menu.nombre = "Información de Ubicación Seleccionada";
         JFrame frame = menu.crearNuevaVentana();
         frame.setSize(600, 400);
+        frame.setAlwaysOnTop(true);
         frame.setLocation(0, 0);
         panelTextoInfo = new JTextPane();  // Cambiado a JTextPane
 

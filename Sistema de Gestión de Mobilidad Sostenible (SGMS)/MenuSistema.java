@@ -230,6 +230,9 @@ public class MenuSistema extends Menu {
         // Inicializamos las variables para estadísticas
         int usuariosNormales = 0;
         int usuariosPremium = 0;
+        
+        double precioTasas = ciudad.dinero.precioTasasEnEuros;
+        int diasEntrePagos = ciudad.tiempo.diasEntrePagos;
         double totalPagadoTasas = 0;
     
         // Calculamos las estadísticas a partir de la lista de usuarios
@@ -255,14 +258,22 @@ public class MenuSistema extends Menu {
         // Creamos etiquetas para mostrar cada estadística
         JLabel labelUsuariosNormales = new JLabel("    Usuarios Normales: " + usuariosNormales);
         JLabel labelUsuariosPremium = new JLabel("    Usuarios Premium: " + usuariosPremium);
+        
+        JLabel labelPrecioTasas = new JLabel("    Precio Tasas: " + String.format("%.2f", precioTasas) + " €");
+        JLabel labelDiasEntrePagos = new JLabel("    Días entre Pagos de Tasas: " + diasEntrePagos + " días");
         JLabel labelTotalPagadoTasas = new JLabel("    Total Pagado en Tasas: " + String.format("%.2f", totalPagadoTasas) + " €");
         
         UtilidadesMenu.aplicarFuenteTexto(labelUsuariosNormales);
         UtilidadesMenu.aplicarFuenteTexto(labelUsuariosPremium);
+        UtilidadesMenu.aplicarFuenteTexto(labelPrecioTasas);
+        UtilidadesMenu.aplicarFuenteTexto(labelDiasEntrePagos);
         UtilidadesMenu.aplicarFuenteTexto(labelTotalPagadoTasas);
 
         panel.add(labelUsuariosNormales);
         panel.add(labelUsuariosPremium);
+        panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
+        panel.add(labelPrecioTasas);
+        panel.add(labelDiasEntrePagos);
         panel.add(labelTotalPagadoTasas);
         panel.add(Box.createVerticalStrut(10));  // Espaciado de 10 píxeles
     
@@ -401,7 +412,7 @@ public class MenuSistema extends Menu {
         JLabel labelRecargasBateria = new JLabel("    Recargas de Batería: " + recargasBateria);
         JLabel labelVecesArrastrados = new JLabel("    Veces Arrastrados: " + vecesArrastrados);
         JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + String.format("%.2f", distanciaRecorrida) + " km");
-        JLabel labelDistanciaRecorridaMediaPorViajeRealizado = new JLabel("    Distancia Media por Viaje Realizado: " + String.format("%.2f", distanciaRecorridaMediaPorViajeRealizado + " km/viaje"));
+        JLabel labelDistanciaRecorridaMediaPorViajeRealizado = new JLabel("    Distancia Media por Viaje Realizado: " + String.format("%.2f", distanciaRecorridaMediaPorViajeRealizado) + " km/viaje");
         
         // Aplicar la fuente a todas las etiquetas
         UtilidadesMenu.aplicarFuenteTexto(labelMotos);
