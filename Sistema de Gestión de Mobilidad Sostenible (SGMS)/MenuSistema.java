@@ -355,6 +355,7 @@ public class MenuSistema extends Menu {
         int vecesArrastrados = 0;
 
         double distanciaRecorrida = 0;
+        double distanciaRecorridaMediaPorViajeRealizado = 0;
 
         // Calculamos las estadísticas a partir de la lista de vehículos
         for (Vehiculo vehiculo : vehiculos) {
@@ -377,6 +378,8 @@ public class MenuSistema extends Menu {
             distanciaRecorrida += vehiculo.getDistanciaRecorrida();
         }
         
+        distanciaRecorridaMediaPorViajeRealizado = (viajesRealizados != 0) ? (distanciaRecorrida / (double) viajesRealizados) : 0.0;
+
         // Creamos el panel donde mostraremos las estadísticas de los vehículos
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));  // Organizar en vertical
@@ -398,7 +401,7 @@ public class MenuSistema extends Menu {
         JLabel labelRecargasBateria = new JLabel("    Recargas de Batería: " + recargasBateria);
         JLabel labelVecesArrastrados = new JLabel("    Veces Arrastrados: " + vecesArrastrados);
         JLabel labelDistanciaRecorrida = new JLabel("    Distancia Recorrida: " + String.format("%.2f", distanciaRecorrida) + " km");
-        JLabel labelDistanciaRecorridaMediaPorViajeRealizado = new JLabel("    Distancia Media por Viaje Realizado: " + String.format("%.2f", (distanciaRecorrida / viajesRealizados) * 100) + " km/viaje");
+        JLabel labelDistanciaRecorridaMediaPorViajeRealizado = new JLabel("    Distancia Media por Viaje Realizado: " + String.format("%.2f", distanciaRecorridaMediaPorViajeRealizado + " km/viaje"));
         
         // Aplicar la fuente a todas las etiquetas
         UtilidadesMenu.aplicarFuenteTexto(labelMotos);
