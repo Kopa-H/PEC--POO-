@@ -11,9 +11,6 @@ public class MenuIniciarSesion extends Menu {
     
     protected String nombreMenuPrincipal;
     
-    protected int WINDOW_WIDTH = 400;
-    protected int WINDOW_HEIGHT = 500;
-    
     private Simulacion simulacion;
     private Ciudad ciudad;
 
@@ -28,7 +25,6 @@ public class MenuIniciarSesion extends Menu {
         menu.nombre = "Iniciar Sesión";
         this.nombreMenuPrincipal = menu.nombre;
         
-        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setTitle(menu.nombre);  // Establece el título de la ventana
         
         this.panel = menu.crearPanel();
@@ -46,9 +42,9 @@ public class MenuIniciarSesion extends Menu {
     
         // Al navegar a un nuevo panel, lo agregamos a la pila
         gestorMenus.panelHistory.push(panel);
-        gestorMenus.agregarBotonAtras(menuSistema.panel);
+        gestorMenus.agregarBotonAtras(this, menuSistema.panel);
         gestorMenus.cardsPanel.add(menuSistema.panel, menuSistema.nombreMenuPrincipal);
-        gestorMenus.navegarA(menuSistema.panel);
+        gestorMenus.navegarA(this, menuSistema.panel);
     }
     
     private Persona identificarse(Class<?> clasePersona) {

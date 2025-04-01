@@ -34,7 +34,7 @@ public class InterfazSimulacion extends JFrame {
 
     public InterfazSimulacion(Simulacion simulacion, Ciudad ciudad, JButton[][] gridButtons, Tiempo tiempo) {
         setTitle("Simulación de Ciudad");
-        setSize(600, 600);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gridPanel = new JPanel(new GridLayout(Simulacion.ROWS, Simulacion.COLUMNS));
@@ -43,7 +43,9 @@ public class InterfazSimulacion extends JFrame {
         Menu menu = new Menu();
         menu.nombre = "Información de Ubicación Seleccionada";
         JFrame frame = menu.crearNuevaVentana();
+        frame.setSize(600, 400);
         frame.setAlwaysOnTop(true);
+        frame.setLocation(0, 0);
         panelTextoInfo = new JTextPane();  // Cambiado a JTextPane
 
         for (int i = 0; i < Ciudad.ROWS; i++) {

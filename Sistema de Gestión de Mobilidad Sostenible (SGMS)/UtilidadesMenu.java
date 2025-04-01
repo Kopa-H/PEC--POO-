@@ -261,7 +261,17 @@ public class UtilidadesMenu extends Menu {
     
     public void mostrarInfo(Ciudad ciudad, TipoInfoMostrada tipo) {
         Menu menu = new Menu();
-        menu.nombre = "Vehículos Disponibles";
+        
+        if (tipo == TipoInfoMostrada.VEHICULOS) {
+            menu.nombre = "Vehículos Disponibles";
+        } else if (tipo == TipoInfoMostrada.BATERIAS) {
+            menu.nombre = "Estado de las Baterías de los Vehículos";
+        } else if (tipo == TipoInfoMostrada.ESTADO_MECANICO) {
+            menu.nombre = "Estado Mecánico de los Vehículos";
+        } else if (tipo == TipoInfoMostrada.BASES) {
+            menu.nombre = "Estado de las Bases";
+        }
+
         JFrame frame = menu.crearNuevaVentana();
         
         // Crear el panel para el submenú
@@ -292,6 +302,7 @@ public class UtilidadesMenu extends Menu {
         // Verificar si hay entidades en la lista
         if (ciudad.getEntidades().isEmpty()) {
             JLabel noEntidadesLabel = new JLabel("No existen entidades todavía.");
+            aplicarFuenteTexto(noEntidadesLabel);
             panel.add(noEntidadesLabel);
         } else {
             boolean entidadEncontrada = false; // Variable para verificar si se encuentra alguna entidad del tipo necesario
@@ -301,6 +312,7 @@ public class UtilidadesMenu extends Menu {
                     for (Entidad entidad : ciudad.getEntidades()) {
                         if (entidad instanceof Vehiculo) {
                             JLabel label = new JLabel(entidad.toString());
+                            aplicarFuenteTexto(label);
                             panel.add(label);
                             entidadEncontrada = true; // Se encontró al menos un vehículo
                         }
@@ -311,6 +323,7 @@ public class UtilidadesMenu extends Menu {
                     for (Entidad entidad : ciudad.getEntidades()) {
                         if (entidad instanceof Vehiculo vehiculo) {
                             JLabel label = new JLabel(entidad.toSimpleString() + " con nivel de batería " + vehiculo.getPorcentajeBateria() + "%");
+                            aplicarFuenteTexto(label);
                             panel.add(label);
                             entidadEncontrada = true; // Se encontró al menos un vehículo con batería
                         }
@@ -321,6 +334,7 @@ public class UtilidadesMenu extends Menu {
                     for (Entidad entidad : ciudad.getEntidades()) {
                         if (entidad instanceof Vehiculo) {
                             JLabel label = new JLabel(entidad.toSimpleString() + " con nivel de batería " + entidad.getPorcentajeEstadoMecanico() + "%");
+                            aplicarFuenteTexto(label);
                             panel.add(label);
                             entidadEncontrada = true; // Se encontró al menos un vehículo con estado mecánico
                         }
@@ -331,6 +345,7 @@ public class UtilidadesMenu extends Menu {
                     for (Entidad entidad : ciudad.getEntidades()) {
                         if (entidad instanceof Base) {
                             JLabel label = new JLabel(entidad.toString());
+                            aplicarFuenteTexto(label);
                             panel.add(label);
                             entidadEncontrada = true; // Se encontró al menos una base
                         }
@@ -341,6 +356,7 @@ public class UtilidadesMenu extends Menu {
             // Si no se encontraron entidades del tipo seleccionado
             if (!entidadEncontrada) {
                 JLabel noEntidadesLabel = new JLabel("No existen " + tipo.toString().toLowerCase() + " todavía.");
+                aplicarFuenteTexto(noEntidadesLabel);
                 panel.add(noEntidadesLabel);
             }
         }

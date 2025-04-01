@@ -18,9 +18,6 @@ public class MenuSistema extends Menu {
     
     protected String nombreMenuPrincipal;
     
-    protected int WINDOW_WIDTH = 600;
-    protected int WINDOW_HEIGHT = 700;
-    
     Simulacion simulacion;
     Ciudad ciudad;
     Persona personaAccedida;
@@ -43,7 +40,6 @@ public class MenuSistema extends Menu {
 
         this.nombreMenuPrincipal = menu.nombre; 
         
-        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setTitle(menu.nombre);
         
         panel = menu.crearPanel();
@@ -418,9 +414,11 @@ public class MenuSistema extends Menu {
         JPanel panel = menu.crearPanel();
     
         JLabel labelDias = new JLabel("Introduce el número de días que transcurren entre cobros:");
+        UtilidadesMenu.aplicarFuenteTexto(labelDias);
         JTextField campoDias = new JTextField(10);
     
         JLabel labelTasas = new JLabel("Introduce el precio de las tasas en euros:");
+        UtilidadesMenu.aplicarFuenteTexto(labelTasas);
         JTextField campoTasas = new JTextField(10);
     
         JButton botonConfirmar = new JButton("Confirmar");
@@ -597,7 +595,9 @@ public class MenuSistema extends Menu {
     
             // Si no hay usuarios, mostrar un mensaje
             if (entidades.isEmpty()) {
-                panel.add(new JLabel("De momento no hay ningún usuario."));
+                JLabel labelNoHayUsuarios = new JLabel("De momento no hay ningún usuario.");
+                UtilidadesMenu.aplicarFuenteTexto(labelNoHayUsuarios);
+                panel.add(labelNoHayUsuarios);
             } else {
                 for (Entidad entidad : entidades) {
                     Usuario usuario = (Usuario) entidad;
@@ -605,7 +605,10 @@ public class MenuSistema extends Menu {
                     // Crear un JPanel para el usuario con su nombre e ID
                     JPanel panelUsuario = new JPanel();
                     panelUsuario.setLayout(new BoxLayout(panelUsuario, BoxLayout.Y_AXIS));
-                    panelUsuario.add(new JLabel("Usuario: " + usuario.getNombre() + " (ID: " + usuario.getId() + ")"));
+                    
+                    JLabel labelUser = new JLabel("Usuario: " + usuario.getNombre() + " (ID: " + usuario.getId() + ")");
+                    UtilidadesMenu.aplicarFuenteTexto(labelUser);
+                    panelUsuario.add(labelUser);
     
                     // Variables para las condiciones de promoción
                     int vehiculosUltimoMes = 0;
@@ -637,6 +640,10 @@ public class MenuSistema extends Menu {
                     JLabel lblVehiculosUltimoMes = new JLabel();
                     JLabel lblVehiculosTresMesesSeguidos = new JLabel();
                     JLabel lblTiposVehiculosUsados = new JLabel();
+                    
+                    UtilidadesMenu.aplicarFuenteTexto(lblVehiculosUltimoMes);
+                    UtilidadesMenu.aplicarFuenteTexto(lblVehiculosTresMesesSeguidos);
+                    UtilidadesMenu.aplicarFuenteTexto(lblTiposVehiculosUsados);
     
                     // Si ha usado 15 vehículos en el último mes
                     if (vehiculosUltimoMes >= 15) {
@@ -711,6 +718,7 @@ public class MenuSistema extends Menu {
         
         // Crear el panel para el submenú
         JPanel panel = menu.crearPanel();
+        panel.setBackground(Color.BLUE);
         
         // Crear y añadir los botones con sus funcionalidades
         menu.botones.put("AgregarUsuarioNormal", new Boton("Agregar Usuario Normal", new ActionListener() {
@@ -808,7 +816,7 @@ public class MenuSistema extends Menu {
         agregarBotones(menu.botones, panel);
         
         // Añadir el panel al JFrame
-        frame.add(agregarScroll(panel));
+        frame.add(panel);
         
         frame.setVisible(true);
     }
